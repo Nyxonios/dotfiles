@@ -1,7 +1,9 @@
+{ pkgs, ... }:
 {
   userData = rec {
     user = "";
-    homeDir = "/Users/${user}";
+    homeDir = if pkgs.stdenv.isDarwin then "/Users/${user}" else "/home/${user}";
     userEmail = "";
   };
 }
+

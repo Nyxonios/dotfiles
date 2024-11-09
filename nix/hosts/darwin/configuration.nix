@@ -1,6 +1,6 @@
 { config, inputs, pkgs, ... }:
 let
-  inherit (import ./../../vars.nix) userData;
+  inherit (import ./../../vars.nix { inherit pkgs; }) userData;
 in
 {
   users.users."${userData.user}".home = userData.homeDir;

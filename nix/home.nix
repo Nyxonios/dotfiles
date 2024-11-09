@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 let
-  inherit (import ./vars.nix) userData;
+  inherit (import ./vars.nix { inherit pkgs; }) userData;
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
 {
