@@ -31,7 +31,7 @@ in
   };
 
   fonts.packages = [
-    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
+    (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; })
   ];
 
 

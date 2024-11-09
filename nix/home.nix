@@ -24,10 +24,6 @@ in
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    # "System" stuff
-    (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
-
-
     # Development stuff
     pkgs.neovim
     pkgs.alacritty
