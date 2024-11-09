@@ -68,6 +68,7 @@ in
     dock.autohide = true;
 
     finder.FXPreferredViewStyle = "clmv";
+    LaunchServices.LSQuarantine = false;
 
     NSGlobalDomain = {
       AppleICUForce24HourTime = true;
@@ -75,6 +76,7 @@ in
       NSAutomaticWindowAnimationsEnabled = false;
       _HIHideMenuBar = true;
       KeyRepeat = 2;
+      NSWindowShouldDragOnGesture = true;
     };
   };
 
