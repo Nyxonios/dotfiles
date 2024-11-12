@@ -1,21 +1,4 @@
-{ pkgs, ... }:
-let
-  tmux_nav =
-    if pkgs.stdenv.isLinux then ''
-      is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
-      | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|l?n?vim?x?(-wrapped)?|fzf)(diff)?$'"
-      bind-key -n 'C-h' if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
-      bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
-      bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
-      bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
-      tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
-      if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
-      "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
-      if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
-      "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
-    ''
-    else "";
-in
+{ config, pkgs, ... }:
 {
   enable = true;
   shell = "${pkgs.zsh}/bin/zsh";
@@ -47,6 +30,12 @@ in
     }
   ];
   extraConfig = ''
+    # These are currently needed on Darwin as there seems
+    # to be a bug in the tmux sensible plugin.
+    # https://github.com/nix-community/home-manager/issues/5952
+    set -gu default-command
+    set -g default-shell "$SHELL"
+
     set -g default-terminal "tmux-256color"
     set -ga terminal-overrides ",*256col*:Tc"
     set -ga terminal-overrides '*:Ss=\E[%p1%d q:Se=\E[ q'
@@ -71,7 +60,7 @@ in
     bind - split-window -v -c '#{pane_current_path}'
 
     unbind r
-    bind r source-file ~/.config/tmux/tmux.conf
+    bind r source-file ${config.xdg.configHome}/tmux/tmux.conf
 
     bind -r j resize-pane -D 5
     bind -r k resize-pane -U 5
@@ -92,10 +81,20 @@ in
     # remove delay for exiting insert mode with ESC in Neovim
     set -sg escape-time 10
 
-    ${tmux_nav}
+    is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|l?n?vim?x?(-wrapped)?|fzf)(diff)?$'"
+    bind-key -n 'C-h' if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
+    bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
+    bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
+    bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
+    tmux_version='$(tmux -V | sed -En "s/^tmux ([0-9]+(.[0-9]+)?).*/\1/p")'
+    if-shell -b '[ "$(echo "$tmux_version < 3.0" | bc)" = 1 ]' \
+    "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\'  'select-pane -l'"
+    if-shell -b '[ "$(echo "$tmux_version >= 3.0" | bc)" = 1 ]' \
+    "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
 
-    unbind C-g
-    bind -n C-g display-popup -E "lazygit"
+    # unbind C-g
+    # bind -n C-g display-popup -E "lazygit"
     bind-key -T copy-mode-vi 'C-h' select-pane -L
     bind-key -T copy-mode-vi 'C-j' select-pane -D
     bind-key -T copy-mode-vi 'C-k' select-pane -U

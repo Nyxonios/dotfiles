@@ -1,17 +1,11 @@
-{ config
-, pkgs
-, lib
-, ...
-}: {
+{ config, pkgs, ... }:
+{
   enable = true;
   history.size = 10000;
   history.path = "${config.xdg.dataHome}/zsh/history";
   shellAliases = {
     vim = "nvim";
     ls = "ls --color";
-    ctrl-l = "clear";
-    C-l = "ctrl-l";
-    control-l = "clear";
     clean = "clear";
   };
   initExtra = ''

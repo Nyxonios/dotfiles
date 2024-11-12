@@ -6,7 +6,7 @@ live_config_reload = true
 
 [shell]
 program = "zsh"
-args = ["-l", "-c", "tmux a"]
+args = ["-l", "-c", "tmux"]
 
 [font]
 normal = {family = "FiraCode Nerd Font"}

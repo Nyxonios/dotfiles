@@ -19,14 +19,13 @@ in
   # release notes.
   home.stateVersion = "24.05"; # Please read the comment before changing.
 
-  fonts.fontconfig.enable = true;
-
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
     # Development stuff
     pkgs.neovim
     pkgs.alacritty
+    pkgs.kitty
 
     # Languages / Language servers
     pkgs.go
@@ -35,19 +34,14 @@ in
 
   # Programs that I use, where I want the configuration
   # files to live outside of Nix configurations.
-
   xdg.configFile.nvim.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/config/nvim;
   xdg.configFile.alacritty.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/config/alacritty;
   xdg.configFile.aerospace.source = lib.mkIf pkgs.stdenv.isDarwin (mkOutOfStoreSymlink userData.homeDir + /dotfiles/config/aerospace);
 
-  # xdg.configFile.nvim.source = ./../config/nvim;
-  # xdg.configFile.alacritty.source = ./../config/alacritty;
-  # xdg.configFile.aerospace.source = lib.mkIf pkgs.stdenv.isDarwin ./../config/aerospace;
-
   programs = {
     fzf = import ./home/fzf.nix { inherit pkgs; };
     zsh = import ./home/zsh/zsh.nix { inherit config pkgs lib; };
-    tmux = import ./home/tmux.nix { inherit pkgs; };
+    tmux = import ./home/tmux.nix { inherit config pkgs; };
   };
 
   # Let Home Manager install and manage itself.
