@@ -1,27 +1,13 @@
 { config, inputs, pkgs, ... }:
-let
-  inherit (import ./../../vars.nix { inherit pkgs; }) userData;
-in
 {
-  users.users."${userData.user}".home = userData.homeDir;
-  nixpkgs.config.allowUnfree = true;
-
-
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
-  environment.systemPackages =
-    [
-      pkgs.aerospace
-      pkgs.mkalias
-      pkgs.btop
-
-      # Scripts
-      (import ./../../scripts/tmux-sessionizer.nix { inherit pkgs; })
-    ];
-
-  nix.nixPath = [
-    "nixpkgs=${inputs.nixpkgs}"
+  imports = [
+    ./../shared.nix
   ];
+
+  environment.systemPackages = [
+    pkgs.aerospace
+  ];
+
 
   homebrew = {
     enable = true;
@@ -34,18 +20,6 @@ in
     onActivation.upgrade = true;
   };
 
-  fonts.packages = [
-    (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; })
-  ];
-
-
-
-  # Auto upgrade nix package and the daemon service.
-  services.nix-daemon.enable = true;
-  # nix.package = pkgs.nix;
-
-  # Necessary for using flakes on this system.
-  nix.settings.experimental-features = "nix-command flakes";
 
   system.activationScripts.applications.text =
     let
@@ -84,16 +58,10 @@ in
     };
   };
 
-  # Enable alternative shell support in nix-darwin.
-  # programs.fish.enable = true;
-
   # Set Git commit hash for darwin-version.
   system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 5;
-
-  # The platform the configuration will be used on.
-  nixpkgs.hostPlatform = "aarch64-darwin";
 }
