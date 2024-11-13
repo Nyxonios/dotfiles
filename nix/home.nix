@@ -29,18 +29,20 @@ in
     # Languages / Language servers
     pkgs.go
     pkgs.nixd
+    pkgs.zigpkgs.master
 
-    # Scripts
-    # (import ./../scripts/tmux-sessionizer.sh { inherit pkgs; })
+    # System stuff
+    pkgs.ripgrep
+
   ];
 
 
 
   # Programs that I use, where I want the configuration
   # files to live outside of Nix configurations.
-  xdg.configFile.nvim.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/config/nvim;
-  xdg.configFile.alacritty.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/config/alacritty;
-  xdg.configFile.aerospace.source = lib.mkIf pkgs.stdenv.isDarwin (mkOutOfStoreSymlink userData.homeDir + /dotfiles/config/aerospace);
+  xdg.configFile.nvim.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/nvim;
+  xdg.configFile.alacritty.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/alacritty;
+  xdg.configFile.aerospace.source = lib.mkIf pkgs.stdenv.isDarwin (mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/aerospace);
 
   programs = {
     fzf = import ./home/fzf.nix { inherit pkgs; };
@@ -48,9 +50,10 @@ in
     tmux = import ./home/tmux.nix { inherit config pkgs; };
   };
 
-  # home.activation.setupDirectories = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-  #   mkdir -p ~/development && mkdir -p ~/scripts
-  # '';
+  # On fresh installs, we ensure that we have the "development" folder created.
+  home.activation.setupDirectories = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p ~/development 
+  '';
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
