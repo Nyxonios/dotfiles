@@ -13,6 +13,10 @@ in
     [
       pkgs.aerospace
       pkgs.mkalias
+      pkgs.btop
+
+      # Scripts
+      (import ./../../scripts/tmux-sessionizer.nix { inherit pkgs; })
     ];
 
   nix.nixPath = [

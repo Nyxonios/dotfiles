@@ -12,8 +12,6 @@
     ZSH_DISABLE_COMPFIX=true
     export EDITOR=nvim
 
-
-
     # disable sort when completing `git checkout`
     zstyle ':completion:*:git-checkout:*' sort false
 
@@ -42,6 +40,9 @@
     setopt hist_save_no_dups
     setopt hist_ignore_dups
     setopt hist_find_no_dups
+
+
+    bindkey -s ^f "tmux-sessionizer\n"
   '';
   oh-my-zsh = {
     enable = true;

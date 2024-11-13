@@ -25,12 +25,16 @@ in
     # Development stuff
     pkgs.neovim
     pkgs.alacritty
-    pkgs.kitty
 
     # Languages / Language servers
     pkgs.go
     pkgs.nixd
+
+    # Scripts
+    # (import ./../scripts/tmux-sessionizer.sh { inherit pkgs; })
   ];
+
+
 
   # Programs that I use, where I want the configuration
   # files to live outside of Nix configurations.
@@ -43,6 +47,10 @@ in
     zsh = import ./home/zsh/zsh.nix { inherit config pkgs lib; };
     tmux = import ./home/tmux.nix { inherit config pkgs; };
   };
+
+  # home.activation.setupDirectories = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  #   mkdir -p ~/development && mkdir -p ~/scripts
+  # '';
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
