@@ -1,4 +1,7 @@
 { config, pkgs, ... }:
+let
+  inherit (import ./../../vars.nix { inherit pkgs; }) userData;
+in
 {
   enable = true;
   history.size = 10000;
@@ -7,6 +10,9 @@
     vim = "nvim";
     ls = "ls --color";
     clean = "clear";
+    cnvim = "nvim ~/.config/nvim";
+    cdot = "nvim ~/dotfiles/";
+    rebuild = if pkgs.stdenv.isDarwin then "" else "sudo nixos-rebuild switch --flake ~/dotfiles/nix#${userData.user}";
   };
   initExtra = ''
     ZSH_DISABLE_COMPFIX=true
