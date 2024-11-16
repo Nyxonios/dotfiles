@@ -43,9 +43,25 @@
           { nixpkgs.overlays = [ zig.overlays.default ]; }
         ];
       };
-
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations."work".pkgs;
+
+
+      nixosConfigurations."${userData.user}" = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/nixos/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "before-nix-backup";
+            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.users."${userData.user}" = import ./home.nix;
+          }
+          { nixpkgs.overlays = [ zig.overlays.default ]; }
+        ];
+      };
     };
 }
 

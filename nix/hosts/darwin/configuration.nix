@@ -1,12 +1,26 @@
 { config, inputs, pkgs, ... }:
+let
+  inherit (import ./../../vars.nix { inherit pkgs; }) userData;
+in
 {
   imports = [
     ./../shared.nix
   ];
 
-  environment.systemPackages = [
+  environment. systemPackages = [
     pkgs.aerospace
   ];
+
+  # Let home-manager set the configuration file for aerospace.
+  # We define the platform specific hm stuff here, so the 
+  # home.nix file can be shared between all platforms.
+  home-manager.users."${userData.user}" = { config, ... }:
+    let
+      inherit (config.lib.file) mkOutOfStoreSymlink;
+    in
+    {
+      xdg.configFile.aerospace.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/aerospace;
+    };
 
 
   homebrew = {

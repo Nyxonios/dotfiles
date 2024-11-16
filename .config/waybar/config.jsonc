@@ -1,0 +1,104 @@
+[
+  {
+    "bluetooth": {
+      "format": "",
+      "format-connected": " {num_connections}",
+      "format-disabled": "󰂲",
+      "on-click": "sleep 0.1 && blueman-manager",
+      "tooltip-format": "{controller_alias}\t{controller_address}",
+      "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+      "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"
+    },
+    "clock": {
+      "format": " {:L%H:%M}",
+      "tooltip": true,
+      "tooltip-format": "<big>{:%A, %d.%B %Y }</big>\n<tt><small>{calendar}</small></tt>"
+    },
+    "cpu": {
+      "format": " {usage:2}%",
+      "interval": 5,
+      "tooltip": true
+    },
+    "custom/exit": {
+      "format": "",
+      "on-click": "sleep 0.1 && wlogout -b 5",
+      "tooltip": false
+    },
+    "disk": {
+      "format": " {free}",
+      "tooltip": true
+    },
+    "hyprland/workspaces": {
+      "format": "{name}",
+      "format-icons": {
+        "active": " ",
+        "default": " ",
+        "urgent": " "
+      },
+      "on-scroll-down": "hyprctl dispatch workspace e-1",
+      "on-scroll-up": "hyprctl dispatch workspace e+1"
+    },
+    "layer": "top",
+    "memory": {
+      "format": " {}%",
+      "interval": 5,
+      "tooltip": true
+    },
+    "modules-center": [
+      "hyprland/workspaces",
+      "clock"
+    ],
+    "modules-left": [
+      "pulseaudio",
+      "cpu",
+      "memory",
+      "disk"
+    ],
+    "modules-right": [
+      "bluetooth",
+      "network",
+      "custom/notification",
+      "tray",
+      "custom/exit"
+    ],
+    "network": {
+      "format-disconnected": "󰤮",
+      "format-ethernet": " {bandwidthDownOctets}",
+      "format-icons": [
+        "󰤯",
+        "󰤟",
+        "󰤢",
+        "󰤥",
+        "󰤨"
+      ],
+      "format-wifi": "{icon} {signalStrength}%",
+      "tooltip": false
+    },
+    "position": "top",
+    "pulseaudio": {
+      "format": "{icon} {volume}% {format_source}",
+      "format-bluetooth": "{volume}% {icon} {format_source}",
+      "format-bluetooth-muted": " {icon} {format_source}",
+      "format-icons": {
+        "car": "",
+        "default": [
+          "",
+          "",
+          ""
+        ],
+        "hands-free": "",
+        "headphone": "",
+        "headset": "",
+        "phone": "",
+        "portable": ""
+      },
+      "format-muted": " {format_source}",
+      "format-source": " {volume}%",
+      "format-source-muted": "",
+      "on-click": "sleep 0.1 && pavucontrol"
+    },
+    "tray": {
+      "spacing": 12
+    }
+  }
+]

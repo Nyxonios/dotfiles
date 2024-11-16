@@ -25,15 +25,20 @@ in
     # Development stuff
     pkgs.neovim
     pkgs.alacritty
+    pkgs.lazygit
 
-    # Languages / Language servers
+    # Languages / Language servers / formatters
     pkgs.go
+    pkgs.gopls
     pkgs.nixd
+    pkgs.nixpkgs-fmt
     pkgs.zigpkgs.master
+    pkgs.lua-language-server
+    pkgs.stylua
 
     # System stuff
     pkgs.ripgrep
-
+    pkgs.btop
   ];
 
 
@@ -42,7 +47,6 @@ in
   # files to live outside of Nix configurations.
   xdg.configFile.nvim.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/nvim;
   xdg.configFile.alacritty.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/alacritty;
-  xdg.configFile.aerospace.source = lib.mkIf pkgs.stdenv.isDarwin (mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/aerospace);
 
   programs = {
     fzf = import ./home/fzf.nix { inherit pkgs; };

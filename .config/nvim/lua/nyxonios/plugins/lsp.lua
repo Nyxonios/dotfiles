@@ -218,17 +218,17 @@ return {
       local servers = {
         -- gopls = {}, -- Handled with external plugin
         -- tsserver = {}, -- Handled with external plugin
-        rust_analyzer = {},
-        templ = {},
-        html = {
-          filetypes = { 'html', 'templ' },
-        },
-        htmx = {
-          filetypes = { 'html', 'templ' },
-        },
-        tailwindcss = {
-          filetypes = { 'html', 'templ' },
-        },
+        -- rust_analyzer = {},
+        -- templ = {},
+        -- html = {
+        --   filetypes = { 'html', 'templ' },
+        -- },
+        -- htmx = {
+        --   filetypes = { 'html', 'templ' },
+        -- },
+        -- tailwindcss = {
+        --   filetypes = { 'html', 'templ' },
+        -- },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -277,9 +277,7 @@ return {
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format lua code
-      })
+      vim.list_extend(ensure_installed, {})
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
