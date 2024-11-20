@@ -87,6 +87,10 @@ return {
           },
         },
       }
+      require('lspconfig').zls.setup {
+        cmd = { 'zls' },
+        settings = {},
+      }
       require('goto-preview').setup()
       -- Brief Aside: **What is LSP?**
       --

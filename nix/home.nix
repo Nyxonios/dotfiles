@@ -33,6 +33,7 @@ in
     pkgs.nixd
     pkgs.nixpkgs-fmt
     pkgs.zigpkgs.master
+    pkgs.zls
     pkgs.lua-language-server
     pkgs.stylua
 
