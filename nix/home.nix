@@ -40,8 +40,10 @@ in
     # System stuff
     pkgs.ripgrep
     pkgs.btop
-  ];
+    pkgs.jq
 
+    # Development libs
+  ];
 
 
   # Programs that I use, where I want the configuration
