@@ -48,14 +48,6 @@ return {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
-      -- Automatically install LSPs and related tools to stdpath for neovim
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
-
-      -- Open LSP stuff (Go to definition etc) in floating window.
-      'rmagatti/goto-preview',
-
       -- Neovim completion
       { 'folke/neodev.nvim', opts = {} },
 
@@ -64,8 +56,10 @@ return {
       { 'j-hui/fidget.nvim', opts = {} },
     },
     config = function()
+      local lspconfig = require 'lspconfig'
+
       local flakePath = '~/dotfiles/nix/flake.nix'
-      require('lspconfig').nixd.setup {
+      lspconfig.nixd.setup {
         cmd = { 'nixd' },
         settings = {
           nixd = {
@@ -81,41 +75,16 @@ return {
                 expr = '(builtins.getFlake "' .. flakePath .. '").darwinConfigurations.work.options',
               },
               home_manager = {
-                expr = '(builtins.getFlake "' .. flakePath .. '").homeConfigurations..options',
+                expr = '(builtins.getFlake "' .. flakePath .. '").homeConfigurations.options',
               },
             },
           },
         },
       }
-      require('lspconfig').zls.setup {
+      lspconfig.zls.setup {
         cmd = { 'zls' },
         settings = {},
       }
-      require('goto-preview').setup()
-      -- Brief Aside: **What is LSP?**
-      --
-      -- LSP is an acronym you've probably heard, but might not understand what it is.
-      --
-      -- LSP stands for Language Server Protocol. It's a protocol that helps editors
-      -- and language tooling communicate in a standardized fashion.
-      --
-      -- In general, you have a "server" which is some tool built to understand a particular
-      -- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc). These Language Servers
-      -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-      -- processes that communicate with some "client" - in this case, Neovim!
-      --
-      -- LSP provides Neovim with features like:
-      --  - Go to definition
-      --  - Find references
-      --  - Autocompletion
-      --  - Symbol Search
-      --  - and more!
-      --
-      -- Thus, Language Servers are external tools that must be installed separately from
-      -- Neovim. This is where `mason` and related plugins come into play.
-      --
-      -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
-      -- and elegantly composed help section, `:help lsp-vs-treesitter`
 
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
@@ -175,14 +144,6 @@ return {
           --  For example, in C this would take you to the header
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-          -- For opening LSP stuff in floating windows
-          map('gpd', require('goto-preview').goto_preview_definition, '[G]oto [P]review [D]efinition')
-          map('gpt', require('goto-preview').goto_preview_type_definition, '[G]oto [P]review [T]type definition')
-          map('gpi', require('goto-preview').goto_preview_implementation, '[G]oto [P]review [I]mplementation')
-          map('gpD', require('goto-preview').goto_preview_declaration, '[G]oto [P]review [D]eclaration')
-          map('gpr', require('goto-preview').goto_preview_references, '[G]oto [P]review [R]eferences')
-          map('gP', require('goto-preview').close_all_win, 'Close all preview windows')
-
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
           --    See `:help CursorHold` for information about when this is executed
@@ -210,92 +171,92 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-      -- Enable the following language servers
-      --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+      --   -- Enable the following language servers
+      --   --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+      --   --
+      --   --  Add any additional override configuration in the following tables. Available keys are:
+      --   --  - cmd (table): Override the default command used to start the server
+      --   --  - filetypes (table): Override the default list of associated filetypes for the server
+      --   --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
+      --   --  - settings (table): Override the default settings passed when initializing the server.
+      --   --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+      --   local servers = {
+      --     -- gopls = {}, -- Handled with external plugin
+      --     -- tsserver = {}, -- Handled with external plugin
+      --     -- rust_analyzer = {},
+      --     -- templ = {},
+      --     -- html = {
+      --     --   filetypes = { 'html', 'templ' },
+      --     -- },
+      --     -- htmx = {
+      --     --   filetypes = { 'html', 'templ' },
+      --     -- },
+      --     -- tailwindcss = {
+      --     --   filetypes = { 'html', 'templ' },
+      --     -- },
+      --     -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
+      --     --
+      --     -- Some languages (like typescript) have entire language plugins that can be useful:
+      --     --    https://github.com/pmizio/typescript-tools.nvim
+      --     --
+      --     -- But for many setups, the LSP (`tsserver`) will work just fine
+      --     -- tsserver = {},
+      --     --
       --
-      --  Add any additional override configuration in the following tables. Available keys are:
-      --  - cmd (table): Override the default command used to start the server
-      --  - filetypes (table): Override the default list of associated filetypes for the server
-      --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-      --  - settings (table): Override the default settings passed when initializing the server.
-      --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local servers = {
-        -- gopls = {}, -- Handled with external plugin
-        -- tsserver = {}, -- Handled with external plugin
-        -- rust_analyzer = {},
-        -- templ = {},
-        -- html = {
-        --   filetypes = { 'html', 'templ' },
-        -- },
-        -- htmx = {
-        --   filetypes = { 'html', 'templ' },
-        -- },
-        -- tailwindcss = {
-        --   filetypes = { 'html', 'templ' },
-        -- },
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`tsserver`) will work just fine
-        -- tsserver = {},
-        --
-
-        lua_ls = {
-          -- cmd = {...},
-          -- filetypes { ...},
-          -- capabilities = {},
-          settings = {
-            Lua = {
-              runtime = { version = 'LuaJIT' },
-              workspace = {
-                checkThirdParty = false,
-                -- Tells lua_ls where to find all the Lua files that you have loaded
-                -- for your neovim configuration.
-                library = {
-                  '${3rd}/luv/library',
-                  unpack(vim.api.nvim_get_runtime_file('', true)),
-                },
-                -- If lua_ls is really slow on your computer, you can try this instead:
-                -- library = { vim.env.VIMRUNTIME },
-              },
-              completion = {
-                callSnippet = 'Replace',
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
-            },
-          },
-        },
-      }
-
-      -- Ensure the servers and tools above are installed
-      --  To check the current status of installed tools and/or manually install
-      --  other tools, you can run
-      --    :Mason
+      --     lua_ls = {
+      --       -- cmd = {...},
+      --       -- filetypes { ...},
+      --       -- capabilities = {},
+      --       settings = {
+      --         Lua = {
+      --           runtime = { version = 'LuaJIT' },
+      --           workspace = {
+      --             checkThirdParty = false,
+      --             -- Tells lua_ls where to find all the Lua files that you have loaded
+      --             -- for your neovim configuration.
+      --             library = {
+      --               '${3rd}/luv/library',
+      --               unpack(vim.api.nvim_get_runtime_file('', true)),
+      --             },
+      --             -- If lua_ls is really slow on your computer, you can try this instead:
+      --             -- library = { vim.env.VIMRUNTIME },
+      --           },
+      --           completion = {
+      --             callSnippet = 'Replace',
+      --           },
+      --           -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+      --           -- diagnostics = { disable = { 'missing-fields' } },
+      --         },
+      --       },
+      --     },
+      --   }
       --
-      --  You can press `g?` for help in this menu
-      require('mason').setup()
-
-      -- You can add other tools here that you want Mason to install
-      -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {})
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
-
-      require('mason-lspconfig').setup {
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for tsserver)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
+      --   -- Ensure the servers and tools above are installed
+      --   --  To check the current status of installed tools and/or manually install
+      --   --  other tools, you can run
+      --   --    :Mason
+      --   --
+      --   --  You can press `g?` for help in this menu
+      --   require('mason').setup()
+      --
+      --   -- You can add other tools here that you want Mason to install
+      --   -- for you, so that they are available from within Neovim.
+      --   local ensure_installed = vim.tbl_keys(servers or {})
+      --   vim.list_extend(ensure_installed, {})
+      --   require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+      --
+      --   require('mason-lspconfig').setup {
+      --     handlers = {
+      --       function(server_name)
+      --         local server = servers[server_name] or {}
+      --         -- This handles overriding only values explicitly passed
+      --         -- by the server configuration above. Useful when disabling
+      --         -- certain features of an LSP (for example, turning off formatting for tsserver)
+      --         server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+      --         require('lspconfig')[server_name].setup(server)
+      --       end,
+      --     },
+      --   }
     end,
   },
 }
