@@ -11,8 +11,8 @@ in
     ls = "ls --color";
     clean = "clear";
     cnvim = "nvim ~/.config/nvim";
-    cdot = "nvim ~/dotfiles/";
-    rebuild = if pkgs.stdenv.isDarwin then "" else "sudo nixos-rebuild switch --flake ~/dotfiles/nix#${userData.user}";
+    cdot = "nvim ~/dotfiles";
+    rebuild = if pkgs.stdenv.isDarwin then "darwin-rebuild switch --flake ~/dotfiles/nix#work" else "sudo nixos-rebuild switch --flake ~/dotfiles/nix#${userData.user}";
   };
   initExtra = ''
     ZSH_DISABLE_COMPFIX=true
