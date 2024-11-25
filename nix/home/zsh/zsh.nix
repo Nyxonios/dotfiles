@@ -49,6 +49,10 @@ in
 
 
     bindkey -s ^f "tmux-sessionizer\n"
+
+    if [ -f ~/bin/work.sh ]; then
+      source ~/bin/work.sh
+    fi
   '';
   oh-my-zsh = {
     enable = true;
