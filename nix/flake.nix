@@ -15,7 +15,7 @@
     zig.url = "github:mitchellh/zig-overlay";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, home-manager, zig }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, home-manager, zig, ... }:
     let
       inherit (import ./vars.nix { pkgs = nixpkgs; }) userData;
     in
