@@ -13,9 +13,10 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     zig.url = "github:mitchellh/zig-overlay";
+    terraform-versions.url = "github:/stackbuilders/nixpkgs-terraform";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, home-manager, zig, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, home-manager, zig, terraform-versions, ... }:
     let
       inherit (import ./vars.nix { pkgs = nixpkgs; }) userData;
     in
@@ -40,7 +41,22 @@
             home-manager.backupFileExtension = "before-nix-backup";
             home-manager.users."${userData.user}" = import ./home.nix;
           }
-          { nixpkgs.overlays = [ zig.overlays.default ]; }
+          {
+            nixpkgs.overlays = [
+              zig.overlays.default
+              terraform-versions.overlays.default
+              (self: super: {
+                karabiner-elements = super.karabiner-elements.overrideAttrs (old: {
+                  version = "14.13.0";
+
+                  src = super.fetchurl {
+                    inherit (old.src) url;
+                    hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
+                  };
+                });
+              })
+            ];
+          }
         ];
       };
       # Expose the package set, including overlays, for convenience.
