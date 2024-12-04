@@ -34,8 +34,8 @@ return {
       dapui.close()
     end
 
-    vim.keymap.set('n', '<leader>dt', dap.toggle_breakpoint, {})
+    vim.keymap.set('n', '<leader>sb', dap.toggle_breakpoint, {})
     vim.keymap.set('n', '<leader>dc', dap.continue, {})
-    vim.keymap.set('n', '<leader>td', dapgo.debug_test, {})
+    vim.keymap.set('n', '<leader>dt', dapgo.debug_test, {})
   end,
 }
