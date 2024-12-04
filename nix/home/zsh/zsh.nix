@@ -10,8 +10,8 @@ in
     vim = "nvim";
     ls = "ls --color";
     clean = "clear";
-    cnvim = "nvim ~/.config/nvim";
-    cdot = "nvim ~/dotfiles";
+    cnvim = "cd ~/.config/nvim && nvim";
+    cdot = "cd ~/dotfiles && nvim";
     rebuild = if pkgs.stdenv.isDarwin then "darwin-rebuild switch --flake ~/dotfiles/nix#work" else "sudo nixos-rebuild switch --flake ~/dotfiles/nix#${userData.user}";
   };
   initExtra = ''
