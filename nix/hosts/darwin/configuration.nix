@@ -7,11 +7,18 @@ in
     ./../shared.nix
   ];
 
-  environment. systemPackages = [
+  environment.systemPackages = [
     pkgs.aerospace
+    pkgs.karabiner-elements
+
+    pkgs.terraform-versions."1.7.0"
+
+    pkgs.nodejs_20
+    pkgs.typescript
+    pkgs.pnpm_8
+    pkgs.prettierd
   ];
 
-  # Let home-manager set the configuration file for aerospace.
   # We define the platform specific hm stuff here, so the 
   # home.nix file can be shared between all platforms.
   home-manager.users."${userData.user}" = { config, ... }:
@@ -20,6 +27,7 @@ in
     in
     {
       xdg.configFile.aerospace.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/aerospace;
+      xdg.configFile.karabiner.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/karabiner;
     };
 
 
@@ -27,6 +35,8 @@ in
     enable = true;
 
     casks = [
+      "betterdisplay"
+      "docker"
     ];
 
     onActivation.cleanup = "zap";
