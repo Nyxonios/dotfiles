@@ -34,8 +34,17 @@ return {
       dapui.close()
     end
 
-    vim.keymap.set('n', '<leader>sb', dap.toggle_breakpoint, {})
-    vim.keymap.set('n', '<leader>dc', dap.continue, {})
     vim.keymap.set('n', '<leader>dt', dapgo.debug_test, {})
+
+    vim.keymap.set('n', '<leader>dl', dap.run_last, {}) -- (d)bug run (l)ast
+    vim.keymap.set('n', '<leader>dr', dap.restart, {}) -- (d)ebug (r)estart
+    vim.keymap.set('n', '<leader>dt', dap.terminate, {}) -- (d)ebug (t)erminate
+
+    vim.keymap.set('n', '<leader>sb', dap.set_breakpoint, {}) -- (s)et (b)reakpoint
+    vim.keymap.set('n', '<leader>cb', dap.clear_breakpoints, {}) -- (c)lear (b)reakpoints
+    vim.keymap.set('n', '<leader>rc', dap.run_to_cursor, {})
+    vim.keymap.set('n', '<leader>c', dap.continue, {})
+    vim.keymap.set('n', '<leader>si', dap.step_into, {})
+    vim.keymap.set('n', '<leader>so', dap.step_over, {})
   end,
 }
