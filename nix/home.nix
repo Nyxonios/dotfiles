@@ -26,6 +26,8 @@ in
     pkgs.neovim
     pkgs.alacritty
     pkgs.lazygit
+    pkgs.cloc
+    pkgs.sqlite
 
     # Languages / Language servers / formatters
     pkgs.go
