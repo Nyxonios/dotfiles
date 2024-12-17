@@ -61,6 +61,7 @@ in
       "git"
       "sudo"
       "golang"
+      "vi-mode"
     ];
   };
   plugins = [
