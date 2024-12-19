@@ -96,13 +96,6 @@ in
     (nerdfonts.override { fonts = [ "FiraCode" ]; })
   ];
 
-  # home-manager = {
-  #   extraSpecialArgs = {inherit inputs;};
-  #   users = {
-  #     "nyxonios" = import ./home.nix;
-  #   };
-  # };
-
   # Install firefox.
   programs.firefox.enable = true;
 
