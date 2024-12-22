@@ -28,6 +28,7 @@ in
     pkgs.lazygit
     pkgs.cloc
     pkgs.sqlite
+    pkgs.limbo
 
     # Languages / Language servers / formatters
     pkgs.go
