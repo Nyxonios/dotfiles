@@ -92,8 +92,8 @@ in
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
-  fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" ]; })
+  fonts.packages = [
+    pkgs.nerd-fonts.fira-code
   ];
 
   # Install firefox.
