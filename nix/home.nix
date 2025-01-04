@@ -29,6 +29,7 @@ in
     pkgs.cloc
     pkgs.sqlite
     pkgs.limbo
+    pkgs.air
 
     # Languages / Language servers / formatters
     pkgs.go
