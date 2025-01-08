@@ -285,14 +285,6 @@
                 {
                     "identifiers": {
                         "is_keyboard": true,
-                        "product_id": 92,
-                        "vendor_id": 5426
-                    },
-                    "ignore": true
-                },
-                {
-                    "identifiers": {
-                        "is_keyboard": true,
                         "product_id": 835,
                         "vendor_id": 1452
                     },
@@ -350,6 +342,14 @@
                 {
                     "identifiers": {
                         "device_address": "d3-2e-35-d5-a7-62",
+                        "is_keyboard": true,
+                        "is_pointing_device": true
+                    },
+                    "ignore": false
+                },
+                {
+                    "identifiers": {
+                        "device_address": "d3-2e-35-d5-ad-03",
                         "is_keyboard": true,
                         "is_pointing_device": true
                     },
