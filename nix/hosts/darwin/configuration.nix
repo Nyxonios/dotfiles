@@ -37,6 +37,8 @@ in
     casks = [
       "betterdisplay"
       "docker"
+      "alacritty"
+      "spotify"
     ];
 
     onActivation.cleanup = "zap";
@@ -67,7 +69,10 @@ in
     '';
 
   system.defaults = {
-    dock.autohide = true;
+    dock = {
+      autohide = true;
+      show-recents = false;
+    };
 
     finder.FXPreferredViewStyle = "clmv";
     LaunchServices.LSQuarantine = false;
@@ -79,6 +84,7 @@ in
       _HIHideMenuBar = true;
       KeyRepeat = 2;
       NSWindowShouldDragOnGesture = true;
+      "com.apple.swipescrolldirection" = false;
     };
   };
 

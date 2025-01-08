@@ -24,7 +24,7 @@ in
   home.packages = [
     # Development stuff
     pkgs.neovim
-    pkgs.alacritty
+    # pkgs.alacritty
     pkgs.lazygit
     pkgs.cloc
     pkgs.sqlite
@@ -35,12 +35,14 @@ in
     # Languages / Language servers / formatters
     pkgs.go
     pkgs.gopls
+    pkgs.gofumpt
     pkgs.nixd
     pkgs.nixpkgs-fmt
     pkgs.zigpkgs.master
     pkgs.zls
     pkgs.lua-language-server
     pkgs.stylua
+    pkgs.ansible
 
     # System stuff
     pkgs.ripgrep
@@ -55,6 +57,7 @@ in
   # files to live outside of Nix configurations.
   xdg.configFile.nvim.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/nvim;
   xdg.configFile.alacritty.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/alacritty;
+  xdg.configFile.k9s.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/k9s;
 
   programs = {
     fzf = import ./home/fzf.nix { inherit pkgs; };
