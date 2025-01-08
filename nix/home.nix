@@ -30,6 +30,7 @@ in
     pkgs.sqlite
     pkgs.limbo
     pkgs.air
+    pkgs.k9s
 
     # Languages / Language servers / formatters
     pkgs.go
