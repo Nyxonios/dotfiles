@@ -4,7 +4,7 @@ pkgs.writeShellScriptBin "tmux-sessionizer" ''
   if [[ $# -eq 1 ]]; then
     selected=$1
   else
-      selected=$(find ~/development -mindepth 1 -maxdepth 2 -type d | ${pkgs.fzf}/bin/fzf)
+      selected=$(find ~/development -mindepth 1 -maxdepth 1 -type d | ${pkgs.fzf}/bin/fzf)
   fi
 
   if [[ -z $selected ]]; then
