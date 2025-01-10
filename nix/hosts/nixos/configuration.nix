@@ -118,6 +118,7 @@ in
     brave
     pavucontrol
     zigpkgs.master
+    alacritty
 
     # Hyprland stuff
     # dunst
