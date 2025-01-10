@@ -169,5 +169,22 @@ if.app-id = "com.tinyspeck.slackmacgap"
 run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
+if.app-id = "Mattermost.Desktop"
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = "com.apple.mail"
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = "com.apple.iCal"
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
 if.app-id = "com.culturedcode.ThingsMac"
 run = 'move-node-to-workspace 4'
+
+
+[[on-window-detected]]
+    if.app-id = 'com.readdle.SparkDesktop'
+    run = 'layout tiling'
