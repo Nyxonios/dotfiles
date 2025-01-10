@@ -19,6 +19,8 @@
   outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, home-manager, zig, terraform-versions, ... }:
     let
       inherit (import ./vars.nix { pkgs = nixpkgs; }) userData;
+      system = userData.platform;
+      pkgs = nixpkgs.legacyPackages.${system};
     in
     {
       # Build darwin flake using:
@@ -75,6 +77,14 @@
             home-manager.users."${userData.user}" = import ./home.nix;
           }
           { nixpkgs.overlays = [ zig.overlays.default ]; }
+        ];
+      };
+
+      homeConfigurations."vm" = home-manager.lib.homeManagerConfiguration {
+        extraSpecialArgs = { inherit inputs; };
+        pkgs = pkgs;
+        modules = [
+          (import ./home.nix)
         ];
       };
     };
