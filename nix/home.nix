@@ -31,6 +31,7 @@ in
     pkgs.limbo
     pkgs.air
     pkgs.k9s
+    pkgs.kubectl
 
     # Languages / Language servers / formatters
     pkgs.go
