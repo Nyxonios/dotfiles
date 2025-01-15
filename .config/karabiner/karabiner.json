@@ -9,7 +9,7 @@
                             {
                                 "conditions": [
                                     {
-                                        "input_sources": [{ "language": "^sv$" }, { "language": "^sw$" ],
+                                        "input_sources": [{ "language": "^sv$" }, { "language": "^sw$" }],
                                         "type": "input_source_if"
                                     }
                                 ],
