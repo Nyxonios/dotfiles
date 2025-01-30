@@ -27,6 +27,8 @@ return {
       }
       vim.keymap.set('n', '<leader>tf', '<cmd>GoTestFunc<CR>')
       vim.keymap.set('n', '<leader>db', '<cmd>GoDebug<CR>')
+      vim.keymap.set('n', '<leader>fs', '<cmd>GoFillStruct<CR>')
+      vim.keymap.set('n', '<leader>at', '<cmd>GoAddTest<CR>')
     end,
     event = { 'CmdlineEnter' },
     ft = { 'go', 'gomod' },
