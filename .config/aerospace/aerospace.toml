@@ -184,7 +184,14 @@ run = 'move-node-to-workspace 4'
 if.app-id = "com.culturedcode.ThingsMac"
 run = 'move-node-to-workspace 4'
 
+[[on-window-detected]]
+if.app-id = 'com.readdle.SparkDesktop'
+run = 'layout tiling'
 
 [[on-window-detected]]
-    if.app-id = 'com.readdle.SparkDesktop'
-    run = 'layout tiling'
+if.app-id = 'com.spotify.client'
+run = 'move-node-to-workspace 5'
+
+[[on-window-detected]]
+if.app-id = 'Cisco-Systems.Spark'
+run = 'layout tiling'
