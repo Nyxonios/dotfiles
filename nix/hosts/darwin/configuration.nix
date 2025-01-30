@@ -11,9 +11,6 @@ in
     pkgs.aerospace
     pkgs.sketchybar
 
-    pkgs.terraform-versions."1.7.0"
-    pkgs.zigpkgs.master
-
     pkgs.nodejs_20
     pkgs.typescript
     pkgs.pnpm_8
@@ -29,7 +26,6 @@ in
     {
       xdg.configFile.aerospace.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/aerospace;
       xdg.configFile.karabiner.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/karabiner;
-      xdg.configFile.sketchybar.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/sketchybar;
     };
 
 

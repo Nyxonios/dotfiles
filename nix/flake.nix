@@ -13,10 +13,9 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     zig.url = "github:mitchellh/zig-overlay";
-    terraform-versions.url = "github:/stackbuilders/nixpkgs-terraform";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, home-manager, zig, terraform-versions, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, home-manager, zig, ... }:
     let
       inherit (import ./vars.nix { pkgs = nixpkgs; }) userData;
       system = userData.platform;
@@ -45,7 +44,6 @@
           {
             nixpkgs.overlays = [
               zig.overlays.default
-              terraform-versions.overlays.default
               (self: super: {
                 karabiner-elements = super.karabiner-elements.overrideAttrs (old: {
                   version = "14.13.0";

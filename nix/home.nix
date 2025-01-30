@@ -50,7 +50,7 @@ in
     pkgs.gofumpt
     pkgs.nixd
     pkgs.nixpkgs-fmt
-    # pkgs.zigpkgs.master
+    pkgs.zigpkgs.master
     pkgs.zls
     pkgs.lua-language-server
     pkgs.stylua
@@ -61,10 +61,9 @@ in
   # Programs that I use, where I want the configuration
   # files to live outside of Nix configurations.
   xdg.configFile.nvim.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/nvim;
+  xdg.configFile.ghostty.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/ghostty;
   xdg.configFile.alacritty.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/alacritty;
   xdg.configFile.k9s.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/k9s;
-  xdg.configFile.ghostty.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/ghostty;
-  xdg.configFile.sketchybar.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/sketchybar;
 
   programs = {
     fzf = import ./home/fzf.nix { inherit pkgs; };
