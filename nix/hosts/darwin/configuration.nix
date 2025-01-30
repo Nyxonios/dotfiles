@@ -9,9 +9,10 @@ in
 
   environment.systemPackages = [
     pkgs.aerospace
-    pkgs.karabiner-elements
+    pkgs.sketchybar
 
     pkgs.terraform-versions."1.7.0"
+    pkgs.zigpkgs.master
 
     pkgs.nodejs_20
     pkgs.typescript
@@ -28,6 +29,7 @@ in
     {
       xdg.configFile.aerospace.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/aerospace;
       xdg.configFile.karabiner.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/karabiner;
+      xdg.configFile.sketchybar.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/sketchybar;
     };
 
 
@@ -36,9 +38,8 @@ in
 
     casks = [
       "betterdisplay"
-      "docker"
-      "alacritty"
       "spotify"
+      "raycast"
       "ghostty"
     ];
 
