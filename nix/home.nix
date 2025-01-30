@@ -22,16 +22,27 @@ in
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = [
-    # Development stuff
+    # Terminals
+    pkgs.alacritty
+    # pkgs.ghostty
+
+    # Editors
     pkgs.neovim
-    # pkgs.alacritty
+
+    # Tools
+    pkgs.kubectl
     pkgs.lazygit
+    pkgs.air
+    pkgs.k9s
+    pkgs.ripgrep
+    pkgs.btop
+    pkgs.jq
+
+    # Development stuff
     pkgs.cloc
     pkgs.sqlite
     pkgs.limbo
-    pkgs.air
-    pkgs.k9s
-    pkgs.kubectl
+    pkgs.git-lfs
 
     # Languages / Language servers / formatters
     pkgs.go
@@ -44,13 +55,6 @@ in
     pkgs.lua-language-server
     pkgs.stylua
     pkgs.ansible
-
-    # System stuff
-    pkgs.ripgrep
-    pkgs.btop
-    pkgs.jq
-
-    # Development libs
   ];
 
 
@@ -59,6 +63,8 @@ in
   xdg.configFile.nvim.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/nvim;
   xdg.configFile.alacritty.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/alacritty;
   xdg.configFile.k9s.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/k9s;
+  xdg.configFile.ghostty.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/ghostty;
+  xdg.configFile.sketchybar.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/sketchybar;
 
   programs = {
     fzf = import ./home/fzf.nix { inherit pkgs; };
