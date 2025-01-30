@@ -32,3 +32,4 @@ vim.opt.hlsearch = true
 vim.opt.scrolloff = 10
 
 vim.filetype.add { extension = { templ = 'templ' } }
+vim.g.vim_markdown_frontmatter = 1
