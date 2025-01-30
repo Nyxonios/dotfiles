@@ -39,6 +39,7 @@ in
       "docker"
       "alacritty"
       "spotify"
+      "ghostty"
     ];
 
     onActivation.cleanup = "zap";

@@ -1,0 +1,8 @@
+font-size = 15
+theme = catppuccin-mocha
+macos-titlebar-style = hidden
+confirm-close-surface = false
+font-feature=-calt
+font-feature=-liga
+font-feature=-dlig
+
