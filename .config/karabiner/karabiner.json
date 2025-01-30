@@ -1,4 +1,8 @@
 {
+    "global": {
+        "ask_for_confirmation_before_quitting": false,
+        "show_in_menu_bar": false
+    },
     "profiles": [
         {
             "complex_modifications": {
@@ -9,7 +13,10 @@
                             {
                                 "conditions": [
                                     {
-                                        "input_sources": [{ "language": "^sv$" }, { "language": "^sw$" }],
+                                        "input_sources": [
+                                            { "language": "^sv$" },
+                                            { "language": "^sw$" }
+                                        ],
                                         "type": "input_source_if"
                                     }
                                 ],
@@ -90,19 +97,6 @@
                                     "key_code": "4",
                                     "modifiers": ["left_shift", "left_command"]
                                 },
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "CMD + W to NOTHING",
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "key_code": "w",
-                                    "modifiers": { "mandatory": ["left_command"] }
-                                },
-                                "to": [],
                                 "type": "basic"
                             }
                         ]
