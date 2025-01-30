@@ -1,12 +1,9 @@
-
-
 [font]
 normal = {family = "FiraCode Nerd Font"}
-size = 14.0
+size = 15.0
 
 [window]
 decorations = "None"
-
 
 [env]
 TERM =  "xterm-256color"
@@ -20,4 +17,3 @@ import = [
 [terminal]
 
 shell.program = "zsh"
-# shell.args = ["-l", "-c", "tmux a || tmux"]
