@@ -10,6 +10,8 @@ in
   environment.systemPackages = [
     pkgs.aerospace
     pkgs.sketchybar
+    pkgs.obsidian
+
 
     pkgs.nodejs_20
     pkgs.typescript
@@ -37,6 +39,7 @@ in
       "spotify"
       "raycast"
       "ghostty"
+
     ];
 
     onActivation.cleanup = "zap";
