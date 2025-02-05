@@ -50,11 +50,13 @@ in
     pkgs.gofumpt
     pkgs.nixd
     pkgs.nixpkgs-fmt
+    # pkgs.zigpkgs."0.13.0"
     pkgs.zigpkgs.master
     pkgs.zls
     pkgs.lua-language-server
     pkgs.stylua
     pkgs.ansible
+    pkgs.rustup
   ];
 
 
