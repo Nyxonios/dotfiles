@@ -57,6 +57,8 @@ in
     pkgs.stylua
     pkgs.ansible
     pkgs.rustup
+
+    pkgs.graphviz
   ];
 
 
