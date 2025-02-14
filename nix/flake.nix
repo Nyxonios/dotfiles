@@ -12,10 +12,11 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    zig.url = "github:mitchellh/zig-overlay";
+    zig-overlay.url = "github:mitchellh/zig-overlay";
+    zls-overlay.url = "github:zigtools/zls";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, home-manager, zig, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, home-manager, ... }:
     let
       inherit (import ./vars.nix { pkgs = nixpkgs; }) userData;
       system = userData.platform;
@@ -24,7 +25,9 @@
     {
       # Build darwin flake using:
       darwinConfigurations."work" = nix-darwin.lib.darwinSystem {
-        specialArgs = { inherit inputs; };
+        specialArgs = {
+          inherit inputs;
+        };
         modules = [
           ./hosts/darwin/configuration.nix
           nix-homebrew.darwinModules.nix-homebrew
@@ -36,6 +39,7 @@
           }
           home-manager.darwinModules.home-manager
           {
+            home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "before-nix-backup";
@@ -43,7 +47,6 @@
           }
           {
             nixpkgs.overlays = [
-              zig.overlays.default
               (self: super: {
                 karabiner-elements = super.karabiner-elements.overrideAttrs (old: {
                   version = "14.13.0";
@@ -62,29 +65,30 @@
       darwinPackages = self.darwinConfigurations."work".pkgs;
 
 
-      nixosConfigurations."${userData.user}" = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/nixos/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "before-nix-backup";
-            home-manager.extraSpecialArgs = { inherit inputs; };
-            home-manager.users."${userData.user}" = import ./home.nix;
-          }
-          { nixpkgs.overlays = [ zig.overlays.default ]; }
-        ];
-      };
+      nixosConfigurations."${userData.user}" = nixpkgs.lib.nixosSystem
+        {
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/nixos/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "before-nix-backup";
+              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.users."${userData.user}" = import ./home.nix;
+            }
+          ];
+        };
 
-      homeConfigurations."vm" = home-manager.lib.homeManagerConfiguration {
-        extraSpecialArgs = { inherit inputs; };
-        pkgs = pkgs;
-        modules = [
-          (import ./home.nix)
-        ];
-      };
+      homeConfigurations."vm" = home-manager.lib.homeManagerConfiguration
+        {
+          extraSpecialArgs = { inherit inputs; };
+          pkgs = pkgs;
+          modules = [
+            (import ./home.nix)
+          ];
+        };
     };
 }
 

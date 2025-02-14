@@ -55,10 +55,11 @@
     set -g status-position top       # macOS / darwin style
 
     unbind %
-    bind | split-window -h -c '#{pane_current_path}'
+    bind -n 'C-\' split-window -h -c '#{pane_current_path}'
 
     unbind '"'
     bind - split-window -v -c '#{pane_current_path}'
+    bind -n 'C-_' split-window -v -c '#{pane_current_path}'
 
     unbind r
     bind r source-file ${config.xdg.configHome}/tmux/tmux.conf

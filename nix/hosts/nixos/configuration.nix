@@ -102,13 +102,10 @@ in
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  ######################### Start: Hyprland config ######################### 
-  ######################### END: hyprland config ######################### 
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    vim 
     git
     wget
     gcc
@@ -117,14 +114,7 @@ in
     ripgrep
     brave
     pavucontrol
-    zigpkgs.master
     alacritty
-
-    # Hyprland stuff
-    # dunst
-    # libnotify
-    # rofi-wayland
-    # swww
   ];
 
   programs.zsh.enable = true;
