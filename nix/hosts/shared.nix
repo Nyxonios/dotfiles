@@ -21,9 +21,6 @@ in
     [
       pkgs.mkalias
       pkgs.btop
-
-      # Scripts
-      (import ./../scripts/tmux-sessionizer.nix { inherit pkgs; })
     ];
 
   nix.nixPath = [
@@ -31,7 +28,6 @@ in
   ];
 
   fonts.packages = [
-    # (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; })
     pkgs.nerd-fonts.fira-code
   ];
 

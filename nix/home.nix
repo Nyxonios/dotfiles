@@ -57,6 +57,9 @@ in
     pkgs.stylua
     pkgs.ansible
     pkgs.rustup
+
+    # Shell scripts
+    (import ./scripts/tmux-sessionizer.nix { inherit pkgs; })
   ];
 
 
