@@ -39,7 +39,6 @@ in
       "spotify"
       "raycast"
       "ghostty"
-
     ];
 
     onActivation.cleanup = "zap";
