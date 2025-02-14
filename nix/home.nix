@@ -51,16 +51,19 @@ in
     pkgs.nixd
     pkgs.nixpkgs-fmt
     # pkgs.zigpkgs."0.13.0"
-    pkgs.zigpkgs.master
+    # pkgs.zigpkgs.master
     pkgs.zls
     pkgs.lua-language-server
     pkgs.stylua
     pkgs.ansible
     pkgs.rustup
 
+    pkgs.minio-warp
+
     # Shell scripts
     (import ./scripts/tmux-sessionizer.nix { inherit pkgs; })
   ];
+
 
 
   # Programs that I use, where I want the configuration
