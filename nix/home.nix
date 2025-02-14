@@ -1,7 +1,11 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 let
   inherit (import ./vars.nix { inherit pkgs; }) userData;
   inherit (config.lib.file) mkOutOfStoreSymlink;
+
+  zig = inputs.zig-overlay.packages.${userData.platform}.master;
+  # zigpkg = inputs.zig-overlay.overlays.default.zig.zigpkgs.master;
+  zls = inputs.zls-overlay.packages.${userData.platform}.zls.overrideAttrs (old: { nativeBuildInputs = [ zig ]; });
 in
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -24,7 +28,6 @@ in
   home.packages = [
     # Terminals
     pkgs.alacritty
-    # pkgs.ghostty
 
     # Editors
     pkgs.neovim
@@ -50,9 +53,8 @@ in
     pkgs.gofumpt
     pkgs.nixd
     pkgs.nixpkgs-fmt
-    # pkgs.zigpkgs."0.13.0"
-    pkgs.zigpkgs.master
-    pkgs.zls
+    zig
+    zls 
     pkgs.lua-language-server
     pkgs.stylua
     pkgs.ansible
