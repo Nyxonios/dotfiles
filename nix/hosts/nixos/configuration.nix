@@ -115,7 +115,7 @@ in
     brave
     pavucontrol
     alacritty
-    zigpkgs.master
+    hyprcursor
   ];
 
   programs.zsh.enable = true;
