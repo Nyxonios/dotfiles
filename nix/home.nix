@@ -55,6 +55,11 @@ in
     zig
     zls
 
+    # For LazyVim experiment
+    pkgs.fd
+    pkgs.lua51Packages.lua
+    pkgs.lua51Packages.luarocks
+
     pkgs.lua-language-server
     pkgs.stylua
     pkgs.ansible
