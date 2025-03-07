@@ -18,6 +18,7 @@ return {
     local dapui = require 'dapui'
     local dapgo = require 'dap-go'
     dapgo.setup()
+    print 'Setting up debug'
 
     require('dapui').setup()
 
@@ -38,7 +39,7 @@ return {
 
     vim.keymap.set('n', '<leader>dl', dap.run_last, {}) -- (d)bug run (l)ast
     vim.keymap.set('n', '<leader>dr', dap.restart, {}) -- (d)ebug (r)estart
-    vim.keymap.set('n', '<leader>dt', dap.terminate, {}) -- (d)ebug (t)erminate
+    vim.keymap.set('n', '<leader>dq', dap.terminate, {}) -- (d)ebug (q)uit
 
     vim.keymap.set('n', '<leader>sb', dap.toggle_breakpoint, {}) -- (s)et (b)reakpoint
     vim.keymap.set('n', '<leader>cb', dap.clear_breakpoints, {}) -- (c)lear (b)reakpoints
@@ -46,5 +47,6 @@ return {
     vim.keymap.set('n', '<leader>c', dap.continue, {})
     vim.keymap.set('n', '<leader>si', dap.step_into, {})
     vim.keymap.set('n', '<leader>s', dap.step_over, {}) -- (s)tep over
+    vim.keymap.set('n', '<leader>tu', dapui.toggle, {}) -- (t)oggle (u)i
   end,
 }
