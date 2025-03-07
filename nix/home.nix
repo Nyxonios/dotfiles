@@ -54,6 +54,7 @@ in
     pkgs.nixpkgs-fmt
     zig
     zls
+
     pkgs.lua-language-server
     pkgs.stylua
     pkgs.ansible
@@ -61,6 +62,7 @@ in
 
     pkgs.minio-warp
     pkgs.graphviz
+    pkgs.awscli2
 
     # Shell scripts
     (import ./scripts/tmux-sessionizer.nix { inherit pkgs; })
