@@ -64,6 +64,7 @@ in
 
     # Shell scripts
     (import ./scripts/tmux-sessionizer.nix { inherit pkgs; })
+    (import ./scripts/notes.nix { inherit pkgs; })
   ];
 
 
@@ -84,6 +85,7 @@ in
   # On fresh installs, we ensure that we have the "development" folder created.
   home.activation.setupDirectories = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     mkdir -p ~/development 
+    mkdir -p ~/docs
   '';
 
   # Let Home Manager install and manage itself.
