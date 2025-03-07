@@ -105,7 +105,7 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim 
+    vim
     git
     wget
     gcc
@@ -115,10 +115,34 @@ in
     brave
     pavucontrol
     alacritty
+    hyprcursor
   ];
 
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
+
+  environment = {
+    variables = {
+      NIXOS_OZONE_WL = "1";
+      GBM_BACKEND = "nvidia-drm";
+      __GL_GSYNC_ALLOWED = "0";
+      __GL_VRR_ALLOWED = "0";
+      DISABLE_QT5_COMPAT = "0";
+      ANKI_WAYLAND = "1";
+      DIRENV_LOG_FORMAT = "";
+      WLR_DRM_NO_ATOMIC = "1";
+      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      QT_QPA_PLATFORM = "wayland";
+      QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+      QT_QPA_PLATFORMTHEME = "qt5ct";
+      MOZ_ENABLE_WAYLAND = "1";
+      WLR_BACKEND = "vulkan";
+      WLR_NO_HARDWARE_CURSORS = "1";
+      XDG_SESSION_TYPE = "wayland";
+      CLUTTER_BACKEND = "wayland";
+      WLR_DRM_DEVICES = "/dev/dri/card1:/dev/dri/card0";
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
