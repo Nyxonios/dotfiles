@@ -7,8 +7,6 @@ let
   zls = inputs.zls-overlay.packages.${userData.platform}.zls.overrideAttrs (old: { nativeBuildInputs = [ zig ]; });
 in
 {
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
   home.username = userData.user;
   home.homeDirectory = userData.homeDir;
   xdg.enable = true;
@@ -45,6 +43,7 @@ in
     pkgs.sqlite
     pkgs.limbo
     pkgs.git-lfs
+    pkgs.vault
 
     # Languages / Language servers / formatters
     pkgs.go
