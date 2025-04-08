@@ -12,6 +12,7 @@ return {
     'leoluz/nvim-dap-go',
     'theHamsta/nvim-dap-virtual-text',
     'nvim-neotest/nvim-nio',
+    'ray-x/guihua.lua',
   },
   config = function()
     local dap = require 'dap'
