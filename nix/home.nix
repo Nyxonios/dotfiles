@@ -70,6 +70,7 @@ in
     pkgs.minio-warp
     pkgs.graphviz
     pkgs.awscli2
+    pkgs.s3cmd
 
     # Shell scripts
     (import ./scripts/tmux-sessionizer.nix { inherit pkgs; })
