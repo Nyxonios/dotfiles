@@ -96,7 +96,7 @@
     "bind-key -n 'C-\\' if-shell \"$is_vim\" 'send-keys C-\\\\'  'select-pane -l'"
 
     unbind C-g
-    bind -n C-g display-popup -d "#{pane_current_path}" -E "lazygit"
+    bind -n C-g display-popup -h 95% -w 95% -d "#{pane_current_path}" -E "lazygit"
     bind-key -T copy-mode-vi 'C-h' select-pane -L
     bind-key -T copy-mode-vi 'C-j' select-pane -D
     bind-key -T copy-mode-vi 'C-k' select-pane -U
