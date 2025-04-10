@@ -15,7 +15,6 @@ in
   };
 
   users.users."${userData.user}".home = userData.homeDir;
-  nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages =
     [
