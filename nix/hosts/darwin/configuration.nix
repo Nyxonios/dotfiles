@@ -9,11 +9,11 @@ in
 
   nixpkgs.config.allowUnfree = true;
   system.primaryUser = "${userData.user}";
+
   environment.systemPackages = [
     pkgs.aerospace
     pkgs.sketchybar
     pkgs.obsidian
-
 
     pkgs.nodejs_20
     pkgs.typescript
@@ -41,6 +41,8 @@ in
       "spotify"
       "raycast"
       "ghostty"
+      "visual-studio-code"
+      "logseq"
     ];
 
     onActivation.cleanup = "zap";
