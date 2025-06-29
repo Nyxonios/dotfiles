@@ -11,7 +11,6 @@ in
   home.homeDirectory = userData.homeDir;
   xdg.enable = true;
 
-  nixpkgs.config.allowUnfree = true;
 
 
   # This value determines the Home Manager release that your configuration is
@@ -50,6 +49,7 @@ in
 
     # Languages / Language servers / formatters
     pkgs.go
+    pkgs.delve
     pkgs.gopls
     pkgs.gofumpt
     pkgs.nixd
@@ -64,7 +64,6 @@ in
 
     pkgs.lua-language-server
     pkgs.stylua
-    pkgs.ansible
     pkgs.rustup
 
     pkgs.minio-warp
