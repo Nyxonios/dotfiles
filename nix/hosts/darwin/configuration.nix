@@ -7,6 +7,8 @@ in
     ./../shared.nix
   ];
 
+  nixpkgs.config.allowUnfree = true;
+  system.primaryUser = "${userData.user}";
   environment.systemPackages = [
     pkgs.aerospace
     pkgs.sketchybar
