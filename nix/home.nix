@@ -54,8 +54,8 @@ in
     pkgs.gofumpt
     pkgs.nixd
     pkgs.nixpkgs-fmt
-    zig
-    zls
+    # zig
+    # zls
 
     # For LazyVim experiment
     pkgs.fd
