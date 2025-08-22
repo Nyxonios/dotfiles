@@ -16,7 +16,7 @@ in
     goupgrade = "go get $(go list - f '{{if not (or .Main .Indirect)}}{{.Path}}{{end}}' -m all)";
     rebuild = if pkgs.stdenv.isDarwin then "darwin-rebuild switch --flake ~/dotfiles/nix#work" else "sudo nixos-rebuild switch --flake ~/dotfiles/nix#${userData.user}";
   };
-  initExtra = ''
+  initContent = ''
     ZSH_DISABLE_COMPFIX=true
     export EDITOR=nvim
 
