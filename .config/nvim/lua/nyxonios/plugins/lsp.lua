@@ -26,6 +26,7 @@ return {
         },
       }
       vim.keymap.set('n', '<leader>tf', '<cmd>GoTestFunc<CR>')
+      vim.keymap.set('n', '<leader>tp', '<cmd>GoTestPkg<CR>')
       vim.keymap.set('n', '<leader>db', '<cmd>GoDebug<CR>')
       vim.keymap.set('n', '<leader>fs', '<cmd>GoFillStruct<CR>')
       vim.keymap.set('n', '<leader>at', '<cmd>GoAddTest<CR>')
@@ -169,7 +170,7 @@ return {
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header
-          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          -- map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
         end,
       })
 
