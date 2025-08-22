@@ -4,11 +4,11 @@ pkgs.writeShellScriptBin "notes" ''
   NOTES_HOME=$HOME/docs
 
   new_note(){
-    read -p "Note name: " note
+    IFS= read -p "Note name: " note
     local full_path="''${NOTES_HOME}/''${note}.md"
-    echo "Full path: $fulle_path"
-    touch $full_path
-    ${pkgs.neovim}/bin/nvim $full_path
+    full_path=''${full_path// /_} # Replace any space with underscore
+    touch ''${full_path}
+    ${pkgs.neovim}/bin/nvim ''${full_path}
   }
 
 
