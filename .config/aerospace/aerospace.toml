@@ -199,3 +199,11 @@ run = 'move-node-to-workspace 5'
 [[on-window-detected]]
 if.app-id = 'Cisco-Systems.Spark'
 run = 'layout tiling'
+
+[[on-window-detected]]
+if.app-id = 'com.electron.logseq'
+run = 'move-node-to-workspace 6'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = 'move-node-to-workspace 2'
