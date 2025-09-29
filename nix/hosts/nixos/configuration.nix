@@ -116,6 +116,7 @@ in
     pavucontrol
     alacritty
     hyprcursor
+    mattermost-desktop
   ];
 
   programs.zsh.enable = true;
