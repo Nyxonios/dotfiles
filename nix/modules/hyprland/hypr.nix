@@ -23,7 +23,7 @@ in
     swaynotificationcenter
     libnotify
 
-    rofi-wayland
+    rofi
     wlogout
   ];
 

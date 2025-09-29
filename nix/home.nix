@@ -3,16 +3,13 @@ let
   inherit (import ./vars.nix { inherit pkgs; }) userData;
   inherit (config.lib.file) mkOutOfStoreSymlink;
 
-  zig = inputs.zig-overlay.packages.${userData.platform}.master;
-  zls = inputs.zls-overlay.packages.${userData.platform}.zls.overrideAttrs (old: { nativeBuildInputs = [ zig ]; });
+  # zig = inputs.zig-overlay.packages.${userData.platform}.master;
+  # zls = inputs.zls-overlay.packages.${userData.platform}.zls.overrideAttrs (old: { nativeBuildInputs = [ zig ]; });
 in
 {
   home.username = userData.user;
   home.homeDirectory = userData.homeDir;
   xdg.enable = true;
-
-  nixpkgs.config.allowUnfree = true;
-
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -46,7 +43,7 @@ in
     pkgs.sqlite
     pkgs.limbo
     pkgs.git-lfs
-    pkgs.vault
+    # pkgs.vault
 
     # Languages / Language servers / formatters
     pkgs.go
@@ -54,6 +51,8 @@ in
     pkgs.gofumpt
     pkgs.nixd
     pkgs.nixpkgs-fmt
+    pkgs.zig
+    pkgs.zls
     # zig
     # zls
 
