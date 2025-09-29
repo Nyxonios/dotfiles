@@ -43,7 +43,7 @@ in
     pkgs.sqlite
     pkgs.limbo
     pkgs.git-lfs
-    # pkgs.vault
+    pkgs.vault
 
     # Languages / Language servers / formatters
     pkgs.go
