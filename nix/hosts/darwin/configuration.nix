@@ -34,6 +34,10 @@ in
   homebrew = {
     enable = true;
 
+    brews = [
+      "zls"
+    ];
+
     casks = [
       "betterdisplay"
       "spotify"
