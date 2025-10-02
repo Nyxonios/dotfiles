@@ -82,7 +82,7 @@ in
       AppleInterfaceStyle = "Dark";
       NSAutomaticWindowAnimationsEnabled = false;
       _HIHideMenuBar = true;
-      KeyRepeat = 2;
+      KeyRepeat = 1;
       NSWindowShouldDragOnGesture = true;
       "com.apple.swipescrolldirection" = false;
     };
