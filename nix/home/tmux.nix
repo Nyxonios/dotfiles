@@ -53,6 +53,7 @@
     set -g renumber-windows on       # renumber all windows when any window is closed
     set -g set-clipboard on          # use system clipboard
     set -g status-position top       # macOS / darwin style
+    set -g pane-active-border-style 'fg=#cad3f5,bg=#cad3f5'
 
     unbind %
     bind -n 'C-\' split-window -h -c '#{pane_current_path}'

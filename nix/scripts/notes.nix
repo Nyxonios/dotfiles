@@ -8,6 +8,7 @@ pkgs.writeShellScriptBin "notes" ''
     local full_path="''${NOTES_HOME}/''${note}.md"
     full_path=''${full_path// /_} # Replace any space with underscore
     touch ''${full_path}
+    echo "# ''${note} \n\n" >> ''${full_path}
     ${pkgs.neovim}/bin/nvim ''${full_path}
   }
 

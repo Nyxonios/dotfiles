@@ -50,12 +50,17 @@ in
 
     # Languages / Language servers / formatters
     pkgs.go
+    pkgs.delve
     pkgs.gopls
     pkgs.gofumpt
     pkgs.nixd
     pkgs.nixpkgs-fmt
     # zig
     # zls
+    pkgs.nodejs
+    pkgs.yarn
+    pkgs.shellcheck
+    pkgs.bash-language-server
 
     # For LazyVim experiment
     pkgs.fd

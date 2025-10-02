@@ -5,6 +5,7 @@ return {
   build = 'make install_jsregexp',
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
+    'rafamadriz/friendly-snippets',
   },
   config = function()
     vim.keymap.set('i', '<c-u>', require 'luasnip.extras.select_choice')
@@ -23,6 +24,8 @@ return {
         ls.change_choice(1)
       end
     end, { silent = true })
+
     require('luasnip.loaders.from_lua').lazy_load { paths = { vim.fn.stdpath 'config' .. '/lua/nyxonios/luasnippets' } }
+    require('luasnip.loaders.from_vscode').lazy_load()
   end,
 }
