@@ -11,8 +11,6 @@ in
     pkgs.aerospace
     pkgs.sketchybar
     pkgs.obsidian
-
-
     pkgs.nodejs_20
     pkgs.typescript
     pkgs.pnpm_8
