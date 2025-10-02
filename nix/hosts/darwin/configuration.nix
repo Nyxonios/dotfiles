@@ -11,8 +11,6 @@ in
     pkgs.aerospace
     pkgs.sketchybar
     pkgs.obsidian
-
-
     pkgs.nodejs_20
     pkgs.typescript
     pkgs.pnpm_8
@@ -33,6 +31,10 @@ in
 
   homebrew = {
     enable = true;
+
+    brews = [
+      "zls"
+    ];
 
     casks = [
       "betterdisplay"
@@ -82,7 +84,7 @@ in
       AppleInterfaceStyle = "Dark";
       NSAutomaticWindowAnimationsEnabled = false;
       _HIHideMenuBar = true;
-      KeyRepeat = 2;
+      KeyRepeat = 1;
       NSWindowShouldDragOnGesture = true;
       "com.apple.swipescrolldirection" = false;
     };

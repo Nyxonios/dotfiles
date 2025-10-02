@@ -3,6 +3,7 @@ let
   inherit (import ./../vars.nix { inherit pkgs; }) userData;
 in
 {
+  system.primaryUser = "${userData.user}";
   nix.gc = {
     automatic = true;
     interval = [
@@ -32,6 +33,5 @@ in
 
 
   nix.settings.experimental-features = "nix-command flakes";
-
   nixpkgs.hostPlatform = "${userData.platform}";
 }

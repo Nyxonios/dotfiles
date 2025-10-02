@@ -3,25 +3,13 @@ let
   inherit (import ./vars.nix { inherit pkgs; }) userData;
   inherit (config.lib.file) mkOutOfStoreSymlink;
 
-  zig = inputs.zig-overlay.packages.${userData.platform}.master;
-  zls = inputs.zls-overlay.packages.${userData.platform}.zls.overrideAttrs (old: { nativeBuildInputs = [ zig ]; });
+  # zig = inputs.zig-overlay.packages.${userData.platform}.master;
+  # zls = inputs.zls-overlay.packages.${userData.platform}.zls.overrideAttrs (old: { nativeBuildInputs = [ zig ]; });
 in
 {
   home.username = userData.user;
   home.homeDirectory = userData.homeDir;
   xdg.enable = true;
-
-  nixpkgs.config.allowUnfree = true;
-
-
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
-  home.stateVersion = "24.05"; # Please read the comment before changing.
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -55,6 +43,8 @@ in
     pkgs.gofumpt
     pkgs.nixd
     pkgs.nixpkgs-fmt
+    pkgs.zig
+    pkgs.zls
     # zig
     # zls
     pkgs.nodejs
@@ -105,4 +95,14 @@ in
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  # This value determines the Home Manager release that your configuration is
+  # compatible with. This helps avoid breakage when a new Home Manager release
+  # introduces backwards incompatible changes.
+  #
+  # You should not change this value, even if you update Home Manager. If you do
+  # want to update the value, then make sure to first check the Home Manager
+  # release notes.
+  home.stateVersion = "24.05"; # Please read the comment before changing.
+
 }

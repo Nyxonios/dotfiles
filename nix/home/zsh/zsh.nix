@@ -55,6 +55,8 @@ in
     if [ -f ~/bin/work.sh ]; then
       source ~/bin/work.sh
     fi
+
+    export PATH=$PATH:/usr/bin
   '';
   oh-my-zsh = {
     enable = true;
