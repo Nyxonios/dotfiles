@@ -93,10 +93,8 @@ return {
       { 'j-hui/fidget.nvim', opts = {} },
     },
     config = function()
-      local lspconfig = require 'lspconfig'
-
       local flakePath = '~/dotfiles/nix/flake.nix'
-      lspconfig.nixd.setup {
+      vim.lsp.config('nixd', {
         cmd = { 'nixd' },
         settings = {
           nixd = {
@@ -116,13 +114,13 @@ return {
             },
           },
         },
-      }
-      lspconfig.zls.setup {
+      })
+      vim.lsp.config('zls', {
         cmd = { 'zls' },
         settings = {},
-      }
-      lspconfig.rust_analyzer.setup {}
-      lspconfig.bashls.setup {}
+      })
+      vim.lsp.enable 'rust_analyzer'
+      vim.lsp.enable 'bashls'
 
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
