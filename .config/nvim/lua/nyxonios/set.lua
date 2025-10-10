@@ -2,12 +2,14 @@ vim.opt.splitright = true
 vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.expandtab = true
+vim.opt.autoread = true
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.showmode = false
 vim.opt.undofile = true
 vim.opt.clipboard = 'unnamedplus'
+vim.opt.swapfile = false
 
 -- Keep signcolumn on by default
 vim.opt.signcolumn = 'yes'
@@ -16,7 +18,7 @@ vim.opt.signcolumn = 'yes'
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
-vim.o.termguicolors = true
+vim.opt.termguicolors = true
 
 vim.opt.spelllang = 'en_us'
 vim.opt.spell = true
