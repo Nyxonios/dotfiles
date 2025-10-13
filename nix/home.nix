@@ -51,6 +51,8 @@ in
     pkgs.yarn
     pkgs.shellcheck
     pkgs.bash-language-server
+    pkgs.ols
+    pkgs.odin
 
     # For LazyVim experiment
     pkgs.fd
