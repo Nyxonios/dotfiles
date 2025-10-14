@@ -98,6 +98,23 @@ in
 
   # Install firefox.
   programs.firefox.enable = true;
+  programs.zsh.enable = true;
+  xdg.portal = {
+    # Enable XDG portals for Wayland URI/file handling
+    enable = true;
+    config.default = {
+      common = [ "gnome" ];
+    }; # Or "gtk" if not using GNOME
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gnome # For GNOME Wayland
+      xdg-desktop-portal-gtk # Fallback for broader compatibility
+    ];
+    configPackages = with pkgs; [
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-gtk
+    ];
+  };
+
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -116,7 +133,6 @@ in
     mattermost-desktop
   ];
 
-  programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
 
   environment = {
