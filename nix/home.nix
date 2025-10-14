@@ -69,6 +69,9 @@ in
     pkgs.awscli2
     pkgs.s3cmd
 
+    # Tools
+    pkgs.obsidian
+
     # Shell scripts
     (import ./scripts/tmux-sessionizer.nix { inherit pkgs; })
     (import ./scripts/notes.nix { inherit pkgs; })
