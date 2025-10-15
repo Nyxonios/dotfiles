@@ -73,6 +73,7 @@
 
       nixosConfigurations."${userData.user}" = nixpkgs.lib.nixosSystem
         {
+          system = system;
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/nixos/configuration.nix
