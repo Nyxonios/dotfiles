@@ -28,6 +28,7 @@ in
     pkgs.ripgrep
     pkgs.btop
     pkgs.jq
+    pkgs.gnumake42
 
     # Development stuff
     pkgs.cloc
