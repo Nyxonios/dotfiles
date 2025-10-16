@@ -114,10 +114,6 @@ return {
           },
         },
       })
-      vim.lsp.config('zls', {
-        cmd = { 'zls' },
-        settings = {},
-      })
       vim.lsp.config('lua_ls', {
         runtime = { version = 'LuaJIT' },
         workspace = {
@@ -137,6 +133,7 @@ return {
         -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
         -- diagnostics = { disable = { 'missing-fields' } },
       })
+      vim.lsp.enable 'zls'
       vim.lsp.enable 'rust_analyzer'
       vim.lsp.enable 'bashls'
 
