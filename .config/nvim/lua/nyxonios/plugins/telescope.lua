@@ -58,9 +58,9 @@ return {
       },
       defaults = {
         file_ignore_patterns = {
-          '.git/',
-          'node_modules/',
-          'vendor/',
+          '.git',
+          'node_modules',
+          'vendor',
           '.zig-cache',
           'zig-out',
         },

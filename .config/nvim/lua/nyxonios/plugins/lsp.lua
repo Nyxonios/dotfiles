@@ -142,11 +142,19 @@ return {
         -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
         -- diagnostics = { disable = { 'missing-fields' } },
       })
-      vim.lsp.enable 'lua_ls'
+
+      -- TODO(mseller): I have no idea why I need to specify the config _and_ enable the lsp.
+      -- Check if one can just enable it.
+      vim.lsp.config('zls', {
+        cmd = { 'zls' },
+        filetypes = { 'zig', 'zir' },
+        root_markers = { 'zls.json', 'build.zig', '.git' },
+        workspace_required = false,
+      })
       vim.lsp.enable 'zls'
       vim.lsp.enable 'rust_analyzer'
       vim.lsp.enable 'bashls'
-      vim.lsp.enable 'ols'
+      vim.lsp.enable 'lua_ls'
 
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
