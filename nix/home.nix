@@ -2,9 +2,6 @@
 let
   inherit (import ./vars.nix { inherit pkgs; }) userData;
   inherit (config.lib.file) mkOutOfStoreSymlink;
-
-  # zig = inputs.zig-overlay.packages.${userData.platform}.master;
-  # zls = inputs.zls-overlay.packages.${userData.platform}.zls.overrideAttrs (old: { nativeBuildInputs = [ zig ]; });
 in
 {
   home.username = userData.user;
@@ -28,6 +25,7 @@ in
     pkgs.ripgrep
     pkgs.btop
     pkgs.jq
+    pkgs.gnumake42
 
     # Development stuff
     pkgs.cloc
@@ -51,6 +49,8 @@ in
     pkgs.yarn
     pkgs.shellcheck
     pkgs.bash-language-server
+    pkgs.ols
+    pkgs.odin
 
     # For LazyVim experiment
     pkgs.fd
@@ -66,6 +66,10 @@ in
     pkgs.graphviz
     pkgs.awscli2
     pkgs.s3cmd
+
+    # Tools
+    pkgs.obsidian
+    pkgs.spotify
 
     # Shell scripts
     (import ./scripts/tmux-sessionizer.nix { inherit pkgs; })

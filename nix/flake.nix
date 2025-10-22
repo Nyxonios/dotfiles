@@ -11,9 +11,6 @@
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    # zig-overlay.url = "github:mitchellh/zig-overlay";
-    zls-overlay.url = "github:zigtools/zls";
   };
 
   outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, home-manager, ... }:
@@ -21,6 +18,13 @@
       inherit (import ./vars.nix { pkgs = nixpkgs; }) userData;
       system = userData.platform;
       pkgs = nixpkgs.legacyPackages.${system};
+
+      # Define the shared module here once
+      commonModules = [
+        { nixpkgs.config.allowUnfree = true; }
+        { nixpkgs.config.permittedInsecurePackages = [ ]; }
+        { nix.optimise.automatic = true; }
+      ];
     in
     {
       # Build darwin flake using:
@@ -59,7 +63,7 @@
               })
             ];
           }
-        ];
+        ] ++ commonModules;
       };
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations."work".pkgs;
@@ -67,6 +71,7 @@
 
       nixosConfigurations."${userData.user}" = nixpkgs.lib.nixosSystem
         {
+          system = system;
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/nixos/configuration.nix
@@ -78,7 +83,7 @@
               home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.users."${userData.user}" = import ./home.nix;
             }
-          ];
+          ] ++ commonModules;
         };
 
       homeConfigurations."vm" = home-manager.lib.homeManagerConfiguration
@@ -87,7 +92,7 @@
           pkgs = pkgs;
           modules = [
             (import ./home.nix)
-          ];
+          ] ++ commonModules;
         };
     };
 }

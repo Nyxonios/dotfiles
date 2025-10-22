@@ -95,29 +95,37 @@ return {
       local flakePath = '~/dotfiles/nix/flake.nix'
       vim.lsp.config('nixd', {
         cmd = { 'nixd' },
+        filetypes = { 'nix' },
+        root_markers = { 'flake.nix', '.git' },
         settings = {
           nixd = {
             nixpkgs = {
-              expr = 'import (builtins.getFlake "' .. flakePath .. '").inputs.nixpkgs { }',
+              -- For flake.
+              -- This expression will be interpreted as "nixpkgs" toplevel
+              -- Nixd provides package, lib completion/information from it.
+              -- Resource Usage: Entries are lazily evaluated, entire nixpkgs takes 200~300MB for just "names".
+              -- Package documentation, versions, are evaluated by-need.
+              expr = 'import (builtins.getFlake(toString ./.)).inputs.nixpkgs { }',
             },
             formatting = {
               command = { 'nixpkgs-fmt' }, -- or nixfmt or nixpkgs-fmt
             },
             options = {
               nixos = {
-                expr = '(builtins.getFlake "' .. flakePath .. '").darwinConfigurations.work.options',
+                expr = 'let flake = builtins.getFlake(toString ./.); in flake.nixosConfigurations.nyxonios.options',
               },
               home_manager = {
-                expr = '(builtins.getFlake "' .. flakePath .. '").homeConfigurations.options',
+                expr = 'let flake = builtins.getFlake(toString ./.); in flake.homeConfigurations.vm.options',
+              },
+              darwin = {
+                expr = 'let flake = builtins.getFlake(toString ./.); in flake.darwinConfigurations.work.options',
               },
             },
           },
         },
       })
-      vim.lsp.config('zls', {
-        cmd = { 'zls' },
-        settings = {},
-      })
+      vim.lsp.enable 'nixd'
+
       vim.lsp.config('lua_ls', {
         runtime = { version = 'LuaJIT' },
         workspace = {
@@ -137,8 +145,11 @@ return {
         -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
         -- diagnostics = { disable = { 'missing-fields' } },
       })
+      vim.lsp.enable 'lua_ls'
+      vim.lsp.enable 'zls'
       vim.lsp.enable 'rust_analyzer'
       vim.lsp.enable 'bashls'
+      vim.lsp.enable 'ols'
 
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
