@@ -69,6 +69,7 @@ in
 
     # Tools
     pkgs.obsidian
+    pkgs.spotify
 
     # Shell scripts
     (import ./scripts/tmux-sessionizer.nix { inherit pkgs; })
