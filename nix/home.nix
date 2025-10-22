@@ -2,9 +2,6 @@
 let
   inherit (import ./vars.nix { inherit pkgs; }) userData;
   inherit (config.lib.file) mkOutOfStoreSymlink;
-
-  # zig = inputs.zig-overlay.packages.${userData.platform}.master;
-  # zls = inputs.zls-overlay.packages.${userData.platform}.zls.overrideAttrs (old: { nativeBuildInputs = [ zig ]; });
 in
 {
   home.username = userData.user;
