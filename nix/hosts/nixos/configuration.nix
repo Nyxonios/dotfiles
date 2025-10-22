@@ -19,6 +19,7 @@ in
     automatic = true;
     dates = "weekly";
   };
+  nix.optimise.automatic = true;
 
 
   # Bootloader.

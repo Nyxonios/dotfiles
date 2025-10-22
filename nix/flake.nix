@@ -23,7 +23,6 @@
       commonModules = [
         { nixpkgs.config.allowUnfree = true; }
         { nixpkgs.config.permittedInsecurePackages = [ ]; }
-        { nix.optimise.automatic = true; }
       ];
     in
     {
