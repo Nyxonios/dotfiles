@@ -43,7 +43,9 @@ return {
     { 'nvim-tree/nvim-web-devicons' },
   },
   config = function()
-    require('telescope').setup {
+    local telescope = require 'telescope'
+
+    telescope.setup {
       pickers = {
         find_files = {
           hidden = true,
@@ -68,8 +70,8 @@ return {
       },
     }
     -- Enable telescope fzf native, if installed
-    pcall(require('telescope').load_extension, 'fzf')
-    pcall(require('telescope').load_extension, 'ui-select')
+    pcall(telescope.load_extension, 'fzf')
+    pcall(telescope.load_extension, 'ui-select')
 
     local builtin = require 'telescope.builtin'
 
