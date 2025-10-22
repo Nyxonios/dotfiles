@@ -33,6 +33,7 @@ in
     pkgs.limbo
     pkgs.git-lfs
     pkgs.vault
+    pkgs.clang-tools
 
     # Languages / Language servers / formatters
     pkgs.go
