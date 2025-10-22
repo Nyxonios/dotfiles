@@ -22,6 +22,7 @@
       # Define the shared module here once
       commonModules = [
         { nixpkgs.config.allowUnfree = true; }
+        { nixpkgs.config.permittedInsecurePackages = [ ]; }
         { nix.optimise.automatic = true; }
       ];
     in
@@ -61,7 +62,7 @@
                 });
               })
             ];
-          } 
+          }
         ] ++ commonModules;
       };
       # Expose the package set, including overlays, for convenience.
