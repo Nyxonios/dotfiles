@@ -152,9 +152,16 @@ return {
         workspace_required = false,
       })
       vim.lsp.enable 'zls'
+
       vim.lsp.enable 'rust_analyzer'
       vim.lsp.enable 'bashls'
       vim.lsp.enable 'lua_ls'
+
+      vim.lsp.config('ols', {
+        cmd = { 'ols' },
+        filetypes = { 'odin' },
+      })
+      vim.lsp.enable 'ols'
 
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
