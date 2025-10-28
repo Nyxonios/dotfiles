@@ -144,6 +144,7 @@ in
     alacritty
     hyprcursor
     mattermost-desktop
+    spotify
   ];
 
   users.defaultUserShell = pkgs.zsh;
