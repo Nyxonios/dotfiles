@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 let
   inherit (import ./../../vars.nix { inherit pkgs; }) userData;
 in
@@ -10,8 +10,21 @@ in
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../modules/hyprland/hypr.nix
+    (import ../../modules/hyprland/hypr.nix { inherit inputs; inherit pkgs; })
   ];
+
+  # Setup all needed configuration files. I currently dont want to configure
+  # all these programs via nix, so we create out of store symlinks to them
+  # instead.
+  home-manager.users."${userData.user}" = { config, ... }:
+    let
+      inherit (config.lib.file) mkOutOfStoreSymlink;
+    in
+    {
+      xdg.configFile."hypr".source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/hypr;
+      xdg.configFile."rofi".source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/rofi;
+      xdg.configFile."wlogout".source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/wlogout;
+    };
 
   hardware.nvidia = (import ./../../modules/nvidia.nix { inherit config; });
 
@@ -56,17 +69,17 @@ in
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  # services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
+  # services.xserver.xkb = {
+  #   layout = "us";
+  #   variant = "";
+  # };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -121,7 +134,6 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim
-    git
     wget
     gcc
     rustup
@@ -132,6 +144,7 @@ in
     alacritty
     hyprcursor
     mattermost-desktop
+    spotify
   ];
 
   users.defaultUserShell = pkgs.zsh;

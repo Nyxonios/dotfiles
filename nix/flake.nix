@@ -11,9 +11,11 @@
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, nix-homebrew, home-manager, ... }:
+  outputs = { self, nixpkgs, nix-darwin, nix-homebrew, home-manager, ... } @ inputs:
     let
       inherit (import ./vars.nix { pkgs = nixpkgs; }) userData;
       system = userData.platform;

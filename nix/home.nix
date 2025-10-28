@@ -18,19 +18,19 @@ in
     pkgs.neovim
 
     # Tools
+    pkgs.git
     pkgs.kubectl
     pkgs.lazygit
-    pkgs.air
     pkgs.k9s
     pkgs.ripgrep
     pkgs.btop
     pkgs.jq
     pkgs.gnumake42
+    pkgs.btop
 
     # Development stuff
     pkgs.cloc
     pkgs.sqlite
-    pkgs.limbo
     pkgs.git-lfs
     pkgs.vault
     pkgs.clang-tools
@@ -44,20 +44,10 @@ in
     pkgs.nixpkgs-fmt
     pkgs.zig
     pkgs.zls
-    # zig
-    # zls
-    pkgs.nodejs
-    pkgs.yarn
     pkgs.shellcheck
     pkgs.bash-language-server
     pkgs.ols
     pkgs.odin
-
-    # For LazyVim experiment
-    pkgs.fd
-    pkgs.lua51Packages.lua
-    pkgs.lua51Packages.luarocks
-
     pkgs.lua-language-server
     pkgs.stylua
     pkgs.ansible
@@ -70,7 +60,6 @@ in
 
     # Tools
     pkgs.obsidian
-    pkgs.spotify
 
     # Shell scripts
     (import ./scripts/tmux-sessionizer.nix { inherit pkgs; })
@@ -90,6 +79,7 @@ in
     fzf = import ./home/fzf.nix { inherit pkgs; };
     zsh = import ./home/zsh/zsh.nix { inherit config pkgs lib; };
     tmux = import ./home/tmux.nix { inherit config pkgs; };
+    direnv = import ./home/direnv.nix;
   };
 
   # On fresh installs, we ensure that we have the "development" folder created.

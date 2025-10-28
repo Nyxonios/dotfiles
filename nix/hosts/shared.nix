@@ -3,6 +3,7 @@ let
   inherit (import ./../vars.nix { inherit pkgs; }) userData;
 in
 {
+  users.users."${userData.user}".home = userData.homeDir;
   system.primaryUser = "${userData.user}";
   nix.gc = {
     automatic = true;
@@ -15,13 +16,6 @@ in
     ];
   };
 
-  users.users."${userData.user}".home = userData.homeDir;
-
-  environment.systemPackages =
-    [
-      pkgs.mkalias
-      pkgs.btop
-    ];
 
   nix.nixPath = [
     "nixpkgs=${inputs.nixpkgs}"

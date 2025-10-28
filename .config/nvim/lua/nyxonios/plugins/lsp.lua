@@ -145,9 +145,24 @@ return {
 
       vim.lsp.enable 'clangd'
       vim.lsp.enable 'lua_ls'
+      -- TODO(mseller): I have no idea why I need to specify the config _and_ enable the lsp.
+      -- Check if one can just enable it.
+      vim.lsp.config('zls', {
+        cmd = { 'zls' },
+        filetypes = { 'zig', 'zir' },
+        root_markers = { 'zls.json', 'build.zig', '.git' },
+        workspace_required = false,
+      })
       vim.lsp.enable 'zls'
+
       vim.lsp.enable 'rust_analyzer'
       vim.lsp.enable 'bashls'
+      vim.lsp.enable 'lua_ls'
+
+      vim.lsp.config('ols', {
+        cmd = { 'ols' },
+        filetypes = { 'odin' },
+      })
       vim.lsp.enable 'ols'
 
       --  This function gets run when an LSP attaches to a particular buffer.
