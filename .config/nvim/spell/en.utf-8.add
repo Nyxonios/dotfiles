@@ -10,3 +10,5 @@ evrocs
 rollouts
 prometheus
 config
+namespace
+ip
