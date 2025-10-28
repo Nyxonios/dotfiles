@@ -23,6 +23,7 @@ return {
           update_in_insert = false,
           signs = true, -- use a table to configure the signs texts
         },
+        init_tags = 'malcolmtest',
       }
       vim.keymap.set('n', '<leader>tf', '<cmd>GoTestFunc<CR>')
       vim.keymap.set('n', '<leader>tp', '<cmd>GoTestPkg<CR>')
@@ -89,7 +90,6 @@ return {
       { 'j-hui/fidget.nvim', opts = {} },
     },
     config = function()
-      local flakePath = '~/dotfiles/nix/flake.nix'
       vim.lsp.config('nixd', {
         cmd = { 'nixd' },
         filetypes = { 'nix' },
@@ -142,6 +142,8 @@ return {
         -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
         -- diagnostics = { disable = { 'missing-fields' } },
       })
+
+      vim.lsp.enable 'clangd'
       vim.lsp.enable 'lua_ls'
       vim.lsp.enable 'zls'
       vim.lsp.enable 'rust_analyzer'
