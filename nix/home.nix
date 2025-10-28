@@ -79,7 +79,6 @@ in
     fzf = import ./home/fzf.nix { inherit pkgs; };
     zsh = import ./home/zsh/zsh.nix { inherit config pkgs lib; };
     tmux = import ./home/tmux.nix { inherit config pkgs; };
-    direnv = import ./home/direnv.nix;
   };
 
   # On fresh installs, we ensure that we have the "development" folder created.
