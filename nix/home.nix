@@ -52,6 +52,7 @@ in
     pkgs.stylua
     pkgs.ansible
     pkgs.rustup
+    pkgs.glsl_analyzer
 
     pkgs.minio-warp
     pkgs.graphviz
