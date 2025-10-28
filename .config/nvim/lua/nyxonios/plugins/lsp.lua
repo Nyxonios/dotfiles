@@ -142,9 +142,10 @@ return {
         -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
         -- diagnostics = { disable = { 'missing-fields' } },
       })
+      vim.lsp.enable 'lua_ls'
 
       vim.lsp.enable 'clangd'
-      vim.lsp.enable 'lua_ls'
+
       -- TODO(mseller): I have no idea why I need to specify the config _and_ enable the lsp.
       -- Check if one can just enable it.
       vim.lsp.config('zls', {
