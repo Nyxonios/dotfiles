@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, pkgs-catppuccin-pin, ... }:
 {
   enable = true;
   shell = "${pkgs.zsh}/bin/zsh";
@@ -7,7 +7,7 @@
       plugin = tmuxPlugins.sensible;
     }
     {
-      plugin = tmuxPlugins.catppuccin;
+      plugin = pkgs-catppuccin-pin.tmuxPlugins.catppuccin;
       extraConfig = ''
         set -g @catppuccin_flavour "mocha"
         set -g @catppuccin_window_left_separator ""

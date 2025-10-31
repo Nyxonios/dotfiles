@@ -3,6 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    pkgs-tmux-catppuccin-pin.url = "github:NixOS/nixpkgs/50165c4f7eb48ce82bd063e1fb8047a0f515f8ce";
+
 
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -15,11 +17,12 @@
     hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = { self, nixpkgs, nix-darwin, nix-homebrew, home-manager, ... } @ inputs:
+  outputs = { self, nixpkgs, pkgs-tmux-catppuccin-pin, nix-darwin, nix-homebrew, home-manager, ... } @ inputs:
     let
       inherit (import ./vars.nix { pkgs = nixpkgs; }) userData;
       system = userData.platform;
       pkgs = nixpkgs.legacyPackages.${system};
+      pkgs-catppuccin-pin = pkgs-tmux-catppuccin-pin.legacyPackages.${system};
 
       # Define the shared module here once
       commonModules = [
@@ -73,7 +76,7 @@
       nixosConfigurations."${userData.user}" = nixpkgs.lib.nixosSystem
         {
           system = system;
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs; inherit pkgs-catppuccin-pin; };
           modules = [
             ./hosts/nixos/configuration.nix
             home-manager.nixosModules.home-manager
@@ -81,7 +84,10 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.backupFileExtension = "before-nix-backup";
-              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                inherit pkgs-catppuccin-pin;
+              };
               home-manager.users."${userData.user}" = import ./home.nix;
             }
           ] ++ commonModules;
