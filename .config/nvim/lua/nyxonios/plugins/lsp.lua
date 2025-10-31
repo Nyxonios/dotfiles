@@ -165,6 +165,7 @@ return {
         filetypes = { 'odin' },
       })
       vim.lsp.enable 'ols'
+      vim.lsp.enable 'glsl_analyzer'
 
       vim.lsp.config('glsl_analyzer', {})
       vim.lsp.enable 'glsl_analyzer'
