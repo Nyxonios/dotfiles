@@ -356,6 +356,14 @@
                         "is_pointing_device": true
                     },
                     "ignore": false
+                },
+                {
+                    "disable_built_in_keyboard_if_exists": true,
+                    "identifiers": {
+                        "device_address": "d3-2e-35-d5-a7-61",
+                        "is_keyboard": true,
+                        "is_pointing_device": true
+                    }
                 }
             ],
             "name": "Default profile",
