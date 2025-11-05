@@ -34,6 +34,8 @@ in
     pkgs.git-lfs
     pkgs.vault
     pkgs.clang-tools
+    pkgs.cmake
+    pkgs.ninja
 
     # Languages / Language servers / formatters
     pkgs.go
