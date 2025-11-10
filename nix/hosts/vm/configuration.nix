@@ -6,6 +6,5 @@ in
     pkgs.vault
     pkgs.devenv
     pkgs.direnv
-    pkgs.kustomize
   ];
 }

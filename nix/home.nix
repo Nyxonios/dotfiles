@@ -20,6 +20,7 @@ in
     # Tools
     pkgs.git
     pkgs.kubectl
+    pkgs.kustomize
     pkgs.lazygit
     pkgs.k9s
     pkgs.ripgrep
