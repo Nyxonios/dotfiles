@@ -49,11 +49,10 @@ return {
       pickers = {
         find_files = {
           hidden = true,
+          additional_args = { '--hidden', '-L' },
         },
         live_grep = {
-          additional_args = function(opts)
-            return { '--hidden', '-L' }
-          end,
+          additional_args = { '--hidden', '-L' },
         },
       },
       defaults = {

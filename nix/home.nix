@@ -32,7 +32,6 @@ in
     pkgs.cloc
     pkgs.sqlite
     pkgs.git-lfs
-    pkgs.vault
     pkgs.clang-tools
     pkgs.cmake
     pkgs.ninja
@@ -89,6 +88,7 @@ in
     mkdir -p ~/development 
     mkdir -p ~/docs
   '';
+
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

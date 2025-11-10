@@ -35,6 +35,7 @@
       darwinConfigurations."work" = nix-darwin.lib.darwinSystem {
         specialArgs = {
           inherit inputs;
+          inherit pkgs-catppuccin-pin;
         };
         modules = [
           ./hosts/darwin/configuration.nix
@@ -47,7 +48,10 @@
           }
           home-manager.darwinModules.home-manager
           {
-            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              inherit pkgs-catppuccin-pin;
+            };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "before-nix-backup";
@@ -95,9 +99,13 @@
 
       homeConfigurations."vm" = home-manager.lib.homeManagerConfiguration
         {
-          extraSpecialArgs = { inherit inputs; };
+          extraSpecialArgs = {
+            inherit inputs;
+            inherit pkgs-catppuccin-pin;
+          };
           pkgs = pkgs;
           modules = [
+            (import ./hosts/vm/configuration.nix)
             (import ./home.nix)
           ] ++ commonModules;
         };
