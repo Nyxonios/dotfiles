@@ -56,11 +56,6 @@ in
     pkgs.rustup
     pkgs.glsl_analyzer
 
-    pkgs.minio-warp
-    pkgs.graphviz
-    pkgs.awscli2
-    pkgs.s3cmd
-
     # Tools
     pkgs.obsidian
 

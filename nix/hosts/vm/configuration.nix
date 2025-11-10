@@ -6,5 +6,9 @@ in
     pkgs.vault
     pkgs.devenv
     pkgs.direnv
+    pkgs.minio-warp
+    pkgs.graphviz
+    pkgs.awscli2
+    pkgs.s3cmd
   ];
 }
