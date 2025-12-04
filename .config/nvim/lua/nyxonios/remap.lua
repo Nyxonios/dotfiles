@@ -18,11 +18,22 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set('n', '[d', function()
   vim.diagnostic.jump { count = -1, float = true }
 end, { desc = 'Go to previous [D]iagnostic message' })
+
 vim.keymap.set('n', ']d', function()
   vim.diagnostic.jump { count = 1, float = true }
 end, { desc = 'Go to next [D]iagnostic message' })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+
+vim.keymap.set('n', '<leader>e', function()
+  vim.diagnostic.open_float {}
+end, { desc = 'Show diagnostic [E]rror messages' })
+
+vim.keymap.set('n', '<leader>q', function()
+  vim.diagnostic.setqflist { severity = 1 }
+end, { desc = 'Open error diagnostic in [Q]uickfix list' })
+
+vim.keymap.set('n', '<leader>Q', function()
+  vim.diagnostic.setqflist {}
+end, { desc = 'Open all diagnostics in [Q]uickfix list' })
 
 -- Reset highlight after search
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
