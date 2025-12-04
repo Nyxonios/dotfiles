@@ -26,6 +26,7 @@ in
     pkgs.ripgrep
     pkgs.btop
     pkgs.jq
+    pkgs.yq-go
     pkgs.gnumake42
     pkgs.btop
 
