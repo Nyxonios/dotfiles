@@ -7,6 +7,7 @@ vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 vim.keymap.set('n', '<leader>fe', '<cmd>Neotree position=left toggle<cr>')
+vim.keymap.set('n', '<leader>fE', '<cmd>Oil --float<cr>')
 
 -- Move selected portions in visual mode with jk.
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
@@ -17,8 +18,12 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Diagnostic key maps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+vim.keymap.set('n', '[d', function()
+  vim.diagnostic.jump { count = -1, float = true }
+end, { desc = 'Go to previous [D]iagnostic message' })
+vim.keymap.set('n', ']d', function()
+  vim.diagnostic.jump { count = 1, float = true }
+end, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -32,4 +37,9 @@ vim.keymap.set('n', '<C-f>', '<cmd>silent !tmux neww tmux-sessionizer<CR>')
 vim.keymap.set('n', '<leader>k', '<cmd>cnext<CR>')
 vim.keymap.set('n', '<leader>j', '<cmd>cprev<CR>')
 
+-- Zen mode
 vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<CR>')
+
+-- Copy/paste/deleting stuff
+vim.keymap.set('n', 'p', '"0p') -- Always copy from the "copy" buffer (ignoring stuff deleted with dd)
+vim.keymap.set('n', 'P', '"1p')
