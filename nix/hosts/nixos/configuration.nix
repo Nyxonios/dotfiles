@@ -145,12 +145,19 @@ in
     hyprcursor
     mattermost-desktop
     spotify
+
+    # Tools to verify acceleration
+    mesa-demos # For glxinfo and glxgears
+    libva-utils # For vainfo
+    vdpauinfo # For VDPAU checks
   ];
 
   users.defaultUserShell = pkgs.zsh;
 
   environment = {
     variables = {
+      LIBVA_DRIVER_NAME = "nvidia";
+      NVD_BACKEND = "nvidia";
       NIXOS_OZONE_WL = "1";
       GBM_BACKEND = "nvidia-drm";
       __GL_GSYNC_ALLOWED = "0";
