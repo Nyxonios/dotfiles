@@ -1,3 +1,5 @@
+local funcs = require 'nyxonios.functions'
+
 vim.g.mapleader = ' '
 vim.g.localleader = ' '
 
@@ -51,3 +53,6 @@ vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<CR>')
 -- Copy/paste/deleting stuff
 vim.keymap.set('n', 'p', '"0p') -- Always copy from the "copy" buffer (ignoring stuff deleted with dd)
 vim.keymap.set('n', 'P', '"1p')
+
+-- Map Ctrl+M in normal mode to the function
+vim.keymap.set('n', '<C-m>', funcs.run_build_script, { desc = 'Run nearest upward build.sh' })
