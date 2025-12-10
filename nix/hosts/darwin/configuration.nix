@@ -11,7 +11,6 @@ in
     pkgs.aerospace
     pkgs.sketchybar
     pkgs.obsidian
-    pkgs.vault
     pkgs.mkalias
 
     pkgs.nodejs_20

@@ -29,6 +29,7 @@ in
     pkgs.yq-go
     pkgs.gnumake42
     pkgs.btop
+    pkgs.vault
 
     # Development stuff
     pkgs.cloc
