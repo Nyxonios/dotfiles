@@ -17,7 +17,12 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = 'markdown,md',
   callback = function()
     local buf = vim.api.nvim_get_current_buf()
-    vim.api.nvim_buf_set_option(buf, 'tabstop', 2)
-    vim.api.nvim_buf_set_option(buf, 'textwidth', 100)
+    vim.api.nvim_set_option_value('tabstop', 2, { scope = 'local', buf = buf })
+    vim.api.nvim_set_option_value('textwidth', 100, { scope = 'local', buf = buf })
   end,
+})
+
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
+  command = "if mode() != 'c' | checktime | endif",
+  pattern = '*',
 })
