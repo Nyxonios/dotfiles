@@ -15,9 +15,11 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     hyprland.url = "github:hyprwm/Hyprland";
+    zig.url = "github:mitchellh/zig-overlay";
+    zls.url = "github:zigtools/zls";
   };
 
-  outputs = { self, nixpkgs, pkgs-tmux-catppuccin-pin, nix-darwin, nix-homebrew, home-manager, ... } @ inputs:
+  outputs = { self, nixpkgs, zig, zls, pkgs-tmux-catppuccin-pin, nix-darwin, nix-homebrew, home-manager, ... } @ inputs:
     let
       inherit (import ./vars.nix { pkgs = nixpkgs; }) userData;
       system = userData.platform;
@@ -59,6 +61,7 @@
           }
           {
             nixpkgs.overlays = [
+              zig.overlays.default
               (self: super: {
                 karabiner-elements = super.karabiner-elements.overrideAttrs (old: {
                   version = "14.13.0";
@@ -93,6 +96,21 @@
                 inherit pkgs-catppuccin-pin;
               };
               home-manager.users."${userData.user}" = import ./home.nix;
+            }
+            {
+              nixpkgs.overlays = [
+                zig.overlays.default
+                (self: super: {
+                  karabiner-elements = super.karabiner-elements.overrideAttrs (old: {
+                    version = "14.13.0";
+
+                    src = super.fetchurl {
+                      inherit (old.src) url;
+                      hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
+                    };
+                  });
+                })
+              ];
             }
           ] ++ commonModules;
         };
