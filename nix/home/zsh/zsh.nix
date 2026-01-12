@@ -3,6 +3,7 @@ let
   inherit (import ./../../vars.nix { inherit pkgs; }) userData;
 in
 {
+  dotDir = "${config.xdg.configHome}/zsh";
   enable = true;
   history.size = 10000;
   history.path = "${config.xdg.dataHome}/zsh/history";

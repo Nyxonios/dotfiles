@@ -38,6 +38,7 @@
         specialArgs = {
           inherit inputs;
           inherit pkgs-catppuccin-pin;
+          # inherit zig;
         };
         modules = [
           ./hosts/darwin/configuration.nix
