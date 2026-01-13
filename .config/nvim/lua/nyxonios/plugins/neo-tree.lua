@@ -10,6 +10,8 @@ return {
     require('neo-tree').setup {
       close_if_last_window = true,
       use_libuv_file_watcher = true,
+      async_directory_scan = false,
+      scan_mode = 'deep',
       filesystem = {
         follow_current_file = {
           enabled = false, -- This will find and focus the file in the active buffer every time

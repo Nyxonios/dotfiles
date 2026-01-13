@@ -10,5 +10,6 @@ in
     pkgs.awscli2
     pkgs.s3cmd
     pkgs.grpcurl
+    pkgs.lsof
   ];
 }

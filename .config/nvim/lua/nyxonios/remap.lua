@@ -58,4 +58,4 @@ vim.keymap.set('n', 'p', '"0p') -- Always copy from the "copy" buffer (ignoring 
 vim.keymap.set('n', 'P', '"1p')
 
 -- Map Ctrl+M in normal mode to the function
-vim.keymap.set('n', '<C-m>', funcs.run_build_script, { desc = 'Run nearest upward build.sh' })
+-- vim.keymap.set('n', '<C-m>', funcs.run_build_script, { desc = 'Run nearest upward build.sh' })

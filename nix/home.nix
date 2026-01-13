@@ -57,6 +57,7 @@ in
     pkgs.ansible
     pkgs.rustup
     pkgs.glsl_analyzer
+    pkgs.opencode
 
     # Tools
     pkgs.obsidian
@@ -74,6 +75,7 @@ in
   xdg.configFile.ghostty.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/ghostty;
   xdg.configFile.alacritty.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/alacritty;
   xdg.configFile.k9s.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/k9s;
+  xdg.configFile.opencode.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/opencode;
 
   programs = {
     fzf = import ./home/fzf.nix { inherit pkgs; };
