@@ -46,8 +46,9 @@ in
     pkgs.gofumpt
     pkgs.nixd
     pkgs.nixpkgs-fmt
-    pkgs.zig
-    pkgs.zls
+    pkgs.zigpkgs.master
+    # pkgs.zig
+    # pkgs.zls
     pkgs.shellcheck
     pkgs.bash-language-server
     pkgs.ols
