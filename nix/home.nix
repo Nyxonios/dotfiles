@@ -38,7 +38,6 @@ in
     pkgs.clang-tools
     pkgs.cmake
     pkgs.ninja
-    pkgs.vscode
 
     # Languages / Language servers / formatters
     pkgs.go
