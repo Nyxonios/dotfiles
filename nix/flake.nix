@@ -38,7 +38,6 @@
         specialArgs = {
           inherit inputs;
           inherit pkgs-catppuccin-pin;
-          # inherit zig;
         };
         modules = [
           ./hosts/darwin/configuration.nix
@@ -124,6 +123,11 @@
           };
           pkgs = pkgs;
           modules = [
+            {
+              nixpkgs.overlays = [
+                zig.overlays.default
+              ];
+            }
             (import ./hosts/vm/configuration.nix)
             (import ./home.nix)
           ] ++ commonModules;
