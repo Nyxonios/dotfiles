@@ -148,6 +148,7 @@ in
     hyprcursor
     mattermost-desktop
     spotify
+    obs-studio
 
     # Tools to verify acceleration
     mesa-demos # For glxinfo and glxgears
