@@ -38,6 +38,7 @@ in
     pkgs.clang-tools
     pkgs.cmake
     pkgs.ninja
+    pkgs.vscode
 
     # Languages / Language servers / formatters
     pkgs.go
@@ -48,7 +49,7 @@ in
     pkgs.nixpkgs-fmt
     pkgs.zigpkgs.master
     # pkgs.zig
-    # pkgs.zls
+    pkgs.zls
     pkgs.shellcheck
     pkgs.bash-language-server
     pkgs.ols
