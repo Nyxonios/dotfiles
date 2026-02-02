@@ -121,7 +121,7 @@ return {
           },
         },
       })
-      vim.lsp.enable 'nixd'
+      -- nixd is already configured above with vim.lsp.config
 
       vim.lsp.config('lua_ls', {
         runtime = { version = 'LuaJIT' },
@@ -142,9 +142,9 @@ return {
         -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
         -- diagnostics = { disable = { 'missing-fields' } },
       })
-      vim.lsp.enable 'lua_ls'
 
-      vim.lsp.enable 'clangd'
+      -- clangd, rust_analyzer, bashls, and glsl_analyzer don't need explicit config
+      -- They will be automatically started by nvim-lspconfig when files are opened
 
       -- TODO(mseller): I have no idea why I need to specify the config _and_ enable the lsp.
       -- Check if one can just enable it.
@@ -154,21 +154,13 @@ return {
         root_markers = { 'zls.json', 'build.zig', '.git' },
         workspace_required = false,
       })
-      vim.lsp.enable 'zls'
-
-      vim.lsp.enable 'rust_analyzer'
-      vim.lsp.enable 'bashls'
-      vim.lsp.enable 'lua_ls'
 
       vim.lsp.config('ols', {
         cmd = { 'ols' },
         filetypes = { 'odin' },
       })
-      vim.lsp.enable 'ols'
-      vim.lsp.enable 'glsl_analyzer'
 
-      vim.lsp.config('glsl_analyzer', {})
-      vim.lsp.enable 'glsl_analyzer'
+      -- glsl_analyzer is already configured above
 
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
