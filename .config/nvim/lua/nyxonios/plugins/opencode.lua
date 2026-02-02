@@ -16,7 +16,7 @@ return {
     vim.o.autoread = true
 
     -- Recommended/example keymaps.
-    vim.keymap.set({ 'n', 'x' }, '<C-a>', function()
+    vim.keymap.set({ 'n', 'x' }, '<C-r>', function()
       require('opencode').ask('@this: ', { submit = true })
     end, { desc = 'Ask opencode' })
     vim.keymap.set({ 'n', 'x' }, '<C-x>', function()
