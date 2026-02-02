@@ -24,15 +24,36 @@
     let
       inherit (import ./vars.nix { pkgs = nixpkgs; }) userData;
       system = userData.platform;
-      pkgs = nixpkgs.legacyPackages.${system};
-      pkgs-stable = nixpkgs-stable.legacyPackages.${system};
-      pkgs-catppuccin-pin = pkgs-tmux-catppuccin-pin.legacyPackages.${system};
 
-      # Define the shared module here once
-      commonModules = [
-        { nixpkgs.config.allowUnfree = true; }
-        { nixpkgs.config.permittedInsecurePackages = [ ]; }
-      ];
+      common-pkgs-config = {
+        allowUnfree = true;
+        permittedInsecurePackages = [ ];
+      };
+      commonModules = [];
+      common-home-manager = {
+        home-manager.extraSpecialArgs = {
+          inherit inputs;
+          inherit pkgs-catppuccin-pin;
+          inherit pkgs-stable;
+        };
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.backupFileExtension = "before-nix-backup";
+        home-manager.users."${userData.user}" = import ./home.nix;
+      };
+
+      pkgs = import nixpkgs {
+        inherit system;
+        config = common-pkgs-config;
+      };
+      pkgs-stable = import nixpkgs-stable {
+        inherit system;
+        config = common-pkgs-config;
+      };
+      pkgs-catppuccin-pin = import pkgs-tmux-catppuccin-pin {
+        inherit system;
+        config = common-pkgs-config;
+      };
     in
     {
       # Build darwin flake using:
@@ -51,18 +72,7 @@
               user = "${userData.user}";
             };
           }
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              inherit pkgs-catppuccin-pin;
-              inherit pkgs-stable;
-            };
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "before-nix-backup";
-            home-manager.users."${userData.user}" = import ./home.nix;
-          }
+          home-manager.darwinModules.home-manager common-home-manager
           {
             nixpkgs.overlays = [
               zig.overlays.default
@@ -90,18 +100,7 @@
           specialArgs = { inherit inputs; inherit pkgs-catppuccin-pin; };
           modules = [
             ./hosts/nixos/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.backupFileExtension = "before-nix-backup";
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                inherit pkgs-catppuccin-pin;
-                inherit pkgs-stable;
-              };
-              home-manager.users."${userData.user}" = import ./home.nix;
-            }
+            home-manager.nixosModules.home-manager common-home-manager
             {
               nixpkgs.overlays = [
                 zig.overlays.default
