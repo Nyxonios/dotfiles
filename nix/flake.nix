@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     pkgs-tmux-catppuccin-pin.url = "github:NixOS/nixpkgs/50165c4f7eb48ce82bd063e1fb8047a0f515f8ce";
 
 
@@ -19,11 +20,12 @@
     zls.url = "github:zigtools/zls";
   };
 
-  outputs = { self, nixpkgs, zig, zls, pkgs-tmux-catppuccin-pin, nix-darwin, nix-homebrew, home-manager, ... } @ inputs:
+  outputs = { self, nixpkgs, nixpkgs-stable, zig, zls, pkgs-tmux-catppuccin-pin, nix-darwin, nix-homebrew, home-manager, ... } @ inputs:
     let
       inherit (import ./vars.nix { pkgs = nixpkgs; }) userData;
       system = userData.platform;
       pkgs = nixpkgs.legacyPackages.${system};
+      pkgs-stable = nixpkgs-stable.legacyPackages.${system};
       pkgs-catppuccin-pin = pkgs-tmux-catppuccin-pin.legacyPackages.${system};
 
       # Define the shared module here once
@@ -38,6 +40,7 @@
         specialArgs = {
           inherit inputs;
           inherit pkgs-catppuccin-pin;
+          inherit pkgs-stable;
         };
         modules = [
           ./hosts/darwin/configuration.nix
@@ -53,6 +56,7 @@
             home-manager.extraSpecialArgs = {
               inherit inputs;
               inherit pkgs-catppuccin-pin;
+              inherit pkgs-stable;
             };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -94,6 +98,7 @@
               home-manager.extraSpecialArgs = {
                 inherit inputs;
                 inherit pkgs-catppuccin-pin;
+                inherit pkgs-stable;
               };
               home-manager.users."${userData.user}" = import ./home.nix;
             }
@@ -120,6 +125,7 @@
           extraSpecialArgs = {
             inherit inputs;
             inherit pkgs-catppuccin-pin;
+            inherit pkgs-stable;
           };
           pkgs = pkgs;
           modules = [

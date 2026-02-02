@@ -1,4 +1,4 @@
-{ config, pkgs, lib, pkgs-catppuccin-pin, ... }:
+{ config, pkgs, pkgs-stable, lib, pkgs-catppuccin-pin, ... }:
 let
   inherit (import ./vars.nix { inherit pkgs; }) userData;
   inherit (config.lib.file) mkOutOfStoreSymlink;
@@ -79,8 +79,10 @@ in
   xdg.configFile.opencode.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/opencode;
 
   programs = {
-    fzf = import ./home/fzf.nix { inherit pkgs; };
-    zsh = import ./home/zsh/zsh.nix { inherit config pkgs lib; };
+    fzf = import ./home/fzf.nix { pkgs = pkgs-stable; };
+    zsh = import ./home/zsh/zsh.nix {
+      inherit config lib; pkgs = pkgs-stable;
+    };
     tmux = import ./home/tmux.nix { inherit config pkgs pkgs-catppuccin-pin; };
   };
 
