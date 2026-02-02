@@ -149,6 +149,7 @@ in
     mattermost-desktop
     spotify
     obs-studio
+    lsof
 
     # Tools to verify acceleration
     mesa-demos # For glxinfo and glxgears

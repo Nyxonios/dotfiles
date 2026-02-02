@@ -29,7 +29,10 @@
         allowUnfree = true;
         permittedInsecurePackages = [ ];
       };
-      commonModules = [];
+      commonModules = [
+        { nixpkgs.config.allowUnfree = true; }
+        { nixpkgs.config.permittedInsecurePackages = [ ]; }
+      ];
       common-home-manager = {
         home-manager.extraSpecialArgs = {
           inherit inputs;
@@ -72,7 +75,8 @@
               user = "${userData.user}";
             };
           }
-          home-manager.darwinModules.home-manager common-home-manager
+          home-manager.darwinModules.home-manager
+          common-home-manager
           {
             nixpkgs.overlays = [
               zig.overlays.default
@@ -100,7 +104,8 @@
           specialArgs = { inherit inputs; inherit pkgs-catppuccin-pin; };
           modules = [
             ./hosts/nixos/configuration.nix
-            home-manager.nixosModules.home-manager common-home-manager
+            home-manager.nixosModules.home-manager
+            common-home-manager
             {
               nixpkgs.overlays = [
                 zig.overlays.default
@@ -135,7 +140,7 @@
             }
             (import ./hosts/vm/configuration.nix)
             (import ./home.nix)
-          ] ++ commonModules;
+          ];
         };
     };
 }
