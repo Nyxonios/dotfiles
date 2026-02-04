@@ -23,7 +23,7 @@
   };
 
   environment.systemPackages = with pkgs;[
-    hyprpaper
+    swww
     hyprshot
     swaynotificationcenter
     libnotify
