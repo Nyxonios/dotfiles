@@ -150,6 +150,7 @@ in
     spotify
     obs-studio
     lsof
+    libreoffice
 
     # Tools to verify acceleration
     mesa-demos # For glxinfo and glxgears
