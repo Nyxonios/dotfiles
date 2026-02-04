@@ -21,6 +21,13 @@ in
       inherit (config.lib.file) mkOutOfStoreSymlink;
     in
     {
+      home.pointerCursor = {
+        gtk.enable = true;
+        package = pkgs.bibata-cursors;
+        name = "Bibata-Modern-Ice";
+        size = 22;
+      };
+
       xdg.configFile."hypr".source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/hypr;
       xdg.configFile."rofi".source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/rofi;
       xdg.configFile."wlogout".source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/wlogout;
