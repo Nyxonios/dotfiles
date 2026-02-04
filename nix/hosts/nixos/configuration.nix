@@ -114,6 +114,7 @@ in
 
   # Install firefox.
   programs.firefox.enable = true;
+  programs.geary.enable = true;
   programs.zsh.enable = true;
   xdg.portal = {
     # Enable XDG portals for Wayland URI/file handling
