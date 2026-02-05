@@ -11,5 +11,6 @@ in
     pkgs.s3cmd
     pkgs.grpcurl
     pkgs.lsof
+    pkgs.xclip
   ];
 }
