@@ -21,6 +21,13 @@ in
       inherit (config.lib.file) mkOutOfStoreSymlink;
     in
     {
+      home.pointerCursor = {
+        gtk.enable = true;
+        package = pkgs.bibata-cursors;
+        name = "Bibata-Modern-Ice";
+        size = 22;
+      };
+
       xdg.configFile."hypr".source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/hypr;
       xdg.configFile."rofi".source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/rofi;
       xdg.configFile."wlogout".source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/wlogout;
@@ -68,18 +75,10 @@ in
     LC_TIME = "sv_SE.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-
   # Enable the GNOME Desktop Environment.
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
-  # Configure keymap in X11
-  # services.xserver.xkb = {
-  #   layout = "us";
-  #   variant = "";
-  # };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -115,6 +114,7 @@ in
 
   # Install firefox.
   programs.firefox.enable = true;
+  programs.geary.enable = true;
   programs.zsh.enable = true;
   xdg.portal = {
     # Enable XDG portals for Wayland URI/file handling
@@ -150,6 +150,7 @@ in
     spotify
     obs-studio
     lsof
+    libreoffice
 
     # Tools to verify acceleration
     mesa-demos # For glxinfo and glxgears
