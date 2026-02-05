@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs-stable, lib, pkgs-catppuccin-pin, ... }:
+{ config, pkgs, lib, ... }:
 let
   inherit (import ./vars.nix { inherit pkgs; }) userData;
   inherit (config.lib.file) mkOutOfStoreSymlink;
@@ -79,11 +79,11 @@ in
   xdg.configFile.opencode.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/opencode;
 
   programs = {
-    fzf = import ./home/fzf.nix { pkgs = pkgs-stable; };
+    fzf = import ./home/fzf.nix { inherit pkgs; };
     zsh = import ./home/zsh/zsh.nix {
-      inherit config lib; pkgs = pkgs-stable;
+      inherit config lib pkgs;
     };
-    tmux = import ./home/tmux.nix { inherit config pkgs pkgs-catppuccin-pin; };
+    tmux = import ./home/tmux.nix { inherit config pkgs; };
   };
 
   # On fresh installs, we ensure that we have the "development" folder created.
