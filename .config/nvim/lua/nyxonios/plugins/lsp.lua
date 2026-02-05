@@ -160,6 +160,16 @@ return {
         filetypes = { 'odin' },
       })
 
+      -- Enable LSP servers
+      vim.lsp.enable('nixd')
+      vim.lsp.enable('lua_ls')
+      vim.lsp.enable('zls')
+      vim.lsp.enable('ols')
+      vim.lsp.enable('clangd')
+      vim.lsp.enable('rust_analyzer')
+      vim.lsp.enable('bashls')
+      vim.lsp.enable('glsl_analyzer')
+
       -- glsl_analyzer is already configured above
 
       --  This function gets run when an LSP attaches to a particular buffer.
