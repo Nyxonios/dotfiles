@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     # Removed: nixpkgs-stable and pkgs-tmux-catppuccin-pin - now using overlays instead
 
     nix-darwin.url = "github:LnL7/nix-darwin";
@@ -33,7 +34,11 @@
       ];
 
       # Import all overlays from the overlays directory
-      overlays = import ./overlays { inherit inputs system; };
+      pkgs-stable = import inputs.nixpkgs-stable {
+        inherit system;
+        config = common-pkgs-config;
+      };
+      overlays = import ./overlays { inherit inputs system pkgs-stable; };
 
       pkgs = import nixpkgs {
         inherit system;

@@ -1,20 +1,21 @@
 # overlays/default.nix
 # Consolidated overlays for the entire flake
 
-{ inputs, system }:
+{ inputs, system, pkgs-stable }:
 
 let
+
   # Overlay for pinned packages using overrideAttrs
   tmuxPluginCatppuccinOverlay = final: prev: {
-    # Pin catppuccin tmux plugin to specific version
+    # Pin catppuccin tmux plugin to the version from nixpkgs rev 50165c4f7eb48ce82bd063e1fb8047a0f515f8ce
     tmuxPlugins = prev.tmuxPlugins // {
       catppuccin = prev.tmuxPlugins.catppuccin.overrideAttrs (old: {
-        version = "pinned";
+        version = "unstable-2024-05-15";
         src = prev.fetchFromGitHub {
           owner = "catppuccin";
           repo = "tmux";
-          rev = "v1.0.3";
-          sha256 = "18ygayigzp7s9fv1fv65m0p6p1f4vjyzq079gm4qadlphn9nnk57"; # Run nix-prefetch-url or nix-prefetch-git to get actual hash
+          rev = "697087f593dae0163e01becf483b192894e69e33";
+          hash = "sha256-EHinWa6Zbpumu+ciwcMo6JIIvYFfWWEKH1lwfyZUNTo=";
         };
       });
     };
@@ -31,6 +32,13 @@ let
     });
   };
 
+  # Overlay to pin zsh, fzf, and zsh-fzf-tab to stable nixpkgs version
+  zshStableOverlay = final: prev: {
+    zsh = pkgs-stable.zsh;
+    fzf = pkgs-stable.fzf;
+    zsh-fzf-tab = pkgs-stable.zsh-fzf-tab;
+  };
+
   # Zig overlay from the zig input
   zigOverlay = inputs.zig.overlays.default;
 
@@ -41,8 +49,9 @@ in
     zigOverlay
     tmuxPluginCatppuccinOverlay
     karabinerOverlay
+    zshStableOverlay
   ];
 
   # Individual overlays for selective use
-  inherit tmuxPluginCatppuccinOverlay karabinerOverlay zigOverlay;
+  inherit tmuxPluginCatppuccinOverlay karabinerOverlay zigOverlay zshStableOverlay;
 }
