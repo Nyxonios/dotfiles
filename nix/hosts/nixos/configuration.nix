@@ -31,6 +31,10 @@ in
       xdg.configFile."hypr".source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/hypr;
       xdg.configFile."rofi".source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/rofi;
       xdg.configFile."wlogout".source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/wlogout;
+
+      programs = {
+        vscode = import ./../../home/vscode.nix { inherit config pkgs; };
+      };
     };
 
   hardware.nvidia = (import ./../../modules/nvidia.nix { inherit config; });

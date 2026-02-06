@@ -28,6 +28,10 @@ in
     {
       xdg.configFile.aerospace.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/aerospace;
       xdg.configFile.karabiner.source = mkOutOfStoreSymlink userData.homeDir + /dotfiles/.config/karabiner;
+
+      programs = {
+        vscode = import ./../../home/vscode.nix { inherit config pkgs; };
+      };
     };
 
 
