@@ -54,6 +54,8 @@
     set -g set-clipboard on          # use system clipboard
     set -g status-position top       # macOS / darwin style
     set -g pane-active-border-style 'fg=#cad3f5,bg=#cad3f5'
+    set -g extended-keys on
+    set -g xterm-keys on
 
     unbind %
     bind -n 'C-\' split-window -h -c '#{pane_current_path}'
