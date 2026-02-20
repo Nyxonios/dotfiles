@@ -13,6 +13,7 @@ in
   home.packages = [
     # Terminals
     pkgs.alacritty
+    pkgs.ghostty
 
     # Editors
     pkgs.neovim

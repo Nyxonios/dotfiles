@@ -1,5 +1,5 @@
 font-size = 13
-theme = catppuccin-mocha
+theme = Catppuccin Mocha
 macos-titlebar-style = hidden
 confirm-close-surface = false
 font-feature=-calt
