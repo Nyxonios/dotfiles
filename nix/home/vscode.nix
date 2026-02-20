@@ -13,6 +13,7 @@
       # Extensions (plugins)
       extensions = with pkgs.vscode-extensions;
         [
+          ms-vscode-remote.remote-ssh
         ] ++ (pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           # For extensions not in Nixpkgs, use this to fetch from Marketplace
           {
