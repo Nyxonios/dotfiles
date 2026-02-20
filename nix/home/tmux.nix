@@ -57,6 +57,8 @@
     set -g extended-keys on
     set -g xterm-keys on
 
+    set -as terminal-features ',*:clipboard'
+
     unbind %
     bind -n 'C-\' split-window -h -c '#{pane_current_path}'
 

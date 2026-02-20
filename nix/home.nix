@@ -30,7 +30,7 @@ in
     pkgs.yq-go
     pkgs.gnumake42
     pkgs.btop
-    pkgs.vault
+    pkgs.vault-bin
 
     # Development stuff
     pkgs.cloc
