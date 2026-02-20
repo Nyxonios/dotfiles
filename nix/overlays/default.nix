@@ -32,7 +32,7 @@ let
     });
   };
 
-  # Overlay to pin zsh, fzf, and zsh-fzf-tab to stable nixpkgs version
+  # Overlay to pin zsh, fzf, zsh-fzf-tab, and hyprland to stable nixpkgs version
   zshStableOverlay = final: prev: {
     zsh = pkgs-stable.zsh;
     fzf = pkgs-stable.fzf;
@@ -42,6 +42,11 @@ let
   # Zig overlay from the zig input
   zigOverlay = inputs.zig.overlays.default;
 
+  hyprlandOverlay = final: prev: {
+    hyprland = pkgs-stable.hyprland;
+    xdg-desktop-portal-hyprland = pkgs-stable.xdg-desktop-portal-hyprland;
+  };
+
 in
 {
   # All overlays combined
@@ -50,8 +55,9 @@ in
     tmuxPluginCatppuccinOverlay
     karabinerOverlay
     zshStableOverlay
+    hyprlandOverlay
   ];
 
   # Individual overlays for selective use
-  inherit tmuxPluginCatppuccinOverlay karabinerOverlay zigOverlay zshStableOverlay;
+  inherit tmuxPluginCatppuccinOverlay karabinerOverlay zigOverlay zshStableOverlay hyprlandOverlay;
 }
