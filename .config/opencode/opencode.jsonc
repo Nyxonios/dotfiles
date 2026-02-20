@@ -15,7 +15,7 @@
         "moonshotai/Kimi-K2.5": {
           "name": "moonshotai/Kimi-K2.5",
           "limit": {
-            "context": 200000,
+            "context": 262000,
             "output": 56000
           }
         },

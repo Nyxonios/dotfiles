@@ -13,14 +13,14 @@ return {
       provider = {
         snacks = {
           win = {
-            position = 'left',
-            width = 0.3,
+            position = 'right',
+            width = 0.4,
           },
         },
       },
     }
 
-    vim.keymap.set({ 'n', 'x' }, '<C-a>', function()
+    vim.keymap.set({ 'n', 'x' }, '<C-e>', function()
       require('opencode').ask('@this: ', { submit = true })
     end, { desc = 'Ask opencode' })
     vim.keymap.set({ 'n', 't' }, '<C-q>', function()
