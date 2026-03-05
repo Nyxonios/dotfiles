@@ -5,21 +5,26 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.kernelParams = [ "nvidia-drm.fbdev=1" ];
+
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/53efd71d-d56e-4feb-a6b5-505b234d60f3";
+    {
+      device = "/dev/disk/by-uuid/53efd71d-d56e-4feb-a6b5-505b234d60f3";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/18CD-BD79";
+    {
+      device = "/dev/disk/by-uuid/18CD-BD79";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
