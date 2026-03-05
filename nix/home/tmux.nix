@@ -51,11 +51,12 @@
     set -g escape-time 0             # zero-out escape time delay
     set -g history-limit 1000000     # increase history size (from 2,000)
     set -g renumber-windows on       # renumber all windows when any window is closed
-    set -g set-clipboard on          # use system clipboard
     set -g status-position top       # macOS / darwin style
     set -g pane-active-border-style 'fg=#cad3f5,bg=#cad3f5'
     set -g extended-keys on
     set -g xterm-keys on
+    set -g allow-passthrough on
+    set -g set-clipboard on          # use system clipboard
 
     set -as terminal-features ',*:clipboard'
 
