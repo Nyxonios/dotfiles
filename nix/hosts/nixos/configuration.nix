@@ -184,6 +184,9 @@ in
       MOZ_ENABLE_WAYLAND = "1";
       WLR_BACKEND = "vulkan";
       WLR_NO_HARDWARE_CURSORS = "1";
+      WLR_RENDERER = "gles2";
+      __GL_SYNC_TO_VBLANK = "0";
+      __GL_SYNC_DISPLAY_DEVICE = "DP-1";
       XDG_SESSION_TYPE = "wayland";
       CLUTTER_BACKEND = "wayland";
       WLR_DRM_DEVICES = "/dev/dri/card1:/dev/dri/card0";
