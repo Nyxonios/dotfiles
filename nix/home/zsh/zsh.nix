@@ -1,6 +1,12 @@
-{ config, pkgs, ... }:
+{ config, pkgs, userData, machineTypes, machineType, ... }:
 let
-  inherit (import ./../../vars.nix { inherit pkgs; }) userData;
+  inherit userData machineTypes machineType;
+  rebuildCmd = if machineType == machineTypes.Darwin then
+    "sudo darwin-rebuild switch --flake ~/dotfiles/nix#work"
+  else if machineType == machineTypes.NixOS then
+    "sudo nixos-rebuild switch --flake ~/dotfiles/nix#${userData.user}"
+  else
+    "nix run nixpkgs#home-manager -- switch --flake ~/dotfiles/nix#vm";
 in
 {
   dotDir = "${config.xdg.configHome}/zsh";
@@ -15,7 +21,7 @@ in
     cdot = "cd ~/dotfiles && nvim";
     devv = "cd ~/development";
     goupgrade = "go get $(go list - f '{{if not (or .Main .Indirect)}}{{.Path}}{{end}}' -m all)";
-    rebuild = if pkgs.stdenv.isDarwin then "darwin-rebuild switch --flake ~/dotfiles/nix#work" else "sudo nixos-rebuild switch --flake ~/dotfiles/nix#${userData.user}";
+    rebuild = rebuildCmd;
   };
   initContent = ''
     ZSH_DISABLE_COMPFIX=true

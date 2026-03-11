@@ -1,6 +1,5 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, userData, machineTypes, machineType, ... }:
 let
-  inherit (import ./vars.nix { inherit pkgs; }) userData;
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
 {
@@ -13,8 +12,8 @@ in
   home.packages = [
     # Terminals
     pkgs.alacritty
-    pkgs.ghostty
-
+  ] ++ lib.optional (machineType == machineTypes.NixOS || machineType == machineTypes.Linux) pkgs.ghostty
+  ++ [
     # Editors
     pkgs.neovim
 
@@ -52,7 +51,7 @@ in
     pkgs.zls
     pkgs.shellcheck
     pkgs.bash-language-server
-    pkgs.ols
+    # pkgs.ols  # Temporarily disabled - broken in nixpkgs (Odin 'using' statements deprecated)
     pkgs.odin
     pkgs.lua-language-server
     pkgs.stylua
@@ -82,7 +81,7 @@ in
   programs = {
     fzf = import ./home/fzf.nix { inherit pkgs; };
     zsh = import ./home/zsh/zsh.nix {
-      inherit config lib pkgs;
+      inherit config lib pkgs userData machineTypes machineType;
     };
     tmux = import ./home/tmux.nix { inherit config pkgs; };
   };

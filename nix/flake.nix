@@ -14,15 +14,14 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.url = "github:hyprwm/HyprLand";
     zig.url = "github:mitchellh/zig-overlay";
     zls.url = "github:zigtools/zls";
   };
 
   outputs = { self, nixpkgs, zig, zls, nix-darwin, nix-homebrew, home-manager, ... } @ inputs:
     let
-      inherit (import ./vars.nix { pkgs = nixpkgs; }) userData;
-      system = userData.platform;
+      system = "aarch64-darwin";
 
       common-pkgs-config = {
         allowUnfree = true;
@@ -46,21 +45,26 @@
         overlays = overlays.allOverlays;
       };
 
-      common-home-manager = {
-        home-manager.extraSpecialArgs = {
-          inherit inputs;
+      # Import vars.nix to get machineType and userData
+      vars = import ./vars.nix { inherit pkgs; };
+      inherit (vars) machineType userData machineTypes;
+
+      common-home-manager = 
+        {
+          home-manager.extraSpecialArgs = {
+            inherit inputs userData machineTypes machineType;
+          };
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.backupFileExtension = "before-nix-backup";
+          home-manager.users."${userData.user}" = import ./home.nix;
         };
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-        home-manager.backupFileExtension = "before-nix-backup";
-        home-manager.users."${userData.user}" = import ./home.nix;
-      };
     in
     {
       # Build darwin flake using:
       darwinConfigurations."work" = nix-darwin.lib.darwinSystem {
         specialArgs = {
-          inherit inputs;
+          inherit inputs userData machineTypes machineType;
         };
         modules = [
           ./hosts/darwin/configuration.nix
@@ -85,7 +89,9 @@
       nixosConfigurations."${userData.user}" = nixpkgs.lib.nixosSystem
         {
           system = system;
-          specialArgs = { inherit inputs; };
+          specialArgs = { 
+            inherit inputs userData machineTypes machineType; 
+          };
           modules = [
             ./hosts/nixos/configuration.nix
             home-manager.nixosModules.home-manager
@@ -99,7 +105,7 @@
       homeConfigurations."vm" = home-manager.lib.homeManagerConfiguration
         {
           extraSpecialArgs = {
-            inherit inputs;
+            inherit inputs userData machineTypes machineType;
           };
           pkgs = pkgs;
           modules = [
