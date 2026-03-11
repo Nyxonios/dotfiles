@@ -1,6 +1,7 @@
 { inputs, pkgs, ... }:
 let
-  inherit (import ./../vars.nix { inherit pkgs; }) userData;
+  machineTypes = import ./../machine-types.nix;
+  inherit (import ./../vars.nix { inherit pkgs machineTypes; }) userData;
 in
 {
   users.users."${userData.user}".home = userData.homeDir;
@@ -27,5 +28,4 @@ in
 
 
   nix.settings.experimental-features = "nix-command flakes";
-  nixpkgs.hostPlatform = "${userData.platform}";
 }

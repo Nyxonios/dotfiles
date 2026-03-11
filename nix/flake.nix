@@ -45,9 +45,10 @@
         overlays = overlays.allOverlays;
       };
 
-      # Import vars.nix to get machineType and userData
-      vars = import ./vars.nix { inherit pkgs; };
-      inherit (vars) machineType userData machineTypes;
+      # Import machine types and vars.nix
+      machineTypes = import ./machine-types.nix;
+      vars = import ./vars.nix { inherit pkgs machineTypes; };
+      inherit (vars) machineType userData;
 
       common-home-manager = 
         {

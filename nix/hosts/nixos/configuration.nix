@@ -4,7 +4,8 @@
 
 { inputs, config, pkgs, ... }:
 let
-  inherit (import ./../../vars.nix { inherit pkgs; }) userData;
+  machineTypes = import ./../../machine-types.nix;
+  inherit (import ./../../vars.nix { inherit pkgs machineTypes; }) userData;
 in
 {
   imports = [
@@ -12,6 +13,8 @@ in
     ./hardware-configuration.nix
     (import ../../modules/hyprland/hypr.nix { inherit inputs; inherit pkgs; })
   ];
+
+  nixpkgs.hostPlatform = userData.platform;
 
   # Setup all needed configuration files. I currently dont want to configure
   # all these programs via nix, so we create out of store symlinks to them

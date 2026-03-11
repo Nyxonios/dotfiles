@@ -1,6 +1,7 @@
 { config, inputs, pkgs, ... }:
 let
-  inherit (import ./../../vars.nix { inherit pkgs; }) userData;
+  machineTypes = import ./../../machine-types.nix;
+  inherit (import ./../../vars.nix { inherit pkgs machineTypes; }) userData;
 in
 {
   imports = [
@@ -98,6 +99,8 @@ in
 
   # Set Git commit hash for darwin-version.
   system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+
+  nixpkgs.hostPlatform = userData.platform;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
