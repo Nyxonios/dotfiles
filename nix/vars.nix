@@ -3,9 +3,9 @@
 {
   machineType = machineTypes.Darwin;
   userData = rec {
-    user = "nyxonios";
+    user = "";
     homeDir = if pkgs.stdenv.isDarwin then "/Users/${user}" else "/home/${user}";
-    userEmail = "mseller@evroc.com";
-    platform = "aarch64-darwin";
+    userEmail = "";
+    platform = "";
   };
 }
