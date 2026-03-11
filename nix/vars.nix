@@ -1,11 +1,12 @@
 # Local machine-specific configuration
-{ pkgs, machineTypes, ... }:
+{ machineTypes, ... }:
 {
-  machineType = machineTypes.Darwin;
   userData = rec {
     user = "";
-    homeDir = if pkgs.stdenv.isDarwin then "/Users/${user}" else "/home/${user}";
+    machineType = machineTypes.Linux;
+    homeDir = if machineType == machineTypes.Darwin then "/Users/${user}" else "/home/${user}";
     userEmail = "";
-    platform = "";
+    platform = if machineType == machineTypes.Darwin then "aarch64-darwin" else "x86_64-linux";
   };
 }
+
