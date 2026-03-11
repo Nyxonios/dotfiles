@@ -1,4 +1,4 @@
-{ config, pkgs, lib, userData, machineTypes, machineType, ... }:
+{ config, pkgs, lib, userData, machineTypes, ... }:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
@@ -12,7 +12,7 @@ in
   home.packages = [
     # Terminals
     pkgs.alacritty
-  ] ++ lib.optional (machineType == machineTypes.NixOS || machineType == machineTypes.Linux) pkgs.ghostty
+  ] ++ lib.optional (userData.machineType == machineTypes.NixOS || userData.machineType == machineTypes.Linux) pkgs.ghostty
   ++ [
     # Editors
     pkgs.neovim
@@ -81,7 +81,7 @@ in
   programs = {
     fzf = import ./home/fzf.nix { inherit pkgs; };
     zsh = import ./home/zsh/zsh.nix {
-      inherit config lib pkgs userData machineTypes machineType;
+      inherit config lib pkgs userData machineTypes;
     };
     tmux = import ./home/tmux.nix { inherit config pkgs; };
   };

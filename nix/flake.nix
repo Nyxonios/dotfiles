@@ -21,7 +21,8 @@
 
   outputs = { self, nixpkgs, zig, zls, nix-darwin, nix-homebrew, home-manager, ... } @ inputs:
     let
-      system = "aarch64-darwin";
+      machineTypes = import ./machine-types.nix;
+      inherit (import ./vars.nix { inherit machineTypes; }) userData;
 
       common-pkgs-config = {
         allowUnfree = true;
@@ -32,28 +33,21 @@
         { nixpkgs.config.permittedInsecurePackages = [ ]; }
       ];
 
-      # Import all overlays from the overlays directory
-      pkgs-stable = import inputs.nixpkgs-stable {
-        inherit system;
-        config = common-pkgs-config;
-      };
-      overlays = import ./overlays { inherit inputs system pkgs-stable; };
 
       pkgs = import nixpkgs {
-        inherit system;
+        system = userData.platform;
         config = common-pkgs-config;
         overlays = overlays.allOverlays;
       };
 
-      # Import machine types and vars.nix
-      machineTypes = import ./machine-types.nix;
-      vars = import ./vars.nix { inherit pkgs machineTypes; };
-      inherit (vars) machineType userData;
+      # Import all overlays from the overlays directory
+      overlays = (import ./overlays { inherit inputs; });
 
-      common-home-manager = 
+
+      common-home-manager = userData:
         {
           home-manager.extraSpecialArgs = {
-            inherit inputs userData machineTypes machineType;
+            inherit inputs userData machineTypes;
           };
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
@@ -65,7 +59,7 @@
       # Build darwin flake using:
       darwinConfigurations."work" = nix-darwin.lib.darwinSystem {
         specialArgs = {
-          inherit inputs userData machineTypes machineType;
+          inherit inputs machineTypes userData;
         };
         modules = [
           ./hosts/darwin/configuration.nix
@@ -77,7 +71,7 @@
             };
           }
           home-manager.darwinModules.home-manager
-          common-home-manager
+          (common-home-manager userData)
           {
             nixpkgs.overlays = overlays.allOverlays;
           }
@@ -89,14 +83,14 @@
 
       nixosConfigurations."${userData.user}" = nixpkgs.lib.nixosSystem
         {
-          system = system;
-          specialArgs = { 
-            inherit inputs userData machineTypes machineType; 
+          system = userData.platform;
+          specialArgs = {
+            inherit inputs userData machineTypes;
           };
           modules = [
             ./hosts/nixos/configuration.nix
             home-manager.nixosModules.home-manager
-            common-home-manager
+            (common-home-manager userData)
             {
               nixpkgs.overlays = overlays.allOverlays;
             }
@@ -106,7 +100,7 @@
       homeConfigurations."vm" = home-manager.lib.homeManagerConfiguration
         {
           extraSpecialArgs = {
-            inherit inputs userData machineTypes machineType;
+            inherit inputs userData machineTypes;
           };
           pkgs = pkgs;
           modules = [

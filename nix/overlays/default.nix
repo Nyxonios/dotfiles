@@ -1,7 +1,7 @@
 # overlays/default.nix
 # Consolidated overlays for the entire flake
 
-{ inputs, system, pkgs-stable }:
+{ inputs, ... }:
 
 let
 
@@ -32,12 +32,19 @@ let
     });
   };
 
-  # Overlay to pin zsh, fzf, zsh-fzf-tab, and hyprland to stable nixpkgs version
-  zshStableOverlay = final: prev: {
-    zsh = pkgs-stable.zsh;
-    fzf = pkgs-stable.fzf;
-    zsh-fzf-tab = pkgs-stable.zsh-fzf-tab;
-  };
+  # Overlay to pin zsh, fzf, zsh-fzf-tab to stable nixpkgs version
+  zshStableOverlay = final: prev: 
+    let
+      pkgs-stable = import inputs.nixpkgs-stable {
+        system = prev.stdenv.hostPlatform.system;
+        config = { allowUnfree = true; };
+      };
+    in
+    {
+      zsh = pkgs-stable.zsh;
+      fzf = pkgs-stable.fzf;
+      zsh-fzf-tab = pkgs-stable.zsh-fzf-tab;
+    };
 
   # Zig overlay from the zig input
   zigOverlay = inputs.zig.overlays.default;

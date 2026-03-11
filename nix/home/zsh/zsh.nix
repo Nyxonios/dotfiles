@@ -1,9 +1,9 @@
-{ config, pkgs, userData, machineTypes, machineType, ... }:
+{ config, pkgs, userData, machineTypes, ... }:
 let
-  inherit userData machineTypes machineType;
-  rebuildCmd = if machineType == machineTypes.Darwin then
+  inherit userData machineTypes;
+  rebuildCmd = if userData.machineType == machineTypes.Darwin then
     "sudo darwin-rebuild switch --flake ~/dotfiles/nix#work"
-  else if machineType == machineTypes.NixOS then
+  else if userData.machineType == machineTypes.NixOS then
     "sudo nixos-rebuild switch --flake ~/dotfiles/nix#${userData.user}"
   else
     "nix run nixpkgs#home-manager -- switch --flake ~/dotfiles/nix#vm";
