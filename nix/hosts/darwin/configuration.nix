@@ -1,8 +1,4 @@
-{ config, inputs, pkgs, ... }:
-let
-  machineTypes = import ./../../machine-types.nix;
-  inherit (import ./../../vars.nix { inherit pkgs machineTypes; }) userData;
-in
+{ config, inputs, pkgs, userData, ... }:
 {
   imports = [
     ./../shared.nix

@@ -1,8 +1,4 @@
-{ inputs, pkgs, ... }:
-let
-  machineTypes = import ./../machine-types.nix;
-  inherit (import ./../vars.nix { inherit pkgs machineTypes; }) userData;
-in
+{ inputs, pkgs, userData, ... }:
 {
   users.users."${userData.user}".home = userData.homeDir;
   system.primaryUser = "${userData.user}";
