@@ -3,10 +3,10 @@
   "theme": "catppuccin",
   "permission": {
     "read": {
-      "/tmp": "allow"
+      "/tmp/**": "allow"
     },
     "edit": {
-      "/tmp": "allow"
+      "/tmp/**": "allow"
     }
   },
   "provider": {
