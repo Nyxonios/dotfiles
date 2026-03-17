@@ -1,6 +1,14 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "theme": "catppuccin",
+  "permission": {
+    "read": {
+      "/tmp": "allow"
+    },
+    "edit": {
+      "/tmp": "allow"
+    }
+  },
   "provider": {
     "evroc": {
       "name": "evroc",
