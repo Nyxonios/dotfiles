@@ -5,9 +5,9 @@ return {
     local config = require 'nvim-treesitter.configs'
 
     config.setup {
-      ensure_installed = { 'lua', 'go', 'rust', 'lua', 'vim', 'vimdoc', 'bash', 'templ', 'sql', 'gotmpl', 'comment', 'regex' },
+      ensure_installed = { 'lua', 'go', 'rust', 'lua', 'vim', 'vimdoc', 'bash', 'templ', 'sql', 'gotmpl', 'comment', 'regex', 'nix' },
       auto_install = true,
-      highlight = { enable = true },
+      highlight = { enable = true, disable = { "ssh_config" } },
       indent = { enable = true },
       textobjects = {
         move = {
@@ -55,8 +55,12 @@ return {
 
         swap = {
           enable = true,
-          swap_next = swap_next,
-          swap_previous = swap_prev,
+          swap_next = {
+            ['<leader>a'] = '@parameter.inner',
+          },
+          swap_previous = {
+            ['<leader>A'] = '@parameter.inner',
+          },
         },
       },
     }

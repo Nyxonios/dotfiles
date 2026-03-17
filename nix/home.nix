@@ -30,6 +30,7 @@ in
     pkgs.gnumake42
     pkgs.btop
     pkgs.vault-bin
+    pkgs.glab
 
     # Development stuff
     pkgs.cloc
@@ -59,6 +60,7 @@ in
     pkgs.rustup
     pkgs.glsl_analyzer
     pkgs.opencode
+    pkgs.bun
 
     # Tools
     pkgs.obsidian
