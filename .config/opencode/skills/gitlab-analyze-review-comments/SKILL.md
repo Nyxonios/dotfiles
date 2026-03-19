@@ -55,54 +55,126 @@ Store the MR ID for subsequent queries.
 
 ### Step 2: Fetch All Discussions and Comments
 
-Retrieve all MR discussions in JSON format:
+**IMPORTANT**: The `glab mr note list` command does NOT exist in glab CLI. Instead, use the GitLab API directly to fetch all MR notes:
 
 ```bash
-# Fetch all discussions with full detail
-GLAB_HOST=gitlab.evroc.dev glab mr note list <MR_ID> -F json --output json
+# First, get the project ID and MR details
+GLAB_HOST=gitlab.evroc.dev glab mr view <MR_ID> --json | jq '{project_id: .project_id, iid: .iid}'
 
-# Also fetch general MR notes (non-diff comments)
-GLAB_HOST=gitlab.evroc.dev glab mr view <MR_ID> --json
+# Fetch all notes (both general comments and diff-level comments) using the API
+# This returns an array of notes including DiffNote types with position data
+GLAB_HOST=gitlab.evroc.dev glab api "projects/<PROJECT_ID>/merge_requests/<MR_IID>/notes" --output json > /tmp/mr_notes.json
+
+# Alternative: Fetch discussions endpoint (groups threaded discussions)
+GLAB_HOST=gitlab.evroc.dev glab api "projects/<PROJECT_ID>/merge_requests/<MR_IID>/discussions" --output json > /tmp/mr_discussions.json
 ```
 
-**Filtering resolved comments**:
-By default, filter out any comments where `resolved: true` — these are already marked as done/completed by the reviewer and don't require further action.
+**Understanding the note types:**
 
-To show resolved comments anyway (user explicitly asks):
-```bash
-# Fetch without filtering — includes resolved comments
-GLAB_HOST=gitlab.evroc.dev glab mr note list <MR_ID> -F json --output json
-```
+The API returns notes with different `type` values:
+- `null` or missing: General MR comment (not attached to code)
+- `"DiffNote"`: Comment attached to a specific line in a diff
+- `"Discussion"`: Threaded discussion (may contain multiple notes)
 
-The JSON structure for discussions includes:
+**Key fields to extract:**
 
 | Field | Description |
 |-------|-------------|
-| `id` | Discussion thread ID |
-| `individual_note` | True if standalone comment, false if threaded |
-| `notes` | Array of notes in this discussion |
-| `notes[].id` | Note ID |
-| `notes[].body` | Comment text |
-| `notes[].author.username` | Comment author |
-| `notes[].created_at` | Timestamp |
-| `notes[].resolvable` | Whether note can be resolved |
-| `notes[].resolved` | Resolution status |
-| `notes[].position` | **Diff position object** (only for diff notes) |
+| `id` | Note ID |
+| `type` | `"DiffNote"` for diff comments, `null` for general |
+| `body` | Comment text |
+| `author.username` | Comment author |
+| `created_at` | Timestamp |
+| `system` | `true` for automated GitLab system notes (commit additions, status changes, etc.) |
+| `resolvable` | Whether note can be resolved |
+| `resolved` | Resolution status (only for resolvable notes) |
+| `position` | **Diff position object** (only for DiffNote types) |
 
-The `position` object contains file/line info:
+**Critical filtering - ALWAYS filter out system notes:**
+
+System notes are automated entries created by GitLab (not human reviewers):
+- Commit addition notifications ("added 3 commits")
+- Status changes ("marked as ready", "merged")
+- Assignment changes ("assigned to @user")
+- Pipeline status updates
+- Title/description changes
+
+**You MUST filter these out** by checking `system: true`:
+```python
+# Only keep actual review comments, not system notes
+actual_comments = [n for n in notes if not n.get('system', False)]
+```
+
+The `position` object for DiffNote types contains file/line info:
 
 | Position Field | Description |
 |----------------|-------------|
-| `position.new_path` | File path in new version |
-| `position.old_path` | File path in old version |
-| `position.new_line` | Line number in new version |
-| `position.old_line` | Line number in old version |
-| `position.line_range` | Multi-line comment range |
-| `position.head_sha` / `position.base_sha` | Commit SHAs |
+| `new_path` | File path in new version |
+| `old_path` | File path in old version |
+| `new_line` | Line number in new version |
+| `old_line` | Line number in old version |
+| `line_range` | Multi-line comment range |
+| `head_sha` / `base_sha` | Commit SHAs |
 
 ### Step 3: Parse and Organize Comments
 
-Process the JSON to group comments by file:
+Process the JSON from the API to group comments by file:
+
+**Step 3.1: Parse the API response**
+
+```python
+import json
+
+# Load from the saved API response
+with open('/tmp/mr_notes.json', 'r') as f:
+    notes = json.load(f)
+
+print(f"Total API entries: {len(notes)}")
+```
+
+**Step 3.2: Filter out system notes (CRITICAL)**
+
+System notes are automated GitLab entries, NOT human review comments:
+```python
+# Filter out system notes - keep only actual review comments
+review_comments = [n for n in notes if not n.get('system', False)]
+
+print(f"Review comments found: {len(review_comments)}")
+```
+
+**Step 3.3: Categorize comments**
+
+```python
+# General MR comments (no file attachment)
+general_comments = [n for n in review_comments if n.get('type') != 'DiffNote']
+
+# File-specific comments (DiffNote type)
+diff_comments = [n for n in review_comments if n.get('type') == 'DiffNote']
+
+# Filter resolved/unresolved
+unresolved = [n for n in review_comments if n.get('resolvable') and not n.get('resolved')]
+resolved = [n for n in review_comments if n.get('resolvable') and n.get('resolved')]
+
+print(f"  General comments: {len(general_comments)}")
+print(f"  Diff comments: {len(diff_comments)}")
+print(f"  Unresolved: {len(unresolved)}")
+print(f"  Resolved: {len(resolved)}")
+```
+
+**Step 3.4: Group by file**
+
+```python
+files = {}
+for comment in review_comments:
+    if comment.get('type') == 'DiffNote' and comment.get('position'):
+        path = comment['position'].get('new_path', 'Unknown')
+    else:
+        path = 'General'
+    
+    if path not in files:
+        files[path] = []
+    files[path].append(comment)
+```
 
 **Filtering resolved comments** (by default):
 - Skip any note where `resolved: true` — these are completed and don't need action
@@ -112,18 +184,18 @@ Process the JSON to group comments by file:
 
 **Groups to create**:
 
-1. **General MR Comments** (no file attachment, `individual_note: true`)
-2. **File-specific Comments** (grouped by file path)
+1. **General MR Comments** (no file attachment, `type: null` or not DiffNote)
+2. **File-specific Comments** (grouped by file path from `position.new_path`)
    - Sorted by line number within each file
    - Include line range for context
 
 **For each comment, extract**:
-- Author (`@username`)
-- File path (if diff note)
-- Line number (new version)
+- Author (`@username` from `author.username`)
+- File path (if DiffNote, from `position.new_path`)
+- Line number (from `position.new_line`)
 - Comment body (truncated if very long, with "..." indicator)
-- Thread status (standalone vs threaded)
-- Resolution status (resolved/unresolved)
+- Resolution status (`resolved` field)
+- Whether it's a reply (check if it's part of a discussion thread)
 
 ### Step 4: Present Structured Summary
 
@@ -435,7 +507,9 @@ Unresolved comments requiring attention:
 | `401 Unauthorized` | Check you're authenticated with gitlab.evroc.dev (run `glab auth login`) |
 | `404 Not Found` | MR may not exist; verify the MR number or branch name |
 | `no merge request found for branch` | Current branch has no open MR; provide an MR number explicitly |
-| Empty JSON response | MR exists but has no comments yet |
+| **"No comments found" but MR has comments** | You're likely not filtering `system: false`. System notes are 90%+ of entries. Always filter: `[n for n in notes if not n.get('system', False)]` |
+| **Missing diff comments** | Use `/projects/<id>/merge_requests/<iid>/notes` endpoint, not `/discussions`. Notes endpoint returns all comment types including `DiffNote` |
+| Empty JSON response | MR exists but has no human review comments yet (only system notes) |
 | Missing `position` fields | Not all notes are diff notes; general MR comments won't have position data |
 
 ---
