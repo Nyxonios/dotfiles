@@ -130,7 +130,7 @@ in
           "custom/exit" = {
             tooltip = false;
             format = "";
-            on-click = "sleep 0.1 && wlogout -b 5";
+            on-click = "sleep 0.1 && wleave";
           };
         }
       ];

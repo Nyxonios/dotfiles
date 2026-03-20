@@ -8,5 +8,6 @@
     ./neovim.nix
     ./rofi.nix
     ./applications.nix
+    ./wleave.nix
   ];
 }

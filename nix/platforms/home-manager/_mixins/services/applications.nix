@@ -55,7 +55,6 @@ in
       # Window manager and desktop environment configs
       xdg.configFile.hypr.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/hypr";
       xdg.configFile.rofi.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/rofi";
-      xdg.configFile.wlogout.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/wlogout";
 
       # Pointer cursor theme (GTK/X11/Wayland specific)
       home.pointerCursor = {
