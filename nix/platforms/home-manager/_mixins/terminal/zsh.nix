@@ -20,7 +20,7 @@ in
   xdg.configFile."zsh/p10k.zsh".source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/zsh/p10k.zsh";
 
   programs.zsh = {
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     enable = true;
 
     history = {

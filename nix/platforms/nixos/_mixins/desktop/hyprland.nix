@@ -43,6 +43,8 @@ in
     # System packages for Hyprland
     environment.systemPackages = with pkgs; [
       hyprcursor
+      swww
+      rofi
     ];
   };
 }

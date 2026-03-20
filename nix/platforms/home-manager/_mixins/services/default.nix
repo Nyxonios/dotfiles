@@ -6,6 +6,7 @@
 {
   imports = [
     ./neovim.nix
+    ./rofi.nix
     ./applications.nix
   ];
 }

@@ -7,5 +7,6 @@
   imports = [
     ./vscode.nix
     ./browsers.nix
+    ./waybar.nix
   ];
 }

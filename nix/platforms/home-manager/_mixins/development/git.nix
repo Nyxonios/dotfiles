@@ -6,23 +6,24 @@
   config = {
     programs.git = {
       enable = true;
-      userName = host.username;
-      userEmail = host.email;
 
-      extraConfig = {
+      settings = {
+        user.name = host.username;
+        user.email = host.email;
+
         init.defaultBranch = "main";
         push.autoSetupRemote = true;
         pull.rebase = true;
-      };
 
-      aliases = {
-        st = "status";
-        co = "checkout";
-        br = "branch";
-        ci = "commit";
-        unstage = "reset HEAD --";
-        last = "log -1 HEAD";
-        visual = "!gitk";
+        alias = {
+          st = "status";
+          co = "checkout";
+          br = "branch";
+          ci = "commit";
+          unstage = "reset HEAD --";
+          last = "log -1 HEAD";
+          visual = "!gitk";
+        };
       };
     };
   };
