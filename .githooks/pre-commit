@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+#
+# Pre-commit hook to verify secrets are encrypted
+#
+# This hook prevents accidentally committing unencrypted secrets files.
+# It checks all files in the secrets/ directory that are staged for commit.
+#
+# SETUP: After cloning, run once:
+#   git config --local include.path ../.gitconfig
+#
+# This enables hooks to run automatically on every commit.
+
+set -euo pipefail
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+echo "Checking for unencrypted secrets..."
+
+# Track if any errors found
+ERRORS=0
+
+# Get list of staged files in secrets/ directory
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep "^secrets/" || true)
+
+if [[ -z "$STAGED_FILES" ]]; then
+    echo -e "${GREEN}No secrets files staged for commit.${NC}"
+    exit 0
+fi
+
+# Check each staged file
+for file in $STAGED_FILES; do
+    # Skip .sops.yaml and non-secret files
+    if [[ "$(basename "$file")" == ".sops.yaml" ]]; then
+        continue
+    fi
+    
+    # Skip non yaml/json/env/ini files
+    if [[ ! "$file" =~ \.(yaml|yml|json|env|ini)$ ]]; then
+        continue
+    fi
+    
+    echo -n "Checking $file... "
+    
+    # Check if file is encrypted by looking for sops metadata
+    if grep -q "^sops:" "$file" 2>/dev/null; then
+        echo -e "${GREEN}encrypted ✓${NC}"
+    else
+        echo -e "${RED}NOT ENCRYPTED ✗${NC}"
+        echo -e "${RED}ERROR: $file appears to be unencrypted!${NC}"
+        echo ""
+        echo "This file must be encrypted with sops before committing."
+        echo ""
+        echo "To fix this:"
+        echo "  1. Encrypt the file: sops --encrypt --in-place $file"
+        echo "  2. Or if editing: sops $file"
+        echo "  3. Then stage the encrypted version: git add $file"
+        echo ""
+        echo "To bypass this check (NOT RECOMMENDED):"
+        echo "  git commit --no-verify"
+        echo ""
+        ERRORS=$((ERRORS + 1))
+    fi
+done
+
+if [[ $ERRORS -gt 0 ]]; then
+    echo ""
+    echo -e "${RED}Commit aborted: Found $ERRORS unencrypted secret file(s).${NC}"
+    exit 1
+fi
+
+echo ""
+echo -e "${GREEN}All secrets are properly encrypted. Committing...${NC}"
+exit 0

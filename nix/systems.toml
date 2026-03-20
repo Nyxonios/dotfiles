@@ -1,0 +1,52 @@
+# System Registry
+# Define all hosts managed by this flake
+# Each host has metadata that self-gating modules use to decide whether to activate
+# The section name (e.g., [athena]) becomes the host name
+
+# WORK MACHINES - Greek Mythology
+
+[athena]
+platform = "darwin"
+system = "aarch64-darwin"
+username = "nyxonios"
+home = "/Users/nyxonios"
+email = "mseller@evroc.com"
+formFactor = "laptop"
+gpu = ["apple"]
+tags = ["work", "development"]
+description = "Work MacBook Pro - Athena: Greek goddess of wisdom, warfare, and crafts. Patron of heroes and strategic thinking."
+
+[hephaestus]
+platform = "home-manager"
+system = "x86_64-linux"
+username = "mseller"
+home = "/home/mseller"
+email = "mseller@evroc.com"
+formFactor = "vm"
+gpu = []
+tags = ["work", "development", "minimal"]
+description = "Work Development VM - Hephaestus: Greek god of fire, metalworking, and craftsmen. The divine smith and builder of the gods."
+
+# PERSONAL MACHINES - Norse Mythology
+
+[odin]
+platform = "nixos"
+system = "x86_64-linux"
+username = "nyxonios"
+home = "/home/nyxonios"
+email = "mseller@evroc.com"
+formFactor = "desktop"
+gpu = ["nvidia"]
+tags = ["personal", "gaming", "development", "nvidia"]
+description = "Personal NixOS Desktop - Odin: Norse Allfather, god of wisdom, poetry, war, and death. Ruler of Asgard and seeker of knowledge."
+
+[mimir]
+platform = "home-manager"
+system = "x86_64-linux"
+username = "nyxonios"
+home = "/home/nyxonios"
+email = "mseller@evroc.com"
+formFactor = "vm"
+gpu = []
+tags = ["personal", "development", "testing"]
+description = "Personal Development VM - Mimir: Norse god of wisdom and knowledge, guardian of the Well of Wisdom. Counselor to the gods who speaks only truth."

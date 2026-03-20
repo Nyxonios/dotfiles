@@ -1,0 +1,156 @@
+# Nix Configuration - Justfile
+# Inspired by wimpysworld/nix-config
+# 
+# Automatically detects current hostname and builds the appropriate configuration
+
+# Git repo root (nix flake is in the nix/ subdirectory)
+export FLAKE_DIR := env_var("HOME") / "dotfiles"
+
+# Get current system info
+host := `hostname -s`
+user := `whoami`
+
+# Default recipe shows help
+default:
+    @just --list --unsorted
+
+# Build and switch OS configuration (auto-detects platform)
+switch:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ "$(uname)" = "Linux" ] && command -v nixos-rebuild &>/dev/null; then
+        just switch-host
+        just switch-home
+    elif [ "$(uname)" = "Darwin" ]; then
+        just switch-host
+        just switch-home
+    else
+        # Non-NixOS Linux - only switch home-manager
+        just switch-home
+    fi
+
+# Build OS and Home configurations without switching
+build:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ "$(uname)" = "Linux" ] && command -v nixos-rebuild &>/dev/null; then
+        just build-host
+        just build-home
+    elif [ "$(uname)" = "Darwin" ]; then
+        just build-host
+        just build-home
+    else
+        # Non-NixOS Linux - only build home-manager
+        just build-home
+    fi
+
+# Check flake for errors
+check:
+    @nix flake check --show-trace "path:$FLAKE_DIR/nix" 2>&1 || true
+
+# Evaluate configurations without building
+eval:
+    @echo "Evaluating flake configurations..."
+    @nix flake show "path:$FLAKE_DIR/nix" 2>&1 | head -50
+
+# Update flake inputs
+update:
+    @echo "Updating flake.lock..."
+    @nix flake update "path:$FLAKE_DIR/nix"
+
+# Clean up old generations
+gc:
+    @echo "Running garbage collection..."
+    @nix-collect-garbage -d
+
+# Optimize nix store
+optimise:
+    @nix-store --optimise
+
+# Format all nix files
+fmt:
+    @find . -name "*.nix" -exec nixpkgs-fmt {} \;
+
+# OS Configuration Commands
+# =========================
+
+# Build OS configuration
+build-host hostname=host:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Building {{ hostname }}..."
+    if [ "$(uname)" = "Linux" ]; then
+        nixos-rebuild build --flake "path:$FLAKE_DIR/nix"#{{hostname}}
+    elif [ "$(uname)" = "Darwin" ]; then
+        darwin-rebuild build --flake "path:$FLAKE_DIR/nix"#{{hostname}}
+    else
+        echo "Unsupported OS: $(uname)"
+        exit 1
+    fi
+
+# Switch OS configuration  
+switch-host hostname=host:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Switching {{ hostname }}..."
+    if [ "$(uname)" = "Linux" ]; then
+        sudo nixos-rebuild switch --flake "path:$FLAKE_DIR/nix"#{{hostname}}
+    elif [ "$(uname)" = "Darwin" ]; then
+        darwin-rebuild switch --flake "path:$FLAKE_DIR/nix"#{{hostname}}
+    else
+        echo "Unsupported OS: $(uname)"
+        exit 1
+    fi
+
+# Home Manager Configuration Commands
+# ===================================
+
+# Build Home configuration
+build-home hostname=host:
+    @echo "Building home configuration for {{ hostname }}..."
+    @home-manager build --flake "path:$FLAKE_DIR/nix"#{{hostname}}
+
+# Switch Home configuration
+switch-home hostname=host:
+    @echo "Switching home configuration for {{ hostname }}..."
+    @home-manager switch --flake "path:$FLAKE_DIR/nix"#{{hostname}}
+
+# Secrets Management (SOPS) - DISABLED
+# =========================
+# NOTE: SOPS support has been temporarily disabled.
+# See sops-backup.md for restoration instructions.
+#
+# # Edit main secrets file
+# secrets:
+#     @sops secrets/secrets.yaml
+#
+# # Edit SSH keys file
+# ssh-secrets:
+#     @sops secrets/ssh.yaml
+#
+# # Generate user age key for sops
+# sops-gen-user-key:
+#     ... (see sops-backup.md for full commands)
+#
+# # Generate host age key (run on NixOS host)
+# sops-gen-host-key:
+#     ... (see sops-backup.md for full commands)
+#
+# # Rekey all secrets after updating .sops.yaml
+# sops-rekey:
+#     ... (see sops-backup.md for full commands)
+#
+# # Check sops setup status
+# sops-check:
+#     ... (see sops-backup.md for full commands)
+
+# Quick Host Reference
+# ====================
+
+# Show all available hosts
+hosts:
+    @echo "Available configurations:"
+    @echo ""
+    @nix eval "path:$FLAKE_DIR/nix"#nixosConfigurations --apply 'builtins.attrNames' --json 2>/dev/null | jq -r '.[]' | sed 's/^/  nixos: /' || true
+    @nix eval "path:$FLAKE_DIR/nix"#darwinConfigurations --apply 'builtins.attrNames' --json 2>/dev/null | jq -r '.[]' | sed 's/^/  darwin: /' || true
+    @nix eval "path:$FLAKE_DIR/nix"#homeConfigurations --apply 'builtins.attrNames' --json 2>/dev/null | jq -r '.[]' | sed 's/^/  home:   /' || true

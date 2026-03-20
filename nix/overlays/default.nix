@@ -1,13 +1,15 @@
-# overlays/default.nix
-# Consolidated overlays for the entire flake
+# Overlays
+# https://nixos.wiki/wiki/Overlays
 
 { inputs, ... }:
 
-let
+{
+  # Local packages from the pkgs directory
+  localPackages = final: _prev: import ../pkgs final.pkgs;
 
-  # Overlay for pinned packages using overrideAttrs
-  tmuxPluginCatppuccinOverlay = final: prev: {
-    # Pin catppuccin tmux plugin to the version from nixpkgs rev 50165c4f7eb48ce82bd063e1fb8047a0f515f8ce
+  # Modified packages - version overrides, patches, compilation flags
+  modifiedPackages = final: prev: {
+    # Pin catppuccin tmux plugin to a specific version
     tmuxPlugins = prev.tmuxPlugins // {
       catppuccin = prev.tmuxPlugins.catppuccin.overrideAttrs (old: {
         version = "unstable-2024-05-15";
@@ -19,21 +21,19 @@ let
         };
       });
     };
-  };
 
-  # Overlay for karabiner-elements version pinning
-  karabinerOverlay = final: super: {
-    karabiner-elements = super.karabiner-elements.overrideAttrs (old: {
+    # Pin karabiner-elements to a specific version (for macOS)
+    karabiner-elements = prev.karabiner-elements.overrideAttrs (old: {
       version = "14.13.0";
-      src = super.fetchurl {
+      src = prev.fetchurl {
         inherit (old.src) url;
         hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
       };
     });
   };
 
-  # Overlay to pin zsh, fzf, zsh-fzf-tab to stable nixpkgs version
-  zshStableOverlay = final: prev: 
+  # Stable packages from nixpkgs-stable
+  stablePackages = final: prev:
     let
       pkgs-stable = import inputs.nixpkgs-stable {
         system = prev.stdenv.hostPlatform.system;
@@ -46,19 +46,6 @@ let
       zsh-fzf-tab = pkgs-stable.zsh-fzf-tab;
     };
 
-  # Zig overlay from the zig input
+  # External overlays from flake inputs
   zigOverlay = inputs.zig.overlays.default;
-
-in
-{
-  # All overlays combined
-  allOverlays = [
-    zigOverlay
-    tmuxPluginCatppuccinOverlay
-    karabinerOverlay
-    zshStableOverlay
-  ];
-
-  # Individual overlays for selective use
-  inherit tmuxPluginCatppuccinOverlay karabinerOverlay zigOverlay zshStableOverlay;
 }

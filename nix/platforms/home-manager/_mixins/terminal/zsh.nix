@@ -1,0 +1,141 @@
+# Zsh Configuration
+# Shell configuration using oh-my-zsh and various plugins
+
+{ config, pkgs, lib, host, ... }:
+
+let
+  inherit (config.lib.file) mkOutOfStoreSymlink;
+
+  # Determine rebuild command based on platform
+  rebuildCmd =
+    if host.platform == "darwin" then
+      "darwin-rebuild switch --flake ~/dotfiles/nix#${host.name}"
+    else if host.platform == "nixos" then
+      "sudo nixos-rebuild switch --flake ~/dotfiles/nix#${host.name}"
+    else
+      "home-manager switch --flake ~/dotfiles/nix#${host.name}";
+in
+{
+  # Symlink p10k config from dotfiles (outside Nix store)
+  xdg.configFile."zsh/p10k.zsh".source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/zsh/p10k.zsh";
+
+  programs.zsh = {
+    dotDir = ".config/zsh";
+    enable = true;
+
+    history = {
+      size = 10000;
+      path = "${config.xdg.dataHome}/zsh/history";
+    };
+
+    shellAliases = {
+      vim = "nvim";
+      ls = "ls --color";
+      clean = "clear";
+      cnvim = "cd ~/.config/nvim && nvim";
+      cdot = "cd ~/dotfiles && nvim";
+      devv = "cd ~/development";
+      goupgrade = "go get $(go list -f '{{if not (or .Main .Indirect)}}{{.Path}}{{end}}' -m all)";
+      rebuild = rebuildCmd;
+    };
+
+    initContent = ''
+      ZSH_DISABLE_COMPFIX=true
+      export EDITOR=nvim
+
+      # Source p10k config from symlinked file
+      [[ -f ~/.config/zsh/p10k.zsh ]] && source ~/.config/zsh/p10k.zsh
+
+      # disable sort when completing `git checkout`
+      zstyle ':completion:*:git-checkout:*' sort false
+
+      # set descriptions format to enable group support
+      # NOTE: don't use escape sequences here, fzf-tab will ignore them
+      zstyle ':completion:*:descriptions' format '[%d]'
+
+      # set list-colors to enable filename colorizing
+      zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
+
+      # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+      zstyle ':completion:*' menu no
+
+      # Completion styling
+      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+      zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
+      zstyle ':completion:*' menu no
+      zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+
+      zle_highlight+=(paste:none)
+
+      setopt appendhistory
+      setopt sharehistory
+      setopt hist_ignore_space
+      setopt hist_ignore_all_dups
+      setopt hist_save_no_dups
+      setopt hist_ignore_dups
+      setopt hist_find_no_dups
+
+
+      bindkey -s ^f "tmux-sessionizer\n"
+
+      _direnv_hook() {
+        trap -- ''' SIGINT
+        eval "$("${pkgs.direnv}/bin/direnv" export zsh)"
+        trap - SIGINT
+      }
+      typeset -ag precmd_functions
+      if (( ! ''${precmd_functions[(I)_direnv_hook]} )); then
+        precmd_functions=(_direnv_hook $precmd_functions)
+      fi
+      typeset -ag chpwd_functions
+      if (( ! ''${chpwd_functions[(I)_direnv_hook]} )); then
+        chpwd_functions=(_direnv_hook $chpwd_functions)
+      fi
+
+      if [ -f ~/bin/work.sh ]; then
+        source ~/bin/work.sh
+      fi
+
+      export PATH=$PATH:/usr/bin
+    '';
+
+    oh-my-zsh = {
+      enable = true;
+      plugins = [
+        "git"
+        "sudo"
+        "golang"
+        "vi-mode"
+      ];
+    };
+
+    plugins = [
+      {
+        # will source zsh-autosuggestions.plugin.zsh
+        name = "zsh-autosuggestions";
+        src = pkgs.zsh-autosuggestions;
+        file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
+      }
+      {
+        name = "zsh-completions";
+        src = pkgs.zsh-completions;
+        file = "share/zsh-completions/zsh-completions.zsh";
+      }
+      {
+        name = "zsh-syntax-highlighting";
+        src = pkgs.zsh-syntax-highlighting;
+        file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
+      }
+      {
+        name = "powerlevel10k";
+        src = pkgs.zsh-powerlevel10k;
+        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      }
+      {
+        name = "fzf-tab";
+        src = pkgs.zsh-fzf-tab;
+        file = "share/fzf-tab/fzf-tab.plugin.zsh";
+      }
+    ];
+  };
+}

@@ -1,0 +1,10 @@
+# Git configuration for this repository
+# 
+# To enable these settings, run:
+#   git config --local include.path ../.gitconfig
+#
+# This will configure Git to use the hooks in the .githooks directory
+# automatically after cloning.
+
+[core]
+    hooksPath = .githooks
