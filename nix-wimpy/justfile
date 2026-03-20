@@ -1,0 +1,106 @@
+# Nix Configuration - Justfile
+# Inspired by wimpysworld/nix-config
+# Hosts: athena (Work MacBook), hephaestus (Work VM), odin (Personal Desktop)
+
+# Default recipe to show help
+default:
+    @just --list
+
+# Host shortcuts - build and switch
+host:
+    @echo "Building and switching host configuration..."
+    just switch-host
+
+# Home shortcuts - build and switch
+home:
+    @echo "Building and switching home configuration..."
+    just switch-home
+
+# Build and switch both host and home
+switch:
+    just switch-host
+    just switch-home
+
+# Build both host and home
+build:
+    just build-host
+    just build-home
+
+# NixOS host rebuild (odin - Personal Desktop)
+[linux]
+switch-host hostname="odin":
+    sudo nixos-rebuild switch --flake .#{{hostname}}
+
+[linux]
+build-host hostname="odin":
+    nixos-rebuild build --flake .#{{hostname}}
+
+# Darwin host rebuild (athena - Work MacBook)
+[macos]
+switch-host hostname="athena":
+    darwin-rebuild switch --flake .#{{hostname}}
+
+[macos]
+build-host hostname="athena":
+    darwin-rebuild build --flake .#{{hostname}}
+
+# Home Manager rebuild
+switch-home hostname="athena":
+    home-manager switch -b backup --flake .#{{hostname}}
+
+build-home hostname="athena":
+    home-manager build --flake .#{{hostname}}
+
+# Update flake inputs
+update:
+    nix flake update
+
+# Garbage collect
+gc:
+    nix-collect-garbage -d
+
+# Clean and optimize store
+optimise:
+    nix-store --optimise
+
+# Format all nix files
+fmt:
+    find . -name "*.nix" -exec nixpkgs-fmt {} \;
+
+# Check flake
+check:
+    nix flake check
+
+# Edit secrets (if using sops)
+secrets:
+    sops secrets/secrets.yaml
+
+# Build ISO image (NixOS only)
+[linux]
+iso:
+    nix build .#nixosConfigurations.iso.config.system.build.isoImage
+
+# Install system remotely via nixos-anywhere (NixOS only)
+[linux]
+install hostname ip:
+    nix run github:nix-community/nixos-anywhere -- --flake '.#{{hostname}}' root@{{ip}}
+
+# Show flake outputs
+show:
+    nix flake show
+
+# Show what's going to change (dry-run)
+dry-run hostname="athena":
+    @echo "Host dry-run..."
+    just build-host {{hostname}}
+    @echo "Home dry-run..."
+    just build-home {{hostname}}
+
+# Quick reference for mythology hostnames
+hosts:
+    @echo "Work (Greek Mythology):"
+    @echo "  athena     - Work MacBook Pro (Goddess of wisdom, warfare, and crafts)"
+    @echo "  hephaestus - Work Development VM (God of fire, metalworking, and craftsmen)"
+    @echo ""
+    @echo "Personal (Norse Mythology):"
+    @echo "  odin       - Personal NixOS Desktop (Allfather, god of wisdom, poetry, and war)"
