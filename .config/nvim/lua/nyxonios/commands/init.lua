@@ -1,14 +1,19 @@
-vim.api.nvim_create_user_command('Cppath', function()
+vim.api.nvim_create_user_command('Cppath', function(opts)
   local path = vim.api.nvim_buf_get_name(0)
   if path == '' then
     vim.notify('Cppath: no file in current buffer', vim.log.levels.WARN, {})
     return
   end
 
+  local has_range = opts.range > 0
+  if has_range then
+    path = path .. ' L' .. opts.line1 .. '-L' .. opts.line2
+  end
+
   vim.fn.setreg('"', path)
   vim.fn.setreg('+', path)
   vim.notify('Copied: ' .. path, vim.log.levels.INFO, {})
-end, { desc = 'Copy the absolute path of the current buffer to the default register and clipboard' })
+end, { desc = 'Copy the absolute path of the current buffer to the default register and clipboard', range = true })
 
 vim.api.nvim_create_user_command('Uuid', function()
   local handle = io.popen("uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '\n'", 'r')
