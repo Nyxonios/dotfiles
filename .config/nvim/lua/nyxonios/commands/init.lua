@@ -1,13 +1,13 @@
 vim.api.nvim_create_user_command('Cppath', function()
   local path = vim.api.nvim_buf_get_name(0)
   if path == '' then
-    vim.api.nvim_notify('Cppath: no file in current buffer', vim.log.levels.WARN, {})
+    vim.notify('Cppath: no file in current buffer', vim.log.levels.WARN, {})
     return
   end
 
   vim.fn.setreg('"', path)
   vim.fn.setreg('+', path)
-  vim.api.nvim_notify('Copied: ' .. path, vim.log.levels.INFO, {})
+  vim.notify('Copied: ' .. path, vim.log.levels.INFO, {})
 end, { desc = 'Copy the absolute path of the current buffer to the default register and clipboard' })
 
 vim.api.nvim_create_user_command('Uuid', function()
@@ -19,9 +19,9 @@ vim.api.nvim_create_user_command('Uuid', function()
     -- Plus one in the column since I want to insert the same way a
     -- regular paste would.
     vim.api.nvim_buf_set_text(0, row - 1, col + 1, row - 1, col + 1, { result })
-    vim.api.nvim_notify('Uuid: ' .. result, vim.log.levels.INFO, {})
+    vim.notify('Uuid: ' .. result, vim.log.levels.INFO, {})
   else
-    vim.api.nvim_notify('Uuid: could not get handle', vim.log.levels.ERROR, {})
+    vim.notify('Uuid: could not get handle', vim.log.levels.ERROR, {})
   end
 end, { desc = 'Inserts a UUID at the current cursor position' })
 
