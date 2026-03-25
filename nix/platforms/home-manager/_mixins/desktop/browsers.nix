@@ -11,6 +11,7 @@ in
     # Install Brave browser on NixOS
     home.packages = [
       pkgs.brave
+      pkgs.firefox
     ];
   };
 }

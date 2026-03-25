@@ -1,0 +1,57 @@
+window {
+    background-color: rgba(30, 30, 46, 0.95);
+}
+
+button {
+    color: #cdd6f4;
+    background-color: #1e1e2e;
+    border: 1px solid #313244;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+button label.action-name {
+    font-size: 10px;
+    font-family: monospace;
+}
+
+button label.keybind {
+    font-size: 8px;
+    font-family: monospace;
+}
+
+button:hover,
+button:focus {
+    background-color: #313244;
+    border-color: #89b4fa;
+}
+
+button:hover label.action-name,
+button:focus label.action-name {
+    color: #89b4fa;
+}
+
+button:active {
+    color: #1e1e2e;
+    background-color: #89b4fa;
+}
+
+button#lock {
+    color: #f9e2af;
+}
+
+button#logout {
+    color: #fab387;
+}
+
+button#suspend {
+    color: #89b4fa;
+}
+
+button#reboot {
+    color: #a6e3a1;
+}
+
+button#shutdown {
+    color: #f38ba8;
+}

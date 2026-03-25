@@ -2,14 +2,21 @@
 
 { config, pkgs, lib, host, ... }:
 
+let
+  inherit (config.lib.file) mkOutOfStoreSymlink;
+in
 {
   config = {
-    programs.neovim = {
-      enable = true;
-      defaultEditor = true;
+    # Install neovim but don't manage config via programs.neovim
+    home.packages = [ pkgs.neovim ];
+    
+    # Set as default editor
+    home.sessionVariables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
     };
-
-    # Note: Neovim config is managed manually in ~/dotfiles/.config/nvim
-    # To use it, ensure the directory exists and contains your config
+    
+    # Symlink the entire nvim config directory from dotfiles
+    xdg.configFile.nvim.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/nvim";
   };
 }
