@@ -1,0 +1,138 @@
+#!/bin/bash
+#
+# Git Stack - Main Entry Point
+# Wrapper script that delegates to individual command scripts
+#
+
+set -e
+
+SCRIPT_SOURCE="${BASH_SOURCE[0]}"
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$SCRIPT_SOURCE")")" && pwd)"
+
+# Show usage if no command provided
+if [[ $# -eq 0 ]]; then
+    echo "Usage: git-stack <command> [options]"
+    echo ""
+    echo "Commands:"
+    echo "  add       Add a branch to a stack"
+    echo "  list      List all stacks or show stack details"
+    echo "  status    Check rebase status of stacks"
+    echo "  rebase    Rebase stack branches onto parents"
+    echo "  remove    Remove a stack or branch from tracking"
+    echo "  validate  Validate stack configuration integrity"
+    echo "  help      Show help information"
+    echo ""
+    echo "Run 'git-stack help <command>' for more information on a command."
+    exit 0
+fi
+
+COMMAND="$1"
+shift
+
+# Route to appropriate script
+case "$COMMAND" in
+    add)
+        exec "${SCRIPT_DIR}/scripts/add.sh" "$@"
+        ;;
+    list)
+        exec "${SCRIPT_DIR}/scripts/list.sh" "$@"
+        ;;
+    status)
+        exec "${SCRIPT_DIR}/scripts/status.sh" "$@"
+        ;;
+    rebase)
+        exec "${SCRIPT_DIR}/scripts/rebase.sh" "$@"
+        ;;
+    remove)
+        exec "${SCRIPT_DIR}/scripts/remove.sh" "$@"
+        ;;
+    validate)
+        exec "${SCRIPT_DIR}/scripts/validate.sh" "$@"
+        ;;
+    help)
+        if [[ $# -eq 0 ]]; then
+            echo "Git Stack - Manage stacked git branches"
+            echo ""
+            echo "Usage: git-stack <command> [options]"
+            echo ""
+            echo "Commands:"
+            echo "  add       Add a branch to a stack"
+            echo "  list      List all stacks or show stack details"
+            echo "  status    Check rebase status of stacks"
+            echo "  rebase    Rebase stack branches onto parents"
+            echo "  remove    Remove a stack or branch from tracking"
+            echo "  validate  Validate stack configuration integrity"
+            echo "  help      Show help information"
+            echo ""
+            echo "Configuration file: ~/.config/git-stacks.yaml"
+        else
+            case "$1" in
+                add)
+                    echo "Add a branch to a stack"
+                    echo ""
+                    echo "Usage: git-stack add --name <stack-name> [--parent <parent-branch>] [--branch <branch-name>]"
+                    echo ""
+                    echo "Options:"
+                    echo "  -n, --name <name>      Name of the stack (required)"
+                    echo "  -p, --parent <parent>  Parent branch in the stack"
+                    echo "  -b, --branch <branch>  Branch to add (defaults to current branch)"
+                    ;;
+                list)
+                    echo "List all stacks or show detailed view of a specific stack"
+                    echo ""
+                    echo "Usage: git-stack list [--stack <stack-name>]"
+                    echo ""
+                    echo "Options:"
+                    echo "  -s, --stack <name>  Show detailed view of specific stack"
+                    ;;
+                status)
+                    echo "Check rebase status of stacks"
+                    echo ""
+                    echo "Usage: git-stack status [--stack <stack-name>] [--verbose]"
+                    echo ""
+                    echo "Options:"
+                    echo "  -s, --stack <name>  Check specific stack"
+                    echo "  -v, --verbose       Show verbose output with commit details"
+                    ;;
+                rebase)
+                    echo "Rebase stack branches onto their parent branches"
+                    echo ""
+                    echo "Usage: git-stack rebase [--stack <stack-name>] [--dry-run] [--abort]"
+                    echo ""
+                    echo "Options:"
+                    echo "  --stack <name>   Name of the stack to rebase (optional if only one stack exists)"
+                    echo "  --dry-run        Preview changes without executing"
+                    echo "  --abort          Abort the current rebase operation"
+                    echo ""
+                    echo "For each branch: fetch origin/<parent>, rebase FETCH_HEAD, push to remote"
+                    ;;
+                remove)
+                    echo "Remove a stack or individual branch from tracking"
+                    echo ""
+                    echo "Usage: git-stack remove --stack <stack-name> [--branch <branch-name>]"
+                    echo ""
+                    echo "Options:"
+                    echo "  -s, --stack <name>   Name of the stack (required)"
+                    echo "  -b, --branch <name>  Specific branch to remove"
+                    ;;
+                validate)
+                    echo "Validate stack configuration integrity"
+                    echo ""
+                    echo "Usage: git-stack validate [--stack <stack-name>]"
+                    echo ""
+                    echo "Options:"
+                    echo "  -s, --stack <name>  Validate specific stack"
+                    ;;
+                *)
+                    echo "Unknown command: $1"
+                    exit 1
+                    ;;
+            esac
+        fi
+        ;;
+    *)
+        echo "Unknown command: $COMMAND"
+        echo "Run 'git-stack help' for usage information."
+        exit 1
+        ;;
+esac
