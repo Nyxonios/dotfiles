@@ -30,26 +30,6 @@
     }
   },
   "categories": {
-    "ultrabrain": {
-      "model": "evroc/moonshotai/Kimi-K2-Thinking",
-      "temperature": 0.1,
-      "description": "Hard logic-heavy tasks, complex architecture decisions, strategic advisor mindset"
-    },
-    "deep": {
-      "model": "evroc/moonshotai/Kimi-K2.5",
-      "temperature": 0.2,
-      "description": "Goal-oriented autonomous problem-solving with thorough research-first approach"
-    },
-    "visual-engineering": {
-      "model": "evroc/moonshotai/Kimi-K2.5",
-      "temperature": 0.4,
-      "description": "Frontend, UI/UX, design, styling, animation tasks with design-system workflow"
-    },
-    "artistry": {
-      "model": "evroc/openai/gpt-oss-120b",
-      "temperature": 0.7,
-      "description": "Creative and unconventional approaches, novel solutions, artistic tasks"
-    },
     "quick": {
       "model": "evroc/mistralai/Devstral-Small-2-24B-Instruct-2512",
       "temperature": 0.1,
@@ -65,5 +45,6 @@
       "temperature": 0.3,
       "description": "General complex tasks that don't fit other categories, high effort"
     }
-  }
+  },
+  "_comment": "Categories deep, ultrabrain, visual-engineering, artistry are broken due to hardcoded model requirements in plugin v3.13.1. Use subagent_type instead."
 }
