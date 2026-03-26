@@ -1,3 +1,4 @@
 .config/karabiner/automatic_backups/*
 .config/sops/age/*
+**/.sisyphus
 
