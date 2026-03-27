@@ -1,7 +1,7 @@
 # NixOS Common System Configuration
 # Applies to all NixOS systems
 
-{ config, lib, host, ... }:
+{ config, lib, host, pkgs, ... }:
 
 {
   config = lib.mkIf (host.platform == "nixos") {
@@ -30,7 +30,11 @@
       isNormalUser = true;
       description = host.username;
       extraGroups = [ "networkmanager" "wheel" ];
+      shell = pkgs.zsh;
     };
+
+    # Set zsh as the default shell for new users
+    users.defaultUserShell = pkgs.zsh;
 
     # System state version
     system.stateVersion = "23.11";

@@ -10,6 +10,8 @@
 
       casks = [
         "betterdisplay"
+        "ghostty"
+        "mattermost"
         "raycast"
       ];
 
