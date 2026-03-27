@@ -1,10 +1,10 @@
 # NixOS Common System Configuration
 # Applies to all NixOS systems
 
-{ config, lib, host, pkgs, ... }:
+{ config, lib, host, pkgs, customLib, ... }:
 
 {
-  config = lib.mkIf (host.platform == "nixos") {
+  config = customLib.mkIfPlatform "nixos" {
     # System platform
     nixpkgs.hostPlatform = host.system;
 
@@ -38,5 +38,5 @@
 
     # System state version
     system.stateVersion = "23.11";
-  };
+  } host;
 }

@@ -32,9 +32,12 @@ let
   # Helper to check if a form factor represents a desktop system
   isDesktop = formFactor: formFactor == "laptop" || formFactor == "desktop";
 
+  # Helper to check if a host is a work machine (based on "work" tag)
+  isWorkMachine = host: hasTag host "work";
+
 in
 {
-  inherit loadFromTOML getNixOSHosts getDarwinHosts getHomeManagerHosts hasTag isFormFactor isDesktop;
+  inherit loadFromTOML getNixOSHosts getDarwinHosts getHomeManagerHosts hasTag isFormFactor isDesktop isWorkMachine;
 
   # Re-export lib functions we use
   inherit (lib) mapAttrs filterAttrs;
@@ -56,4 +59,12 @@ in
 
   # mkIf wrapper for desktop checks
   mkIfDesktop = config: host: lib.mkIf (isDesktop (host.formFactor or "")) config;
+
+  # Composite helpers for common platform + desktop combinations
+  mkIfNixOSDesktop = config: host: lib.mkIf (isDesktop (host.formFactor or "") && host.platform == "nixos") config;
+  mkIfDarwinDesktop = config: host: lib.mkIf (isDesktop (host.formFactor or "") && host.platform == "darwin") config;
+
+  # Composite helpers for work/personal based on host naming convention
+  mkIfWork = config: host: lib.mkIf (isWorkMachine host) config;
+  mkIfPersonal = config: host: lib.mkIf (!(isWorkMachine host)) config;
 }

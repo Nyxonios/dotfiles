@@ -1,10 +1,10 @@
 # Darwin Common System Configuration
 # Applies to all Darwin systems
 
-{ config, lib, host, pkgs, ... }:
+{ config, lib, host, pkgs, customLib, ... }:
 
 {
-  config = lib.mkIf (host.platform == "darwin") {
+  config = customLib.mkIfPlatform "darwin" {
     # System platform
     nixpkgs.hostPlatform = host.system;
 
@@ -20,5 +20,5 @@
 
     # Git commit hash for darwin-version
     system.configurationRevision = config.self.rev or config.self.dirtyRev or null;
-  };
+  } host;
 }

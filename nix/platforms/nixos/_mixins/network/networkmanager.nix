@@ -1,10 +1,10 @@
 # NetworkManager
 # Applies to all NixOS systems
 
-{ config, lib, host, ... }:
+{ config, lib, host, customLib, ... }:
 
 {
-  config = lib.mkIf (host.platform == "nixos") {
+  config = customLib.mkIfPlatform "nixos" {
     networking.networkmanager.enable = true;
-  };
+  } host;
 }

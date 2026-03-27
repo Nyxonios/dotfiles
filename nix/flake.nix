@@ -43,10 +43,9 @@
       # Convert overlays to list for nixpkgs
       overlaysList = builtins.attrValues overlays;
 
-      # Common nixpkgs configuration
-      nixpkgsConfig = {
-        allowUnfree = true;
-        permittedInsecurePackages = [ ];
+      # Import builders
+      builders = import ./lib/builders.nix {
+        inherit nixpkgs nix-darwin home-manager nix-homebrew inputs self lib overlays overlaysList;
       };
     in
     {
@@ -54,120 +53,13 @@
       inherit overlays;
 
       # NixOS configurations - automatically generated from registry
-      nixosConfigurations = lib.mapAttrs
-        (hostname: system:
-          nixpkgs.lib.nixosSystem {
-            inherit (system) system;
-            specialArgs = {
-              inherit inputs;
-              inherit (self) outputs;
-              host = system;
-              customLib = lib;
-            };
-            modules = [
-              # Common configuration (overlays, nix settings, etc.)
-              ./platforms/common
-              # Include all nixos mixins (self-gating modules)
-              ./platforms/nixos
-              # Host-specific hardware configuration
-              ./hosts/${hostname}
-              # Home Manager integration
-              home-manager.nixosModules.home-manager
-              {
-                home-manager = {
-                  useGlobalPkgs = true;
-                  useUserPackages = true;
-                  backupFileExtension = "before-nix-backup";
-                  extraSpecialArgs = {
-                    inherit inputs overlays;
-                    inherit (self) outputs;
-                    host = system;
-                    customLib = lib;
-                  };
-                  users.${system.username} = import ./platforms/home-manager;
-                };
-              }
-            ];
-          }
-        )
-        nixosHosts;
+      nixosConfigurations = lib.mapAttrs builders.mkNixOSConfiguration nixosHosts;
 
       # macOS (nix-darwin) configurations - automatically generated from registry
-      darwinConfigurations = lib.mapAttrs
-        (hostname: system:
-          nix-darwin.lib.darwinSystem {
-            inherit (system) system;
-            specialArgs = {
-              inherit inputs;
-              inherit (self) outputs;
-              host = system;
-              customLib = lib;
-            };
-            modules = [
-              # Common configuration (overlays, nix settings, etc.)
-              ./platforms/common
-              # Include all darwin mixins (self-gating modules)
-              ./platforms/darwin
-              # Host-specific configuration
-              ./hosts/${hostname}
-              # nix-homebrew integration
-              nix-homebrew.darwinModules.nix-homebrew
-              {
-                nix-homebrew = {
-                  enable = true;
-                  user = system.username;
-                };
-              }
-              # Home Manager integration
-              home-manager.darwinModules.home-manager
-              {
-                home-manager = {
-                  useGlobalPkgs = true;
-                  useUserPackages = true;
-                  backupFileExtension = "before-nix-backup";
-                  extraSpecialArgs = {
-                    inherit inputs overlays;
-                    inherit (self) outputs;
-                    host = system;
-                    customLib = lib;
-                  };
-                  users.${system.username} = import ./platforms/home-manager;
-                };
-              }
-            ];
-          }
-        )
-        darwinHosts;
+      darwinConfigurations = lib.mapAttrs builders.mkDarwinConfiguration darwinHosts;
 
       # Standalone Home Manager configurations
-      homeConfigurations = lib.mapAttrs
-        (hostname: system:
-          home-manager.lib.homeManagerConfiguration {
-            pkgs = import nixpkgs {
-              inherit (system) system;
-              overlays = overlaysList;
-              config = nixpkgsConfig;
-            };
-            extraSpecialArgs = {
-              inherit inputs overlays;
-              inherit (self) outputs;
-              host = system;
-              # Pass our custom lib functions as customLib
-              customLib = import ./lib { nixpkgs = { inherit (nixpkgs) lib; }; };
-            };
-            modules = [
-              ./platforms/home-manager
-              {
-                home = {
-                  inherit (system) username;
-                  homeDirectory = system.home;
-                  stateVersion = "24.05";
-                };
-              }
-            ];
-          }
-        )
-        homeHosts;
+      homeConfigurations = lib.mapAttrs builders.mkHomeConfiguration homeHosts;
 
       # Expose package sets for convenience
       packages = lib.mapAttrs

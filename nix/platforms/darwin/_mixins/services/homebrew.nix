@@ -1,10 +1,10 @@
 # Homebrew Default Configuration
 # Applies to all Darwin systems
 
-{ config, lib, host, ... }:
+{ config, lib, host, customLib, ... }:
 
 {
-  config = lib.mkIf (host.platform == "darwin") {
+  config = customLib.mkIfPlatform "darwin" {
     homebrew = {
       enable = true;
 
@@ -21,5 +21,5 @@
         upgrade = true;
       };
     };
-  };
+  } host;
 }

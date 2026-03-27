@@ -7,7 +7,7 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
 {
-  config = lib.mkIf (customLib.isDesktop (host.formFactor or "")) (lib.mkMerge [
+  config = customLib.mkIfDesktop (lib.mkMerge [
     # ============================================================================
     # Shared Desktop Applications (All Platforms)
     # These work on both macOS and Linux desktops
@@ -33,16 +33,16 @@ in
     # Darwin/macOS Specific
     # Apps and configs that only make sense on macOS
     # ============================================================================
-    (lib.mkIf (host.platform == "darwin") {
+    (customLib.mkIfPlatform "darwin" {
       xdg.configFile.aerospace.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/aerospace";
       xdg.configFile.karabiner.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/karabiner";
-    })
+    } host)
 
     # ============================================================================
     # NixOS/Linux Specific
     # Apps and configs that only make sense on NixOS
     # ============================================================================
-    (lib.mkIf (host.platform == "nixos") {
+    (customLib.mkIfPlatform "nixos" {
       home.packages = [
         # Content creation (Linux-specific or better on Linux)
         pkgs.obs-studio
@@ -65,6 +65,6 @@ in
         name = "Bibata-Modern-Ice";
         size = 22;
       };
-    })
-  ]);
+    } host)
+  ]) host;
 }

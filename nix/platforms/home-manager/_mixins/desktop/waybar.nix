@@ -24,7 +24,7 @@ let
   };
 in
 {
-  config = lib.mkIf (customLib.isDesktop (host.formFactor or "") && host.platform == "nixos") {
+  config = customLib.mkIfNixOSDesktop {
     # Configure & Theme Waybar via home-manager
     programs.waybar = {
       enable = true;
@@ -287,5 +287,5 @@ in
         }
       '';
     };
-  };
+  } host;
 }

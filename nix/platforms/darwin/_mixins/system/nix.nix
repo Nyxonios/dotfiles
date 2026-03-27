@@ -1,10 +1,10 @@
 # Nix Settings for macOS
 # Platform-specific GC timing (interval format for launchd)
 
-{ config, lib, host, ... }:
+{ config, lib, host, customLib, ... }:
 
 {
-  config = lib.mkIf (host.platform == "darwin") {
+  config = customLib.mkIfPlatform "darwin" {
     nix.gc.interval = [
       {
         Hour = 3;
@@ -12,5 +12,5 @@
         Weekday = 7;
       }
     ];
-  };
+  } host;
 }

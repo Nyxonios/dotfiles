@@ -51,13 +51,3 @@ gpu = []
 tags = ["personal", "development", "testing"]
 description = "Personal Development VM - Mimir: Norse god of wisdom and knowledge, guardian of the Well of Wisdom. Counselor to the gods who speaks only truth."
 
-[workstation-nhriv]
-platform = "home-manager"
-system = "x86_64-linux"
-username = "mseller"
-home = "/home/mseller"
-email = "mseller@evroc.com"
-formFactor = "vm"
-gpu = []
-tags = ["work", "development"]
-description = "Work development workstation"

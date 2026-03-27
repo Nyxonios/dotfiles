@@ -7,7 +7,7 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
 {
-  config = lib.mkIf (customLib.isDesktop (host.formFactor or "")) {
+  config = customLib.mkIfDesktop {
     programs.vscode = {
       enable = true;
       package = pkgs.vscode;
@@ -34,5 +34,5 @@ in
 
     # Symlink VSCode config from dotfiles
     xdg.configFile.vscode.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/vscode";
-  };
+  } host;
 }
