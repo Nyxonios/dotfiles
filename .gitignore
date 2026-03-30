@@ -1,4 +1,17 @@
 .config/karabiner/automatic_backups/*
 .config/sops/age/*
-**/.sisyphus
+
+# OpenCode / Oh My OpenCode working files
+**/.sisyphus/
+**/.open-code/
+**/.omoc/
+**/.omo/
+**/.opencode-sessions/
+**/.opencode-cache/
+**/.opencode-temp/
+
+# Oh My OpenCode output directories (evidence, plans, drafts, etc.)
+**/evidence/
+**/plans/
+**/drafts/
 
