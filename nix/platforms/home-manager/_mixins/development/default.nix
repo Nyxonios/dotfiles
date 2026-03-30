@@ -5,8 +5,11 @@
 
 {
   imports = [
-    ./languages.nix
     ./tools.nix
+    ./languages.nix
     ./git.nix
+    ./neovim.nix
+    ./k9s.nix
+    ./opencode.nix
   ];
 }

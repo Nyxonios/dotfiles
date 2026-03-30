@@ -4,11 +4,6 @@
 { ... }:
 
 {
-  imports = [
-    ./neovim.nix
-    ./rofi.nix
-    ./hypr.nix
-    ./applications.nix
-    ./wleave.nix
-  ];
+  # Services folder is currently empty
+  # Add user systemd services, timers, and background processes here
 }

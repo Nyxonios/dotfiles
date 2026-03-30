@@ -1,9 +1,9 @@
 # Services Mixins for macOS
+# User services and background processes
 
 { ... }:
 
 {
-  imports = [
-    ./homebrew.nix
-  ];
+  # Services folder is currently empty
+  # Add user launchd services and background processes here
 }

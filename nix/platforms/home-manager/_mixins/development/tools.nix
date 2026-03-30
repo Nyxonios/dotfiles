@@ -1,9 +1,10 @@
-# Development Tools
+# Development Tools that require no configuration
 
 { config, pkgs, lib, host, ... }:
-
 {
   config = {
+    # Configuration files for CLI tools
+
     home.packages = [
       # Task runner
       pkgs.just
@@ -11,7 +12,6 @@
       # Containers/Kubernetes
       pkgs.kubectl
       pkgs.kustomize
-      pkgs.k9s
 
       # Version control
       pkgs.lazygit
@@ -39,9 +39,6 @@
 
       # Code analysis
       pkgs.glsl_analyzer
-
-      # AI assistants
-      pkgs.opencode
 
       # VM-specific tools (only on VMs)
     ] ++ lib.optionals (host.platform == "home-manager") [
