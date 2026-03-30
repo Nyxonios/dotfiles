@@ -17,7 +17,8 @@ let
 in
 {
   # Symlink p10k config from dotfiles (outside Nix store)
-  xdg.configFile."zsh/p10k.zsh".source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/zsh/p10k.zsh";
+  # Using home.file instead of xdg.configFile to avoid collision with dotDir
+  home.file."${config.xdg.configHome}/zsh/p10k.zsh".source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/zsh/p10k.zsh";
 
   programs.zsh = {
     dotDir = "${config.xdg.configHome}/zsh";
