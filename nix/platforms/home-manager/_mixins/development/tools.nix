@@ -5,6 +5,9 @@
 {
   config = {
     home.packages = [
+      # Task runner
+      pkgs.just
+
       # Containers/Kubernetes
       pkgs.kubectl
       pkgs.kustomize
