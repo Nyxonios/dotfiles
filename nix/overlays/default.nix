@@ -30,6 +30,9 @@
         hash = "sha256-gmJwoht/Tfm5qMecmq1N6PSAIfWOqsvuHU8VDJY8bLw=";
       };
     });
+
+    # Pin devenv to v1.x (highest v1 version before v2.0)
+    devenv = inputs.devenv.packages.${prev.stdenv.hostPlatform.system}.devenv;
   };
 
   # Stable packages from nixpkgs-stable

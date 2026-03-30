@@ -17,6 +17,10 @@
     zig.url = "github:mitchellh/zig-overlay";
     zls.url = "github:zigtools/zls";
 
+    # Pin devenv to v1.x
+    devenv.url = "github:cachix/devenv/v1.11.2";
+    devenv.inputs.nixpkgs.follows = "nixpkgs";
+
 
   };
 
