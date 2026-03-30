@@ -7,6 +7,7 @@
   imports = [
     ./neovim.nix
     ./rofi.nix
+    ./hypr.nix
     ./applications.nix
     ./wleave.nix
   ];

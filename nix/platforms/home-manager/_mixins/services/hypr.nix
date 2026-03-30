@@ -1,4 +1,4 @@
-# Rofi Configuration
+# Hyprland Configuration
 # Self-gating: Only applies to NixOS desktop/laptop systems
 
 { config, pkgs, lib, host, customLib, ... }:
@@ -10,7 +10,7 @@ let
 in
 {
   config = lib.mkIf (isNixOS && isDesktop) {
-    # Symlink the entire rofi config directory from dotfiles
-    xdg.configFile.rofi.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/rofi";
+    # Window manager and desktop environment configs
+    xdg.configFile.hypr.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/hypr";
   };
 }

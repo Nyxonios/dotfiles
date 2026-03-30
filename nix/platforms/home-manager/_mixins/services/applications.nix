@@ -7,62 +7,59 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
 {
-  config = lib.mkIf (customLib.isDesktop (host.formFactor or "")) (lib.mkMerge [
+  config = lib.mkMerge [
     # ============================================================================
-    # Shared Desktop Applications (All Platforms)
-    # These work on both macOS and Linux desktops
+    # Universal Configs (All Form Factors)
+    # These configs apply to VMs, laptops, and desktops alike
     # ============================================================================
     {
-      home.packages = [
-        # Productivity
-        pkgs.obsidian
-
-        # Communication
-        pkgs.telegram-desktop
-        pkgs.mattermost-desktop
-
-        # Media
-        pkgs.spotify
-      ];
-
-      # Application configs (shared across platforms)
       xdg.configFile.k9s.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/k9s";
       xdg.configFile.opencode.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/opencode";
     }
 
     # ============================================================================
-    # Darwin/macOS Specific
-    # Apps and configs that only make sense on macOS
+    # Desktop-only Applications (laptop/desktop form factors)
     # ============================================================================
-    (lib.mkIf (host.platform == "darwin") {
-      xdg.configFile.aerospace.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/aerospace";
-      xdg.configFile.karabiner.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/karabiner";
-    })
+    (lib.mkIf (customLib.isDesktop (host.formFactor or "")) (lib.mkMerge [
+      # Shared Desktop Applications (All Platforms)
+      {
+        home.packages = [
+          # Productivity
+          pkgs.obsidian
 
-    # ============================================================================
-    # NixOS/Linux Specific
-    # Apps and configs that only make sense on NixOS
-    # ============================================================================
-    (lib.mkIf (host.platform == "nixos") {
-      home.packages = [
-        # Content creation (Linux-specific or better on Linux)
-        pkgs.obs-studio
+          # Communication
+          pkgs.telegram-desktop
+          pkgs.mattermost-desktop
 
-        # Office suite (LibreOffice works on macOS but you probably use MS Office/iWork)
-        pkgs.libreoffice
-      ];
+          # Media
+          pkgs.spotify
+        ];
+      }
 
-      # Window manager and desktop environment configs
-      xdg.configFile.hypr.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/hypr";
-      xdg.configFile.rofi.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/rofi";
+      # Darwin/macOS Specific
+      (lib.mkIf (host.platform == "darwin") {
+        xdg.configFile.aerospace.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/aerospace";
+        xdg.configFile.karabiner.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/karabiner";
+      })
 
-      # Pointer cursor theme (GTK/X11/Wayland specific)
-      home.pointerCursor = {
-        gtk.enable = true;
-        package = pkgs.bibata-cursors;
-        name = "Bibata-Modern-Ice";
-        size = 22;
-      };
-    })
-  ]);
+      # NixOS/Linux Specific
+      (lib.mkIf (host.platform == "nixos") {
+        home.packages = [
+          # Content creation (Linux-specific or better on Linux)
+          pkgs.obs-studio
+
+          # Office suite (LibreOffice works on macOS but you probably use MS Office/iWork)
+          pkgs.libreoffice
+        ];
+
+        # Pointer cursor theme (GTK/X11/Wayland specific)
+        home.pointerCursor = {
+          gtk.enable = true;
+          package = pkgs.bibata-cursors;
+          name = "Bibata-Modern-Ice";
+          size = 22;
+        };
+      })
+    ]))
+  ];
 }

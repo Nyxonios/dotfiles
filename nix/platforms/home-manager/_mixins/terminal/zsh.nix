@@ -9,11 +9,11 @@ let
   # Determine rebuild command based on platform
   rebuildCmd =
     if host.platform == "darwin" then
-      "darwin-rebuild switch --flake ~/dotfiles/nix#${host.name}"
+      "darwin-rebuild switch --flake path:${host.home}/dotfiles/nix#${host.name}"
     else if host.platform == "nixos" then
-      "sudo nixos-rebuild switch --flake ~/dotfiles/nix#${host.name}"
+      "sudo nixos-rebuild switch --flake path:${host.home}/dotfiles/nix#${host.name}"
     else
-      "home-manager switch --flake ~/dotfiles/nix#${host.name}";
+      "home-manager switch --flake path:${host.home}/dotfiles/nix#${host.name}";
 in
 {
   # Symlink p10k config from dotfiles (outside Nix store)
@@ -42,6 +42,7 @@ in
     initContent = ''
       ZSH_DISABLE_COMPFIX=true
       export EDITOR=nvim
+      export OPENCODE_CONFIG_DIR=~/.config/opencode
 
       # Source p10k config from symlinked file
       [[ -f ~/.config/zsh/p10k.zsh ]] && source ~/.config/zsh/p10k.zsh
@@ -96,7 +97,7 @@ in
         source ~/bin/work.sh
       fi
 
-      export PATH=$PATH:/usr/bin
+      export PATH=$PATH:$HOME/bin
     '';
 
     oh-my-zsh = {
