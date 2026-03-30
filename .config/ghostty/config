@@ -1,9 +1,10 @@
 font-size = 9
-theme = Catppuccin Mocha
+theme = catppuccin-mocha
 macos-titlebar-style = hidden
 confirm-close-surface = false
-font-feature=-calt
-font-feature=-liga
-font-feature=-dlig
-app-notifications = no-clipboard-copy
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
 
+# Load Linux-specific config if present
+config-file = ?linux-config

@@ -1,13 +1,10 @@
 # GNOME Desktop
-# Self-gating: Only activates on desktop systems
+# Self-gating: Only activates on NixOS desktop systems
 
 { config, pkgs, lib, host, customLib, ... }:
 
-let
-  isNixOS = host.platform == "nixos";
-in
 {
-  config = lib.mkIf (customLib.isDesktop (host.formFactor or "") && isNixOS) {
+  config = customLib.mkIfNixOSDesktop {
     # Enable GNOME
     services.displayManager.gdm.enable = true;
     services.desktopManager.gnome.enable = true;
@@ -27,5 +24,5 @@ in
         xdg-desktop-portal-gtk
       ];
     };
-  };
+  } host;
 }

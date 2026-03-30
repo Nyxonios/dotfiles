@@ -4,11 +4,11 @@
 { config, lib, host, customLib, ... }:
 
 {
-  config = lib.mkIf (customLib.isDesktop (host.formFactor or "") && host.platform == "nixos") {
+  config = customLib.mkIfNixOSDesktop {
     hardware.bluetooth = {
       enable = true;
       powerOnBoot = true;
       settings.General.AutoEnable = "true";
     };
-  };
+  } host;
 }

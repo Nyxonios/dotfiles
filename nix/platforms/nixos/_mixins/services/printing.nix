@@ -4,7 +4,7 @@
 { config, lib, host, customLib, ... }:
 
 {
-  config = lib.mkIf (customLib.isDesktop (host.formFactor or "") && host.platform == "nixos") {
+  config = customLib.mkIfNixOSDesktop {
     services.printing.enable = true;
-  };
+  } host;
 }

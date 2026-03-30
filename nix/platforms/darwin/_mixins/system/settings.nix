@@ -3,11 +3,8 @@
 
 { config, lib, host, customLib, ... }:
 
-let
-  isDarwin = host.platform == "darwin";
-in
 {
-  config = lib.mkIf (isDarwin && customLib.isDesktop (host.formFactor or "")) {
+  config = customLib.mkIfDarwinDesktop {
     # macOS-specific defaults
     system.defaults = {
       dock = {
@@ -28,5 +25,5 @@ in
         "com.apple.swipescrolldirection" = false;
       };
     };
-  };
+  } host;
 }

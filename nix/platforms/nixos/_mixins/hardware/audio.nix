@@ -4,7 +4,7 @@
 { config, pkgs, lib, host, customLib, ... }:
 
 {
-  config = lib.mkIf (customLib.isDesktop (host.formFactor or "") && host.platform == "nixos") {
+  config = customLib.mkIfNixOSDesktop {
     # Disable PulseAudio, enable PipeWire
     services.pulseaudio.enable = false;
     security.rtkit.enable = true;
@@ -22,5 +22,5 @@
     environment.systemPackages = with pkgs; [
       pavucontrol
     ];
-  };
+  } host;
 }

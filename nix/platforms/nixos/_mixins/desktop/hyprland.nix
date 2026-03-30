@@ -1,5 +1,5 @@
 # Hyprland Window Manager
-# Self-gating: Only activates on desktop systems
+# Self-gating: Only activates on NixOS desktop systems
 
 { config, pkgs, lib, host, inputs, customLib, ... }:
 
@@ -13,7 +13,7 @@ in
     inputs.hyprland.nixosModules.default
   ];
 
-  config = lib.mkIf enableHyprland {
+  config = customLib.mkIfNixOSDesktop {
     programs.hyprland = {
       enable = true;
       xwayland.enable = true;
@@ -47,5 +47,5 @@ in
       rofi
       wleave
     ];
-  };
+  } host;
 }
