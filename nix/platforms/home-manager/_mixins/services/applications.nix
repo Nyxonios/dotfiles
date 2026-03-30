@@ -53,12 +53,6 @@ in
         pkgs.libreoffice
       ];
 
-      # Darwin/macOS Specific
-      (lib.mkIf (host.platform == "darwin") {
-        xdg.configFile.aerospace.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/aerospace";
-        xdg.configFile.karabiner.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/karabiner";
-      })
-
       # Pointer cursor theme (GTK/X11/Wayland specific)
       home.pointerCursor = {
         gtk.enable = true;
