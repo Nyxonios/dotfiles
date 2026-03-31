@@ -8,6 +8,7 @@
     ./vscode.nix
     ./browsers.nix
     ./waybar.nix
+    ./mako.nix
     ./applications.nix
     ./hypr.nix
     ./rofi.nix
