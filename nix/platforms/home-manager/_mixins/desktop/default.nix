@@ -13,5 +13,7 @@
     ./hypr.nix
     ./rofi.nix
     ./wleave.nix
+    ./universal-apps.nix
+    ./darwin-apps.nix
   ];
 }

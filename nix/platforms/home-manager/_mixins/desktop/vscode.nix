@@ -1,13 +1,15 @@
 # VSCode Configuration
-# Applies to all desktop systems
+# Applies to NixOS desktop systems
 
 { config, pkgs, lib, host, customLib, ... }:
 
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
+  isNixOS = host.platform == "nixos";
+  isDesktop = customLib.isDesktop (host.formFactor or "");
 in
 {
-  config = customLib.mkIfDesktop {
+  config = lib.mkIf (isNixOS && isDesktop) {
     programs.vscode = {
       enable = true;
       package = pkgs.vscode;
@@ -34,5 +36,5 @@ in
 
     # Symlink VSCode config from dotfiles
     xdg.configFile.vscode.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/vscode";
-  } host;
+  };
 }

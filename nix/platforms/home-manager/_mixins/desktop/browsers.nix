@@ -3,13 +3,15 @@
 
 { config, pkgs, lib, host, customLib, ... }:
 
+let
+  isNixOS = host.platform == "nixos";
+  isDesktop = customLib.isDesktop (host.formFactor or "");
+in
 {
-  config = customLib.mkIfNixOSDesktop
-    {
-      # Install Brave browser on NixOS
-      home.packages = [
-        pkgs.firefox
-      ];
-    }
-    host;
+  config = lib.mkIf (isNixOS && isDesktop) {
+    # Install Brave browser on NixOS
+    home.packages = [
+      pkgs.firefox
+    ];
+  };
 }

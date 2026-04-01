@@ -45,7 +45,6 @@ in
       hyprcursor
       swww
       rofi
-      wleave
     ];
   } host;
 }

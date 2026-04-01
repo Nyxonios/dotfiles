@@ -15,3 +15,6 @@
 **/plans/
 **/drafts/
 
+# Jujutsu (jj) version control metadata
+.jj/
+

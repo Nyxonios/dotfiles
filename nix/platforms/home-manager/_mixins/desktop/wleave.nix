@@ -1,7 +1,9 @@
-{ config, pkgs, lib, host, ... }:
+{ config, pkgs, lib, host, customLib, ... }:
 
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
+  isNixOS = host.platform == "nixos";
+  isDesktop = customLib.isDesktop (host.formFactor or "");
   
   wleaveLayout = pkgs.writeText "wleave-layout.json" (builtins.toJSON {
     margin = 550;
@@ -52,7 +54,8 @@ let
   });
 in
 {
-  config = lib.mkIf (host.platform == "nixos") {
+  config = lib.mkIf (isNixOS && isDesktop) {
+    home.packages = [ pkgs.wleave ];
     # Symlink individual icon files
     xdg.configFile."wleave/icons/lock.svg".source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/wleave/icons/lock.svg";
     xdg.configFile."wleave/icons/logout.svg".source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/wleave/icons/logout.svg";

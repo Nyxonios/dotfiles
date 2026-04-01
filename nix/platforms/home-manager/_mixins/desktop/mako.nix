@@ -4,6 +4,9 @@
 { config, pkgs, lib, host, customLib, ... }:
 
 let
+  isNixOS = host.platform == "nixos";
+  isDesktop = customLib.isDesktop (host.formFactor or "");
+
   # Catppuccin Mocha palette
   palette = {
     base = "1e1e2e";
@@ -25,7 +28,7 @@ let
   };
 in
 {
-  config = customLib.mkIfNixOSDesktop {
+  config = lib.mkIf (isNixOS && isDesktop) {
     services.mako = {
       enable = true;
 
@@ -73,5 +76,5 @@ in
         background-color=#${palette.mantle}
       '';
     };
-  } host;
+  };
 }

@@ -4,6 +4,9 @@
 { config, pkgs, lib, host, customLib, ... }:
 
 let
+  isNixOS = host.platform == "nixos";
+  isDesktop = customLib.isDesktop (host.formFactor or "");
+
   palette = {
     base00 = "1e1e2e"; # base
     base01 = "181825"; # mantle
@@ -24,7 +27,7 @@ let
   };
 in
 {
-  config = customLib.mkIfNixOSDesktop {
+  config = lib.mkIf (isNixOS && isDesktop) {
     # Configure & Theme Waybar via home-manager
     programs.waybar = {
       enable = true;
@@ -287,5 +290,5 @@ in
         }
       '';
     };
-  } host;
+  };
 }
