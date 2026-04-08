@@ -41,7 +41,7 @@
       "description": "General tasks that don't fit other categories, low to moderate effort"
     },
     "unspecified-high": {
-      "model": "evroc/nvidia/Llama-3.3-70B-Instruct-FP8",
+      "model": "evroc/moonshotai/Kimi-K2.5",
       "temperature": 0.3,
       "description": "General complex tasks that don't fit other categories, high effort"
     }
