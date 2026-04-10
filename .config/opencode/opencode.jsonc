@@ -77,13 +77,13 @@
             "output": 10000
           }
         },
-        "nvidia/Llama-3.3-70B-Instruct-FP8": {
-          "name": "nvidia/Llama-3.3-70B-Instruct-FP8",
-          "limit": {
-            "context": 128000,
-            "output": 20000
-          }
-        }
+        // "nvidia/Llama-3.3-70B-Instruct-FP8": {
+        //   "name": "nvidia/Llama-3.3-70B-Instruct-FP8",
+        //   "limit": {
+        //     "context": 128000,
+        //     "output": 20000
+        //   }
+        // }
       }
     }
   }
