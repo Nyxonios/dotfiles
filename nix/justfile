@@ -56,7 +56,7 @@ eval:
 # Update flake inputs
 update:
     @echo "Updating flake.lock..."
-    @nix flake update "path:$FLAKE_DIR/nix"
+    @nix flake update --flake "path:$FLAKE_DIR/nix"
 
 # Clean up old generations
 gc:

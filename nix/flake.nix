@@ -18,8 +18,10 @@
     zls.url = "github:zigtools/zls";
 
     # Pin devenv to v1.x
+    # Note: Don't use follows here - devenv needs its own nixpkgs pin
+    # to avoid lowdown 3.0 compatibility issues
+    # See: https://github.com/cachix/devenv/issues/2553
     devenv.url = "github:cachix/devenv/v1.11.2";
-    devenv.inputs.nixpkgs.follows = "nixpkgs";
 
 
   };
