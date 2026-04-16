@@ -13,7 +13,7 @@ Arguments: $ARGUMENTS
 1. Check what's staged: `git status` and `git diff --staged --stat`
 2. Read the diff: `git diff --staged`
 3. Check repo style: `git log -20 --oneline`
-4. Check git-stack: `~/dotfiles/.config/opencode/git-stack/git-stack list`
+4. Check git-stack: `git-stack list`
 5. Write the message
 
 ## Output Format
