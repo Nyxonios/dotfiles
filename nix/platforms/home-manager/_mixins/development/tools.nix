@@ -9,9 +9,6 @@
       # Task runner
       pkgs.just
 
-      # Containers/Kubernetes
-      pkgs.kubectl
-      pkgs.kustomize
 
       # Version control
       pkgs.lazygit
@@ -40,17 +37,14 @@
       # Code analysis
       pkgs.glsl_analyzer
 
-      # VM-specific tools (only on VMs)
-    ] ++ lib.optionals (host.platform == "home-manager") [
+      pkgs.gcc
+
+    ] ++ lib.optionals (host.formFactor == "vm" && builtins.elem "work" (host.tags or [ ])) [
       pkgs.devenv
       pkgs.direnv
-      pkgs.minio-warp
-      pkgs.graphviz
-      pkgs.awscli2
-      pkgs.s3cmd
-      pkgs.grpcurl
       pkgs.lsof
-      pkgs.xclip
+      pkgs.kubectl
+      pkgs.kustomize
     ];
   };
 }
