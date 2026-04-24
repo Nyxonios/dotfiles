@@ -7,7 +7,7 @@ let
 in
 {
   config = {
-    home.packages = [ pkgs.opencode ];
+    # home.packages = [ pkgs.opencode ];
     xdg.configFile.opencode.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/opencode";
   };
 }

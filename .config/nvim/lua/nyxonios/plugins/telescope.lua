@@ -36,7 +36,6 @@ vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
 
 return {
   'nvim-telescope/telescope.nvim',
-  tag = '0.1.8',
   dependencies = {
     'nvim-lua/plenary.nvim',
     { 'nvim-telescope/telescope-ui-select.nvim' },
