@@ -1,13 +1,16 @@
 # Opencode Configuration
+# Only enabled on NixOS machines
 
-{ config, pkgs, lib, host, ... }:
+{ config, pkgs, lib, host, customLib, ... }:
 
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
 {
-  config = {
-    # home.packages = [ pkgs.opencode ];
-    xdg.configFile.opencode.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/opencode";
-  };
+  config = customLib.mkIfPlatform "nixos"
+    {
+      home.packages = [ pkgs.opencode ];
+    }
+    host;
+  xdg.configFile.opencode.source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/opencode";
 }
