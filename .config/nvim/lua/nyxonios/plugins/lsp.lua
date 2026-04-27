@@ -5,6 +5,7 @@ return {
     dependencies = { -- optional packages
       'neovim/nvim-lspconfig',
       'nvim-treesitter/nvim-treesitter',
+      'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
       require('go').setup {
@@ -12,7 +13,8 @@ return {
         lsp_inlay_hints = {
           enable = false,
         },
-        lsp_cfg = true,
+        -- Use native vim.lsp.config instead of deprecated lspconfig.setup
+        lsp_cfg = false,
         lsp_keymaps = false,
         dap_debug_keymap = false,
         diagnostic = { -- set diagnostic to false to disable diagnostic
@@ -25,6 +27,13 @@ return {
         },
         init_tags = 'malcolmtest',
       }
+
+      -- Build gopls config using go.nvim helpers, then register with native API
+      local capabilities = vim.tbl_deep_extend(
+        'force',
+        vim.lsp.protocol.make_client_capabilities(),
+        require('cmp_nvim_lsp').default_capabilities()
+      )
       vim.keymap.set('n', '<leader>tf', '<cmd>GoTestFunc<CR>')
       vim.keymap.set('n', '<leader>tp', '<cmd>GoTestPkg<CR>')
       vim.keymap.set('n', '<leader>db', '<cmd>GoDebug<CR>')
@@ -36,6 +45,8 @@ return {
     build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
   },
   -- Typescript LSP with extra stuff.
+  -- NOTE: This plugin still internally uses the deprecated `require('lspconfig')` API.
+  -- It will show deprecation warnings until https://github.com/pmizio/typescript-tools.nvim/issues/370 is resolved.
   {
     'pmizio/typescript-tools.nvim',
     dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
@@ -88,8 +99,24 @@ return {
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
+      -- Ensure cmp-nvim-lsp is loaded so we can advertise enhanced capabilities
+      'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
+      -- nvim-cmp supports more completion types than the default omnifunc.
+      -- We must advertise these capabilities to each LSP server.
+      local capabilities = vim.tbl_deep_extend(
+        'force',
+        vim.lsp.protocol.make_client_capabilities(),
+        require('cmp_nvim_lsp').default_capabilities()
+      )
+
+      -- Apply these capabilities globally to all LSP clients.
+      -- Individual configs below will be merged on top of this.
+      vim.lsp.config('*', {
+        capabilities = capabilities,
+      })
+
       vim.lsp.config('nixd', {
         cmd = { 'nixd' },
         filetypes = { 'nix' },
@@ -199,7 +226,7 @@ return {
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-T>.
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
 
           -- Find references for the word under your cursor.
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')

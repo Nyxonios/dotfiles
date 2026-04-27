@@ -3,6 +3,7 @@ return {
   branch = 'main',
   lazy = false,
   build = ':TSUpdate',
+  auto_install = true, -- Auto-install missing parsers when entering buffer
   config = function()
     require('nvim-treesitter').install {
       'lua',
