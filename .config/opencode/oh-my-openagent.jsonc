@@ -1,7 +1,7 @@
 {
   "agents": {
     "sisyphus": {
-      "model": "evroc/moonshotai/Kimi-K2.5",
+      "model": "evroc/moonshotai/Kimi-K2.6",
       "temperature": 0.7
     },
     "prometheus": {

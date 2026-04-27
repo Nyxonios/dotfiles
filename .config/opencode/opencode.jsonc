@@ -49,6 +49,13 @@
         }
       },
       "models": {
+        "moonshotai/Kimi-K2.6": {
+          "name": "moonshotai/Kimi-K2.6",
+          // "limit": {
+          //   "context": 262000,
+          //   "output": 56000
+          // }
+        },
         "moonshotai/Kimi-K2.5": {
           "name": "moonshotai/Kimi-K2.5",
           "limit": {
