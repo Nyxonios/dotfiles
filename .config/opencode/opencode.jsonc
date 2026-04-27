@@ -10,7 +10,7 @@
       "/tmp/**": "allow"
     },
     "bash": {
-      "*": "ask",
+      "*": "allow",
       "git status": "allow",
       "git status *": "allow",
       "git log": "allow",
@@ -35,7 +35,10 @@
       "git revert*": "deny",
       "git stash*": "deny",
       "git tag*": "deny",
-      "git mv*": "deny"
+      "git mv*": "deny",
+      "rm": "deny",
+      "rm *": "deny",
+      "rm -rf": "deny"
     }
   },
   "provider": {
