@@ -34,6 +34,12 @@ return {
         vim.lsp.protocol.make_client_capabilities(),
         require('cmp_nvim_lsp').default_capabilities()
       )
+      local gopls_cfg = require('go.lsp').config()
+      gopls_cfg.cmd = { 'gopls' }
+      gopls_cfg.capabilities = capabilities
+      vim.lsp.config('gopls', gopls_cfg)
+      vim.lsp.enable('gopls')
+
       vim.keymap.set('n', '<leader>tf', '<cmd>GoTestFunc<CR>')
       vim.keymap.set('n', '<leader>tp', '<cmd>GoTestPkg<CR>')
       vim.keymap.set('n', '<leader>db', '<cmd>GoDebug<CR>')
