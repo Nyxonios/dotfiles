@@ -16,11 +16,14 @@
         enable = true;
         support32Bit = false;
       };
+      pulse.enable = true;
+      wireplumber.enable = true;
     };
 
-    # Audio control GUI
+    # Audio control GUI and media key support
     environment.systemPackages = with pkgs; [
       pavucontrol
+      playerctl  # MPRIS controller for media keys
     ];
   } host;
 }
