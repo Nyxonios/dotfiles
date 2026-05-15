@@ -94,8 +94,8 @@
             "output": 50000
           }
         },
-        "mistralai/Devstral-Small-2-24B-Instruct-2512": {
-          "name": "mistralai/Devstral-Small-2-24B-Instruct-2512",
+        "mistralai/Devstral-Small-2-24B-Instruct": {
+          "name": "mistralai/Devstral-Small-2-24B-Instruct",
           "limit": {
             "context": 10000,
             "output": 10000

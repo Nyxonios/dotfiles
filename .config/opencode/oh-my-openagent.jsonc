@@ -1,7 +1,7 @@
 {
   "agents": {
     "sisyphus": {
-      "model": "evroc/moonshotai/Kimi-K2.6",
+      "model": "evroc/moonshotai/Kimi-K2.5",
       "temperature": 0.7
     },
     "prometheus": {
@@ -21,7 +21,7 @@
       "temperature": 0.3
     },
     "librarian": {
-      "model": "evroc/mistralai/Devstral-Small-2-24B-Instruct-2512",
+      "model": "evroc/Qwen/Qwen3-30B-A3B-Instruct-2507-FP8",
       "temperature": 0.3
     },
     "multimodal-looker": {
@@ -31,7 +31,7 @@
   },
   "categories": {
     "quick": {
-      "model": "evroc/mistralai/Devstral-Small-2-24B-Instruct-2512",
+      "model": "evroc/Qwen/Qwen3-30B-A3B-Instruct-2507-FP8",
       "temperature": 0.1,
       "description": "Trivial tasks, single file changes, typo fixes, fast and cheap execution"
     },
@@ -41,7 +41,7 @@
       "description": "General tasks that don't fit other categories, low to moderate effort"
     },
     "unspecified-high": {
-      "model": "evroc/moonshotai/Kimi-K2.5",
+      "model": "evroc/moonshotai/Kimi-K2.6",
       "temperature": 0.3,
       "description": "General complex tasks that don't fit other categories, high effort"
     }
