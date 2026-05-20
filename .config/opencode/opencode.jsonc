@@ -1,6 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "theme": "catppuccin",
+  "model": "evroc/moonshotai/Kimi-K2.6",
   "plugin": ["oh-my-openagent@3.13.1"],
   "permission": {
     "read": {
@@ -37,8 +38,8 @@
       "git tag*": "deny",
       "git mv*": "deny",
       "rm": "deny",
-      "rm *": "deny",
-      "rm -rf": "deny"
+      "rm *": "ask",
+      "rm -rf *": "deny"
     }
   },
   "provider": {
