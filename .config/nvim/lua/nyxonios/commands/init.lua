@@ -37,6 +37,82 @@ vim.api.nvim_create_user_command('DecodeBase64File', function()
   local decoded = Base64dec(text)
 end, { desc = 'Decodes a base64 string' })
 
+vim.api.nvim_create_user_command('AlignMarkdownTable', function(opts)
+  local start_line = opts.line1
+  local end_line = opts.line2
+  local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+
+  if #lines < 2 then
+    vim.notify('AlignMarkdownTable: selection must contain at least a header and separator row', vim.log.levels.WARN)
+    return
+  end
+
+  local rows = {}
+  local is_separator = {}
+
+  for _, line in ipairs(lines) do
+    if line:match('%S') then
+      local cells = {}
+      local trimmed_line = line:gsub('|$', '')
+      local is_sep = true
+      for cell in trimmed_line:gmatch('|([^|]*)') do
+        local trimmed = cell:gsub('^%s+', ''):gsub('%s+$', '')
+        table.insert(cells, trimmed)
+        if trimmed ~= '' and not trimmed:match('^%-+$') then
+          is_sep = false
+        end
+      end
+      while #cells > 0 and cells[#cells] == '' do
+        table.remove(cells)
+      end
+      if #cells > 0 then
+        table.insert(rows, cells)
+        table.insert(is_separator, is_sep)
+      end
+    end
+  end
+
+  if #rows < 2 then
+    vim.notify('AlignMarkdownTable: could not parse table', vim.log.levels.WARN)
+    return
+  end
+
+  local col_count = #rows[1]
+  local col_widths = {}
+  for i = 1, col_count do
+    col_widths[i] = 0
+  end
+
+  for row_idx, row in ipairs(rows) do
+    if not is_separator[row_idx] then
+      for i, cell in ipairs(row) do
+        if i <= col_count then
+          col_widths[i] = math.max(col_widths[i], vim.fn.strdisplaywidth(cell))
+        end
+      end
+    end
+  end
+
+  local formatted_lines = {}
+  for row_idx, row in ipairs(rows) do
+    local formatted_cells = {}
+    for i = 1, col_count do
+      if is_separator[row_idx] then
+        table.insert(formatted_cells, string.rep('-', col_widths[i] + 2))
+      else
+        local cell = row[i] or ''
+        table.insert(formatted_cells, ' ' .. cell .. string.rep(' ', col_widths[i] - vim.fn.strdisplaywidth(cell)) .. ' ')
+      end
+    end
+    table.insert(formatted_lines, '|' .. table.concat(formatted_cells, '|') .. '|')
+  end
+
+  vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, false, formatted_lines)
+end, {
+  desc = 'Aligns a markdown table within the selected range',
+  range = true,
+})
+
 -- Utility functions
 
 local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
