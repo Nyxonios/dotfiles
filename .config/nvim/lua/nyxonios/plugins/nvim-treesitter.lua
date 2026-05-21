@@ -3,27 +3,30 @@ return {
   branch = 'main',
   lazy = false,
   build = ':TSUpdate',
-  auto_install = true, -- Auto-install missing parsers when entering buffer
   config = function()
-    require('nvim-treesitter').install {
-      'lua',
-      'go',
-      'rust',
-      'vim',
-      'vimdoc',
-      'bash',
-      'templ',
-      'sql',
-      'gotmpl',
-      'comment',
-      'regex',
-      'nix',
+    require('nvim-treesitter').setup {
+      ensure_installed = {
+        'lua',
+        'go',
+        'rust',
+        'vim',
+        'vimdoc',
+        'bash',
+        'templ',
+        'sql',
+        'gotmpl',
+        'comment',
+        'regex',
+        'nix',
+      },
+      highlight = { 
+        enable = true,
+        disable = function(lang, buf)
+          return lang == "markdown"
+        end,
+      },
+      auto_install = true,
+      sync_install = false,
     }
-
-    vim.api.nvim_create_autocmd('FileType', {
-      callback = function()
-        pcall(vim.treesitter.start)
-      end,
-    })
   end,
 }

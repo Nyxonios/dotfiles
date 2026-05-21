@@ -4,22 +4,25 @@
 { config, lib, host, customLib, ... }:
 
 {
-  config = customLib.mkIfPlatform "darwin" {
-    homebrew = {
-      enable = true;
+  config = customLib.mkIfPlatform "darwin"
+    {
+      homebrew = {
+        enable = true;
 
-      casks = [
-        "betterdisplay"
-        "ghostty"
-        "mattermost"
-        "raycast"
-      ];
+        casks = [
+          "betterdisplay"
+          "ghostty"
+          "mattermost"
+          "raycast"
+          "notion"
+        ];
 
-      onActivation = {
-        cleanup = "zap";
-        autoUpdate = true;
-        upgrade = true;
+        onActivation = {
+          cleanup = "zap";
+          autoUpdate = true;
+          upgrade = true;
+        };
       };
-    };
-  } host;
+    }
+    host;
 }
