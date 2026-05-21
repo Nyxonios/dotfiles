@@ -5,11 +5,10 @@
 
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
-  isNixOS = host.platform == "nixos";
   isDesktop = customLib.isDesktop (host.formFactor or "");
 in
 {
-  config = lib.mkIf (isNixOS && isDesktop) {
+  config = lib.mkIf isDesktop {
     programs.vscode = {
       enable = true;
       package = pkgs.vscode;
