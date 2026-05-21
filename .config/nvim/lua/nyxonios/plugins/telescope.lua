@@ -43,6 +43,25 @@ return {
   },
   config = function()
     local telescope = require 'telescope'
+    local previewers = require 'telescope.previewers'
+
+    -- Prevent crashes on macOS by skipping image previews Telescope can't handle
+    local image_exts = {
+      svg = true,
+      png = true,
+      jpg = true,
+      jpeg = true,
+      gif = true,
+      webp = true,
+      bmp = true,
+    }
+    local new_maker = function(filepath, bufnr, opts)
+      local ext = vim.fn.fnamemodify(filepath, ':e'):lower()
+      if image_exts[ext] then
+        return
+      end
+      previewers.buffer_previewer_maker(filepath, bufnr, opts)
+    end
 
     telescope.setup {
       pickers = {
@@ -55,6 +74,7 @@ return {
         },
       },
       defaults = {
+        buffer_previewer_maker = new_maker,
         file_ignore_patterns = {
           '.git',
           'node_modules',
