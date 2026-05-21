@@ -9,7 +9,7 @@ let
   # Determine rebuild command based on platform
   rebuildCmd =
     if host.platform == "darwin" then
-      "darwin-rebuild switch --flake path:${host.home}/dotfiles/nix#${host.name}"
+      "sudo darwin-rebuild switch --flake path:${host.home}/dotfiles/nix#${host.name}"
     else if host.platform == "nixos" then
       "sudo nixos-rebuild switch --flake path:${host.home}/dotfiles/nix#${host.name}"
     else
