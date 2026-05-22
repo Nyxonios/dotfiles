@@ -25,9 +25,55 @@ let
     base0E = "cba6f7"; # mauve
     base0F = "f2cdcd"; # flamingo
   };
+
+  stop-recording = pkgs.writeShellApplication {
+    name = "stop-recording";
+    runtimeInputs = [ pkgs.coreutils pkgs.procps pkgs.libnotify ];
+    text = ''
+      for statefile in /tmp/screen-record-*.state; do
+        [ -f "$statefile" ] || continue
+        pid=$(head -n1 "$statefile" 2>/dev/null || true)
+        file=$(tail -n1 "$statefile" 2>/dev/null || true)
+        if [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null; then
+          kill "$pid"
+        fi
+        if [ -n "$file" ] && [ -f "$file" ]; then
+          timestamp=$(date +%Y%m%d-%H%M%S)
+          dest="$HOME/screenrecord-$timestamp.mp4"
+          mv "$file" "$dest"
+          notify-send "Screen Recording Saved" "$dest"
+        else
+          notify-send "Screen Recording Stopped" "No output file found"
+        fi
+        rm -f "$statefile"
+      done
+      # Update Waybar indicator
+      killall -USR1 waybar 2>/dev/null || true
+    '';
+  };
+
+  recording-indicator = pkgs.writeShellApplication {
+    name = "recording-indicator";
+    runtimeInputs = [ pkgs.coreutils pkgs.procps ];
+    text = ''
+      for statefile in /tmp/screen-record-*.state; do
+        [ -f "$statefile" ] || continue
+        pid=$(head -n1 "$statefile" 2>/dev/null || true)
+        if kill -0 "$pid" 2>/dev/null; then
+          echo '{"text": "󰻃 REC", "class": "recording", "tooltip": "Screen recording in progress. Click to stop."}'
+          exit 0
+        else
+          rm -f "$statefile"
+        fi
+      done
+      echo '{"text": "", "class": "hidden", "tooltip": "No recording in progress"}'
+    '';
+  };
 in
 {
   config = lib.mkIf (isNixOS && isDesktop) {
+    home.packages = [ recording-indicator stop-recording ];
+
     # Configure & Theme Waybar via home-manager
     programs.waybar = {
       enable = true;
@@ -38,20 +84,23 @@ in
           position = "top";
           modules-center = [
             "hyprland/workspaces"
+            "custom/recording"
             "clock"
-          ];
-          modules-left = [
-            "pulseaudio"
-            "cpu"
-            "memory"
-            "disk"
           ];
           modules-right = [
             "bluetooth"
             "network"
             "custom/notification"
             "tray"
+            "custom/screenshot"
+            "custom/screen-record"
             "custom/exit"
+          ];
+          modules-left = [
+            "pulseaudio"
+            "cpu"
+            "memory"
+            "disk"
           ];
 
           "hyprland/workspaces" = {
@@ -135,6 +184,23 @@ in
             format = "";
             on-click = "sleep 0.1 && wleave";
           };
+          "custom/recording" = {
+            exec = "${recording-indicator}/bin/recording-indicator";
+            interval = 1;
+            return-type = "json";
+            format = "{}";
+            on-click = "stop-recording";
+          };
+          "custom/screenshot" = {
+            tooltip = "Screenshot Region";
+            format = "󰄀";
+            on-click = "sleep 0.1 && screenshot-region";
+          };
+          "custom/screen-record" = {
+            tooltip = "Screen Record Region";
+            format = "󰻃";
+            on-click = "sleep 0.1 && screen-record-region";
+          };
         }
       ];
       style = ''
@@ -192,6 +258,9 @@ in
         #custom-updates,
         #custom-caffeine,
         #custom-exit,
+        #custom-recording,
+        #custom-screenshot,
+        #custom-screen-record,
         #window,
         #hyprland-workspaces,
         #clock,
@@ -268,7 +337,7 @@ in
         #network {
           color: #${palette.base05};
           border-left: 0px;
-          border-right: 0px;
+          border-radius: 0 10px 10px 0;
         }
         #bluetooth {
           color: #${palette.base05};
@@ -282,11 +351,41 @@ in
           border-radius: 10px 0 0 10px;
           margin-left: 10px;
         }
-        #custom-exit {
+        #custom-screenshot {
+          color: #${palette.base05};
+          border-radius: 10px 0 0 10px;
+          margin-left: 10px;
+          border-right: 0px;
+        }
+        #custom-screen-record {
           color: #${palette.base05};
           border-radius: 0 10px 10px 0;
-          margin-right: 10px;
           border-left: 0px;
+        }
+        #custom-recording {
+            color: #f38ba8;
+            border-radius: 10px;
+            padding-left: 12px;
+            padding-right: 12px;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+        #custom-recording.hidden {
+            color: transparent;
+            background: transparent;
+            padding: 0px;
+            margin: 0px;
+            border: none;
+        }
+        #custom-recording.recording {
+            color: #ffffff;
+            background: #f38ba8;
+        }
+        #custom-exit {
+          color: #${palette.base05};
+          border-radius: 10px;
+          margin-right: 10px;
+          margin-left: 15px;
         }
       '';
     };

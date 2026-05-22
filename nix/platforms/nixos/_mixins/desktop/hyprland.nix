@@ -19,6 +19,17 @@ in
       xwayland.enable = true;
     };
 
+    # Portal configuration for screen sharing
+    # Hyprland automatically registers xdg-desktop-portal-hyprland,
+    # but we need to explicitly set the backend preference so that
+    # xdg-desktop-portal routes screen sharing to the Hyprland portal
+    # rather than falling back to a non-running GNOME backend.
+    xdg.portal = {
+      config.Hyprland = {
+        default = [ "hyprland" "gtk" ];
+      };
+    };
+
     # Environment variables for Wayland/NVIDIA
     environment.sessionVariables = {
       NIXOS_OZONE_WL = "1";
