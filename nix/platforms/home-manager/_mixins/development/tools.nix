@@ -9,10 +9,6 @@
       # Task runner
       pkgs.just
 
-
-      # Version control
-      pkgs.lazygit
-
       # Search and utilities
       pkgs.ripgrep
       pkgs.jq
