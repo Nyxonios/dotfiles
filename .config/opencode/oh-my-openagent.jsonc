@@ -17,11 +17,11 @@
       "temperature": 0.7
     },
     "explore": {
-      "model": "evroc/Qwen/Qwen3-30B-A3B-Instruct-2507-FP8",
+      "model": "evroc/Qwen/Qwen3.6-35B-A3B-FP8",
       "temperature": 0.3
     },
     "librarian": {
-      "model": "evroc/Qwen/Qwen3-30B-A3B-Instruct-2507-FP8",
+      "model": "evroc/Qwen/Qwen3.6-35B-A3B-FP8",
       "temperature": 0.3
     },
     "multimodal-looker": {
@@ -31,12 +31,12 @@
   },
   "categories": {
     "quick": {
-      "model": "evroc/Qwen/Qwen3-30B-A3B-Instruct-2507-FP8",
+      "model": "evroc/Qwen/Qwen3.6-35B-A3B-FP8",
       "temperature": 0.1,
       "description": "Trivial tasks, single file changes, typo fixes, fast and cheap execution"
     },
     "unspecified-low": {
-      "model": "evroc/Qwen/Qwen3-30B-A3B-Instruct-2507-FP8",
+      "model": "evroc/Qwen/Qwen3.6-35B-A3B-FP8",
       "temperature": 0.2,
       "description": "General tasks that don't fit other categories, low to moderate effort"
     },
