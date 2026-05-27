@@ -11,6 +11,10 @@ in
     # Enable NVIDIA drivers
     services.xserver.videoDrivers = [ "nvidia" ];
 
+    # Enable graphics support (OpenGL/Vulkan)
+    # Required for any graphical session including Wayland/Hyprland
+    hardware.graphics.enable = true;
+
     hardware.nvidia = {
       modesetting.enable = true;
       powerManagement.enable = false;
@@ -18,6 +22,24 @@ in
       open = false;
       nvidiaSettings = true;
       package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+    };
+
+    # Environment variables for NVIDIA + Wayland/Hyprland
+    environment.variables = {
+      GBM_BACKEND = "nvidia-drm";
+      LIBVA_DRIVER_NAME = "nvidia";
+      NVD_BACKEND = "nvidia";
+      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+      WLR_NO_HARDWARE_CURSORS = "1";
+      __GL_SYNC_TO_VBLANK = "0";
+      WLR_RENDERER = "gles2";
+
+      # Critical: prevents black screen on NVIDIA with atomic DRM
+      WLR_DRM_NO_ATOMIC = "1";
+
+      # Disable G-Sync and VRR to prevent display issues
+      __GL_GSYNC_ALLOWED = "0";
+      __GL_VRR_ALLOWED = "0";
     };
 
     # Hardware acceleration packages

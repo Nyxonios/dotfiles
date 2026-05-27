@@ -35,9 +35,11 @@
 
       pkgs.gcc
 
+      # Directory environment
+      pkgs.direnv
+
     ] ++ lib.optionals (host.formFactor == "vm" && builtins.elem "work" (host.tags or [ ])) [
       pkgs.devenv
-      pkgs.direnv
       pkgs.lsof
       pkgs.kubectl
       pkgs.kustomize
