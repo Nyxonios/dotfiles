@@ -59,6 +59,7 @@
         set -g status-position top
         set -g pane-active-border-style 'fg=#cad3f5,bg=#cad3f5'
         set -g extended-keys on
+        set -g extended-keys-format csi-u
         set -g xterm-keys on
         set -g allow-passthrough on
         set -g set-clipboard on

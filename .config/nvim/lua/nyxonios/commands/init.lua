@@ -55,17 +55,36 @@ vim.api.nvim_create_user_command('AlignMarkdownTable', function(opts)
       local cells = {}
       local trimmed_line = line:gsub('|$', '')
       local is_sep = true
-      for cell in trimmed_line:gmatch('|([^|]*)') do
-        local trimmed = cell:gsub('^%s+', ''):gsub('%s+$', '')
-        table.insert(cells, trimmed)
-        if trimmed ~= '' and not trimmed:match('^%-+$') then
-          is_sep = false
+
+      -- Split by '|' not preceded by '\' so escaped pipes stay inside cells
+      local i = 1
+      local cell_start = 1
+      while i <= #trimmed_line do
+        if trimmed_line:sub(i, i) == '|' and (i == 1 or trimmed_line:sub(i - 1, i - 1) ~= '\\') then
+          table.insert(cells, trimmed_line:sub(cell_start, i - 1))
+          cell_start = i + 1
         end
+        i = i + 1
+      end
+      if cell_start <= #trimmed_line then
+        table.insert(cells, trimmed_line:sub(cell_start))
+      end
+
+      if cells[1] == '' then
+        table.remove(cells, 1)
       end
       while #cells > 0 and cells[#cells] == '' do
         table.remove(cells)
       end
+
       if #cells > 0 then
+        for idx, cell in ipairs(cells) do
+          local trimmed = cell:gsub('^%s+', ''):gsub('%s+$', '')
+          cells[idx] = trimmed
+          if trimmed ~= '' and not trimmed:match('^%-+$') then
+            is_sep = false
+          end
+        end
         table.insert(rows, cells)
         table.insert(is_separator, is_sep)
       end

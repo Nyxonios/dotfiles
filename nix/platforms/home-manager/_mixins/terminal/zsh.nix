@@ -45,6 +45,11 @@ in
       export EDITOR=nvim
       export OPENCODE_CONFIG_DIR=~/.config/opencode
 
+      # Enable editing current command line in $EDITOR
+      autoload -U edit-command-line
+      zle -N edit-command-line
+      bindkey '^e' edit-command-line
+
       # Source p10k config from symlinked file
       [[ -f ~/.config/zsh/p10k.zsh ]] && source ~/.config/zsh/p10k.zsh
 
@@ -99,6 +104,7 @@ in
       fi
 
       export PATH=$PATH:$HOME/bin
+      export PATH=$PATH:$HOME/.local/bin
     '';
 
     oh-my-zsh = {

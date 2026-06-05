@@ -12,5 +12,6 @@
     ./neovim.nix
     ./k9s.nix
     ./opencode.nix
+    ./pi.nix
   ];
 }

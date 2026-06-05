@@ -41,7 +41,8 @@
       pkgs.bun
 
       # JavaScript/TypeScript (Node already in host config for work)
-      pkgs.nodejs_20
+      pkgs.nodejs_25
+      # pkgs.pnpm_10
       pkgs.typescript
       pkgs.prettierd
 

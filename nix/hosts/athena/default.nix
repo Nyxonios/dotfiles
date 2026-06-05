@@ -8,8 +8,6 @@
   # Work-specific system packages
   # Note: User applications like obsidian, spotify are managed by Home Manager
   environment.systemPackages = [
-    pkgs.nodejs_20
-    pkgs.pnpm_8
     pkgs.typescript
     pkgs.prettierd
   ];

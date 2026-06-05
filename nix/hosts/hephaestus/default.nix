@@ -12,5 +12,6 @@
     pkgs.grpcurl
     pkgs.lsof
     pkgs.xclip
+    pkgs.gcx
   ];
 }
