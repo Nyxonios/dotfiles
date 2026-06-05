@@ -40,17 +40,6 @@ in
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     };
 
-    # Additional environment variables for NVIDIA
-    environment.variables = lib.mkIf (builtins.elem "nvidia" (host.gpu or [ ])) {
-      LIBVA_DRIVER_NAME = "nvidia";
-      NVD_BACKEND = "nvidia";
-      GBM_BACKEND = "nvidia-drm";
-      __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-      WLR_NO_HARDWARE_CURSORS = "1";
-      WLR_RENDERER = "gles2";
-      __GL_SYNC_TO_VBLANK = "0";
-    };
-
     # System packages for Hyprland
     environment.systemPackages = with pkgs; [
       hyprcursor
