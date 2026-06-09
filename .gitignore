@@ -18,3 +18,4 @@
 # Jujutsu (jj) version control metadata
 .jj/
 
+.config/pi/agent/sessions/*
