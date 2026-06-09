@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "paths": {
+      "@earendil-works/pi-coding-agent": [
+        "../../../.local/lib/node_modules/@earendil-works/pi-coding-agent/dist/index.d.ts"
+      ],
+      "@earendil-works/pi-tui": [
+        "../../../.local/lib/node_modules/@earendil-works/pi-coding-agent/node_modules/@earendil-works/pi-tui/dist/index.d.ts"
+      ]
+    },
+    "typeRoots": [
+      "../../../.local/lib/node_modules/@earendil-works/pi-coding-agent/node_modules/@types"
+    ]
+  },
+  "include": ["agent/extensions/**/*.ts"]
+}
