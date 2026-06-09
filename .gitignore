@@ -19,3 +19,4 @@
 .jj/
 
 .config/pi/agent/sessions/*
+.config/pi/agent/trust.json
