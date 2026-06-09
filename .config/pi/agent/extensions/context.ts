@@ -228,11 +228,12 @@ export default function contextExtension(pi: ExtensionAPI) {
 
 			// Get prompt if not inline
 			if (!userPrompt.trim()) {
-				userPrompt = await ctx.ui.editor(`Prompt (contexts: ${validNames.join(", ")}):`);
-				if (!userPrompt?.trim()) {
+				const editorPrompt = await ctx.ui.editor(`Prompt (contexts: ${validNames.join(", ")}):`);
+				if (!editorPrompt?.trim()) {
 					ctx.ui.notify("No prompt provided.", "info");
 					return;
 				}
+				userPrompt = editorPrompt;
 			}
 
 			// Read context files
@@ -259,6 +260,10 @@ export default function contextExtension(pi: ExtensionAPI) {
 
 			ctx.ui.notify(`Loaded contexts: ${validNames.join(", ")}. Sending prompt...`, "info");
 			pi.sendUserMessage(combined);
+			// Defer adding to history so it goes in AFTER the "/context" command
+			// that the editor already added via the normal submit flow.
+			await new Promise((r) => setTimeout(r, 0));
+			(ctx.ui as any).addToHistory?.(combined);
 		},
 	});
 }
