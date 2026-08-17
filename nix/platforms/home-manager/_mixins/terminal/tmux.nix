@@ -72,6 +72,7 @@
         unbind '"'
         bind - split-window -v -c '#{pane_current_path}'
         bind -n 'C-_' split-window -v -c '#{pane_current_path}'
+        bind -n 'C-i' split-window -h -c '#{pane_current_path}' \; send-keys 'nvim' C-m \; select-pane -L \; send-keys 'pi' C-m
 
         unbind r
         bind r source-file ${config.xdg.configHome}/tmux/tmux.conf

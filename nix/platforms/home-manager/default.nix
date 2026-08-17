@@ -19,6 +19,9 @@ in
 
     # Services mixins
     ./_mixins/services
+
+    # Local bin / scripts
+    ./_mixins/bin
   ];
 
   # Enable XDG

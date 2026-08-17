@@ -99,11 +99,10 @@ in
         chpwd_functions=(_direnv_hook $chpwd_functions)
       fi
 
-      if [ -f ~/bin/work.sh ]; then
-        source ~/bin/work.sh
+      if [ -f ~/.local/bin/work.sh ]; then
+        source ~/.local/bin/work.sh
       fi
 
-      export PATH=$PATH:$HOME/bin
       export PATH=$PATH:$HOME/.local/bin
     '';
 

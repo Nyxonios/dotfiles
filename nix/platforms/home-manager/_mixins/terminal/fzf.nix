@@ -7,6 +7,7 @@
     programs.fzf = {
       enable = true;
       enableZshIntegration = true;
+      enableNushellIntegration = false;
       tmux.enableShellIntegration = true;
     };
   };
