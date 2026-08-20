@@ -13,6 +13,7 @@ let
     row-spacing = 8;
     show-keybinds = false;
     close-on-lost-focus = true;
+    no-version-info = true;
     css = "${host.home}/.config/wleave/style.css";
     buttons = [
       {
