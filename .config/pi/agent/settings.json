@@ -13,7 +13,7 @@
     "enabled": true,
     "maxRetries": 3
   },
-  "lastChangelogVersion": "0.79.0",
+  "lastChangelogVersion": "0.84.2",
   "packages": [
     "npm:pi-web-access",
     "npm:pi-subagents"
