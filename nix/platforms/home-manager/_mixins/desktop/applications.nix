@@ -22,6 +22,7 @@ in
 
     # Pointer cursor theme (GTK/X11/Wayland specific)
     home.pointerCursor = {
+      enable = true;
       gtk.enable = true;
       package = pkgs.bibata-cursors;
       name = "Bibata-Modern-Ice";
