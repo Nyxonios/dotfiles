@@ -9,6 +9,15 @@
 
   # Modified packages - version overrides, patches, compilation flags
   modifiedPackages = final: prev: {
+    # Fix mattermost-desktop bundled .node addon not finding libstdc++.so.6
+    mattermost-desktop = prev.mattermost-desktop.overrideAttrs (old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ prev.makeWrapper ];
+      postFixup = (old.postFixup or "") + ''
+        wrapProgram "$out/bin/mattermost-desktop" \
+          --prefix LD_LIBRARY_PATH : "${prev.stdenv.cc.cc.lib}/lib"
+      '';
+    });
+
     # Pin catppuccin tmux plugin to a specific version
     tmuxPlugins = prev.tmuxPlugins // {
       catppuccin = prev.tmuxPlugins.catppuccin.overrideAttrs (old: {
