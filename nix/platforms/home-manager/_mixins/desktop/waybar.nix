@@ -72,7 +72,7 @@ let
 in
 {
   config = lib.mkIf (isNixOS && isDesktop) {
-    home.packages = [ recording-indicator stop-recording ];
+    home.packages = [ recording-indicator stop-recording pkgs.networkmanagerapplet ];
 
     # Configure & Theme Waybar via home-manager
     programs.waybar = {
@@ -90,7 +90,6 @@ in
           modules-right = [
             "bluetooth"
             "network"
-            "custom/notification"
             "tray"
             "custom/screenshot"
             "custom/screen-record"
@@ -143,7 +142,11 @@ in
             format-ethernet = " {bandwidthDownOctets}";
             format-wifi = "{icon} {signalStrength}%";
             format-disconnected = "󰤮";
-            tooltip = false;
+            tooltip = true;
+            tooltip-format-wifi = "{essid} ({signalStrength}%)";
+            tooltip-format-ethernet = "{ifname}";
+            tooltip-format-disconnected = "Disconnected";
+            on-click = "sleep 0.1 && nm-connection-editor";
           };
           "tray" = {
             spacing = 12;
