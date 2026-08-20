@@ -42,6 +42,17 @@
 
     # Pin devenv to v1.x (highest v1 version before v2.0)
     devenv = inputs.devenv.packages.${prev.stdenv.hostPlatform.system}.devenv;
+
+    # Fix hyprland/workspaces click navigation on Hyprland >= 0.55 with Lua configs
+    # by applying PR #5013 (adapt dispatch commands for Lua IPC protocol).
+    # The patch alters only the hyprland IPC module; all original build
+    # dependencies (including the absence of libcava in this nixpkgs version)
+    # are preserved.
+    # See: https://github.com/Alexays/Waybar/pull/5013
+    waybar = prev.waybar.overrideAttrs (old: {
+      patches = (old.patches or [ ]) ++ [ ./0001-waybar-hyprland-lua-dispatch.patch ];
+    });
+
   };
 
   # Stable packages from nixpkgs-stable
