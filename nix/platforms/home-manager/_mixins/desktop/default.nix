@@ -16,5 +16,6 @@
     ./universal-apps.nix
     ./darwin-apps.nix
     ./screenshot.nix
+    ./hyprlock.nix
   ];
 }

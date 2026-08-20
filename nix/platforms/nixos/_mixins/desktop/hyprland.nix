@@ -19,6 +19,9 @@ in
       xwayland.enable = true;
     };
 
+    # Required for hyprlock to authenticate
+    security.pam.services.hyprlock = {};
+
     # Portal configuration for screen sharing
     # Hyprland automatically registers xdg-desktop-portal-hyprland,
     # but we need to explicitly set the backend preference so that

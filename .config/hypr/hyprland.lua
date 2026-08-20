@@ -38,6 +38,7 @@ local menu        = "rofi -show drun"
 hl.on("hyprland.start", function ()
     hl.exec_cmd("waybar")
     hl.exec_cmd("swaync")
+    hl.exec_cmd("hypridle")
     hl.exec_cmd("awww-daemon")
     hl.exec_cmd("awww img $HOME/dotfiles/wallpapers/art-mars.png --transition-type none")
     -- Expand HYPRLAND_INSTANCE_SIGNATURE at runtime via a sub-shell
@@ -139,6 +140,8 @@ hl.bind(mainMod .. " + V",     hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P",     hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J",     hl.dsp.window.pseudo())
+hl.bind(mainMod .. " + L",     hl.dsp.exec_cmd("loginctl lock-session"))
+hl.bind(mainMod .. " + CTRL + Q", hl.dsp.exec_cmd("loginctl lock-session"))
 
 -- Floating window preset (toggle + resize + center)
 -- Note: Lua resize bindings do not support percentage strings.
