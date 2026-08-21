@@ -69,10 +69,29 @@ let
       echo '{"text": "", "class": "hidden", "tooltip": "No recording in progress"}'
     '';
   };
+
+  language-indicator = pkgs.writeShellApplication {
+    name = "language-indicator";
+    runtimeInputs = [ pkgs.jq ];
+    text = ''
+      map=$(hyprctl devices -j | jq -r '.keyboards[] | select(.main == true) | .active_keymap')
+      case "$map" in
+        *English*|*US*)
+          echo "us"
+          ;;
+        *Swedish*|*Svenska*)
+          echo "se"
+          ;;
+        *)
+          echo "??"
+          ;;
+      esac
+    '';
+  };
 in
 {
   config = lib.mkIf (isNixOS && isDesktop) {
-    home.packages = [ recording-indicator stop-recording pkgs.networkmanagerapplet ];
+    home.packages = [ recording-indicator stop-recording language-indicator pkgs.networkmanagerapplet ];
 
     # Configure & Theme Waybar via home-manager
     programs.waybar = {
@@ -88,6 +107,7 @@ in
             "clock"
           ];
           modules-right = [
+            "custom/language"
             "bluetooth"
             "network"
             "tray"
@@ -159,6 +179,12 @@ in
             tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{device_enumerate}";
             tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
             on-click = "sleep 0.1 && blueman-manager";
+          };
+          "custom/language" = {
+            exec = "${language-indicator}/bin/language-indicator";
+            interval = 1;
+            format = "⌨ {}";
+            tooltip = false;
           };
           "pulseaudio" = {
             format = "{icon} {volume}% {format_source}";
@@ -298,8 +324,10 @@ in
 
         #custom-language {
             color: #${palette.base05};
-            border-left: 0px;
+            border-radius: 10px 0px 0px 10px;
             border-right: 0px;
+            margin-left: 10px;
+            margin-right: 0px;
         }
 
         #custom-updates {
@@ -344,9 +372,10 @@ in
         }
         #bluetooth {
           color: #${palette.base05};
-          border-radius: 10px 0px 0px 10px;
+          border-radius: 0px;
+          border-left: 0px;
           border-right: 0px;
-          margin-left: 10px;
+          margin-left: 0px;
         }
 
         #pulseaudio {
