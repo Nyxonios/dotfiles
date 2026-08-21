@@ -167,6 +167,7 @@ return {
               library = {
                 '${3rd}/luv/library',
                 vim.api.nvim_get_runtime_file('', true),
+                '/run/current-system/sw/share/hypr/stubs',
               },
               -- If lua_ls is really slow on your computer, you can try this instead:
               -- library = { vim.env.VIMRUNTIME },
@@ -175,7 +176,7 @@ return {
               callSnippet = 'Replace',
             },
             diagnostics = {
-              globals = { 'vim' },
+              globals = { 'vim', 'hl' },
             },
             -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
             -- diagnostics = { disable = { 'missing-fields' } },
