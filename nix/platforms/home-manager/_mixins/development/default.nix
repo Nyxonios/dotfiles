@@ -13,5 +13,6 @@
     ./k9s.nix
     ./opencode.nix
     ./pi.nix
+    ./tuicr.nix
   ];
 }

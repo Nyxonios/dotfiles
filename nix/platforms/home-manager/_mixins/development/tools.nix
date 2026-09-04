@@ -38,6 +38,9 @@
       # Directory environment
       pkgs.direnv
 
+      # AI agent "runtime"
+      pkgs.herdr
+
     ] ++ lib.optionals (host.formFactor == "vm" && builtins.elem "work" (host.tags or [ ])) [
       pkgs.devenv
       pkgs.lsof
