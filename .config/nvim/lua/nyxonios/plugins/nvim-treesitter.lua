@@ -3,7 +3,7 @@ return {
   lazy = false,
   build = ':TSUpdate !',
   config = function()
-    require('nvim-treesitter').install {
+    require('nvim-treesitter.install').ensure_installed {
       'lua',
       'go',
       'rust',
