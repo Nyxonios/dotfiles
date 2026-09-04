@@ -7,5 +7,6 @@
   imports = [
     ./networkmanager.nix
     ./ssh.nix
+    ./netbird.nix
   ];
 }

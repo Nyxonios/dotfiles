@@ -88,6 +88,19 @@ let
       esac
     '';
   };
+
+  netbird-indicator = pkgs.writeShellApplication {
+    name = "netbird-indicator";
+    runtimeInputs = [ pkgs.coreutils pkgs.netbird ];
+    text = ''
+      status=$(netbird status 2>/dev/null || true)
+      if echo "$status" | grep -q "NetBird IP:" 2>/dev/null; then
+        echo '{"text": "󰌆", "class": "connected", "tooltip": "Netbird VPN connected"}'
+      else
+        echo '{"text": "󰌊", "class": "disconnected", "tooltip": "Netbird VPN disconnected"}'
+      fi
+    '';
+  };
 in
 {
   config = lib.mkIf (isNixOS && isDesktop) {
@@ -107,6 +120,7 @@ in
             "clock"
           ];
           modules-right = [
+            "custom/netbird"
             "custom/language"
             "bluetooth"
             "network"
@@ -179,6 +193,12 @@ in
             tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{device_enumerate}";
             tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
             on-click = "sleep 0.1 && blueman-manager";
+          };
+          "custom/netbird" = {
+            exec = "${netbird-indicator}/bin/netbird-indicator";
+            interval = 5;
+            return-type = "json";
+            format = "{}";
           };
           "custom/language" = {
             exec = "${language-indicator}/bin/language-indicator";
@@ -290,6 +310,7 @@ in
         #custom-recording,
         #custom-screenshot,
         #custom-screen-record,
+        #custom-netbird,
         #window,
         #hyprland-workspaces,
         #clock,
@@ -322,11 +343,24 @@ in
             padding-left: 5px;
         }
 
-        #custom-language {
+        #custom-netbird {
             color: #${palette.base05};
             border-radius: 10px 0px 0px 10px;
             border-right: 0px;
             margin-left: 10px;
+            margin-right: 0px;
+        }
+        #custom-netbird.connected {
+            color: #a6e3a1;
+        }
+        #custom-netbird.disconnected {
+            color: #f38ba8;
+        }
+        #custom-language {
+            color: #${palette.base05};
+            border-left: 0px;
+            border-right: 0px;
+            margin-left: 0px;
             margin-right: 0px;
         }
 
