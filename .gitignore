@@ -20,3 +20,9 @@
 
 .config/pi/agent/sessions/*
 .config/pi/agent/trust.json
+.config/pi/agent/missions/*
+.config/pi/agent/run-history.jsonl
+.config/pi/agent/models-store.json
+.config/pi/agent/skills/source-layout/
+.config/pi/agent/extensions/herdr-agent-state.ts
+.config/opencode/plugins/
