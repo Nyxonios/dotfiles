@@ -1,0 +1,5 @@
+# Linux-specific Ghostty settings
+# This file is only loaded on Linux systems (via conditional config)
+
+# Disable clipboard copy notifications (Linux/GTK only)
+app-notifications = no-clipboard-copy
