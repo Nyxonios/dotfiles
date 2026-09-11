@@ -9,6 +9,13 @@
       # Task runner
       pkgs.just
 
+      # Containers/Kubernetes
+      pkgs.kubectl
+      pkgs.kustomize
+
+      # Version control
+      pkgs.lazygit
+
       # Search and utilities
       pkgs.ripgrep
       pkgs.jq
@@ -21,31 +28,29 @@
       pkgs.gnumake42
 
       # Secrets
-      pkgs.vault-bin
+      # pkgs.vault-bin
 
       # SOPS tools (age encryption)
       pkgs.age
       pkgs.ssh-to-age
 
       # GitLab
-      pkgs.glab
+      # pkgs.glab
 
       # Code analysis
-      pkgs.glsl_analyzer
+      # pkgs.glsl_analyzer
 
-      pkgs.gcc
-
-      # Directory environment
-      pkgs.direnv
-
-      # AI agent "runtime"
-      pkgs.herdr
-
-    ] ++ lib.optionals (host.formFactor == "vm" && builtins.elem "work" (host.tags or [ ])) [
-      pkgs.devenv
-      pkgs.lsof
-      pkgs.kubectl
-      pkgs.kustomize
+      # VM-specific tools (only on VMs)
+    ] ++ lib.optionals (host.platform == "home-manager") [
+      # pkgs.devenv
+      # pkgs.direnv
+      # pkgs.minio-warp
+      # pkgs.graphviz
+      # pkgs.awscli2
+      # pkgs.s3cmd
+      # pkgs.grpcurl
+      # pkgs.lsof
+      # pkgs.xclip
     ];
   };
 }
