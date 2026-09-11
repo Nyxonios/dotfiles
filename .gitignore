@@ -26,3 +26,6 @@
 .config/pi/agent/skills/source-layout/
 .config/pi/agent/extensions/herdr-agent-state.ts
 .config/opencode/plugins/
+
+# Zeroclaw runtime state
+.config/zeroclaw/workspaces/daemon_state.json
