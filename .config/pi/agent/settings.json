@@ -13,10 +13,10 @@
     "enabled": true,
     "maxRetries": 10
   },
-  "lastChangelogVersion": "0.84.4",
+  "lastChangelogVersion": "0.85.1",
   "packages": [
     "npm:pi-web-access",
     "npm:pi-subagents"
   ],
-  "hideThinkingBlock": true
+  "hideThinkingBlock": false
 }
