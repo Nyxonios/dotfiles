@@ -12,7 +12,7 @@
       pkgs.gofumpt
 
       # Zig
-      pkgs.zigpkgs.master
+      pkgs.zigpkgs."0.16.0"
       pkgs.zls
 
       # Rust

@@ -35,6 +35,22 @@
             set -g @catppuccin_date_time_text "%H:%M"
           '';
         }
+      ] ++ lib.optionals (host.name == "odin") [
+        {
+          plugin = pkgs.tmuxPlugins.resurrect;
+          extraConfig = ''
+            set -g @resurrect-capture-pane-contents 'on'
+            set -g @resurrect-strategy-nvim 'session'
+            set -g @resurrect-processes ':all:'
+          '';
+        }
+        {
+          plugin = pkgs.tmuxPlugins.continuum;
+          extraConfig = ''
+            set -g @continuum-restore 'on'
+            set -g @continuum-save-interval '15'
+          '';
+        }
       ];
 
       extraConfig = ''
