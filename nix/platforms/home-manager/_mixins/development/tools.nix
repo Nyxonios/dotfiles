@@ -30,6 +30,9 @@
       # GitLab
       pkgs.glab
 
+      # GitHub
+      pkgs.gh
+
       # Code analysis
       pkgs.glsl_analyzer
 
