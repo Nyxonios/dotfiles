@@ -22,5 +22,8 @@
 
     # Users mixins
     ./_mixins/users
+
+    # Gaming mixins
+    ./_mixins/gaming
   ];
 }

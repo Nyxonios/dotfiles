@@ -14,7 +14,7 @@
       audio.enable = true;
       alsa = {
         enable = true;
-        support32Bit = false;
+        support32Bit = lib.mkDefault false;
       };
       pulse.enable = true;
       wireplumber.enable = true;
