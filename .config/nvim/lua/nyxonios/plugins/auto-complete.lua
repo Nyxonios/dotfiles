@@ -34,6 +34,7 @@ return {
     -- See `:help cmp`
     local cmp = require 'cmp'
     local luasnip = require 'luasnip'
+    require 'nyxonios.cmp.pi-skills'
     luasnip.config.setup {
       updateevents = 'TextChanged,TextChangedI',
       enable_autosnippets = true,
@@ -90,6 +91,7 @@ return {
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
         { name = 'path' },
+        { name = 'pi_skills' },
       },
     }
   end,
