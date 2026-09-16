@@ -3,7 +3,7 @@ return {
   lazy = false,
   build = ':TSUpdate !',
   config = function()
-    require('nvim-treesitter').install {
+    require('nvim-treesitter').install({
       'lua',
       'go',
       'rust',
@@ -16,14 +16,16 @@ return {
       'comment',
       'regex',
       'nix',
-    }
+    })
 
     vim.api.nvim_create_autocmd('FileType', {
       group = vim.api.nvim_create_augroup('treesitter-highlight', { clear = true }),
       callback = function(args)
         local ft = vim.bo[args.buf].filetype
         local lang = vim.treesitter.language.get_lang(ft)
-        if lang and vim.treesitter.language.add(lang) then
+        -- Only enable treesitter highlight if the parser is actually installed.
+        -- Prevents errors when a parser install failed/is missing.
+        if lang and vim.treesitter.language.add(lang) and pcall(vim.treesitter.get_parser, args.buf, lang) then
           vim.treesitter.start(args.buf, lang)
         end
       end,
