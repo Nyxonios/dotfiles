@@ -8,7 +8,10 @@
       enable = true;
       enableZshIntegration = true;
       enableNushellIntegration = false;
-      tmux.enableShellIntegration = true;
+      # Disable fzf-tmux script integration; use inline fzf instead.
+      # The fzf-tmux split-pane mode has a bug where selected history items
+      # are not returned to the zsh buffer, leaving the prompt empty.
+      tmux.enableShellIntegration = false;
     };
   };
 }
