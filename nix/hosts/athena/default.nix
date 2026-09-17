@@ -10,5 +10,6 @@
   environment.systemPackages = [
     pkgs.typescript
     pkgs.prettierd
+    pkgs.nodejs
   ];
 }

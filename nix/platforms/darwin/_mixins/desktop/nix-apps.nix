@@ -13,9 +13,9 @@ in
     environment.systemPackages = [ pkgs.betterdisplay ];
 
     # Symlink BetterDisplay to /Applications so it's discoverable by LaunchServices
-    system.activationScripts.postUserActivation.text = ''
+    system.activationScripts.applications.text = ''
       echo "Linking BetterDisplay to /Applications..."
-      rm -f "/Applications/BetterDisplay.app"
+      rm -rf "/Applications/BetterDisplay.app"
       ln -sf "${pkgs.betterdisplay}/Applications/BetterDisplay.app" "/Applications/BetterDisplay.app"
     '';
   };
