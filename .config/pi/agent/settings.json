@@ -18,5 +18,7 @@
     "npm:pi-web-access",
     "npm:pi-subagents"
   ],
-  "hideThinkingBlock": false
+  "hideThinkingBlock": false,
+  "fullscreenExitOutput": "transcript",
+  "tuiMode": "fullscreen"
 }

@@ -8,6 +8,8 @@ let
 in
 {
   config = {
+    home.packages = [ pkgs.pi ];
+
     home.file.".pi".source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/pi";
   };
 }

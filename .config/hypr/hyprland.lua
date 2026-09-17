@@ -51,6 +51,11 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("sh -c 'tmux setenv -g HYPRLAND_INSTANCE_SIGNATURE \"$HYPRLAND_INSTANCE_SIGNATURE\"'")
 end)
 
+-- Start WoW mouse-grab daemon immediately on config load 
+-- (covers both initial startup and hyprctl reloads).
+-- The script kills any old instance before launching itself.
+hl.exec_cmd("sh -c 'nohup bash /home/nyxonios/dotfiles/.config/hypr/scripts/disable-wow-mouse-grab.sh >/dev/null 2>&1 &'")
+
 -------------------------------
 ---- ENVIRONMENT VARIABLES ----
 -------------------------------
@@ -142,7 +147,6 @@ hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + space", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.window.pseudo())
-hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("loginctl lock-session"))
 hl.bind(mainMod .. " + CTRL + Q", hl.dsp.exec_cmd("loginctl lock-session"))
 
 -- Floating window preset (toggle + resize + center)
@@ -235,4 +239,11 @@ hl.window_rule({
 	name = "calendar-to-workspace-4",
 	match = { class = "^org\\.gnome\\.Calendar$" },
 	workspace = 4,
+})
+
+hl.window_rule({
+	name = "wow-true-fullscreen",
+	match = { title = "^World of Warcraft$" },
+	float = true,
+	fullscreen = true,
 })
