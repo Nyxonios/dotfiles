@@ -67,6 +67,7 @@ let
       extraSpecialArgs = mkSpecialArgs system;
       modules = [
         ../platforms/home-manager
+        ../hosts/${hostname}
         {
           home = {
             inherit (system) username;

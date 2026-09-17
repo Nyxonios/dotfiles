@@ -6,7 +6,7 @@
 , version ? "0.85.1"
 , npmDepsHash ? {
     aarch64-darwin = "sha256-QVO552JAR2TxQ2x5hObg8VzZPmTLXUms2gypiBM1XXA=";
-    x86_64-linux   = "sha256-MYF38/Q8JFzg2juul/jgYDjy8Bk08kJy+siLjJrIPr0=";
+    x86_64-linux   = "sha256-TOcaCCWaWU5b53QCUYHQApcuJemgQykMfFWEFiOcqQE=";
   }.${pkgs.stdenv.hostPlatform.system} or (throw "pi-coding-agent: no npmDepsHash known for ${pkgs.stdenv.hostPlatform.system}; build once with lib.fakeSha256 and add it here")
 }:
 
