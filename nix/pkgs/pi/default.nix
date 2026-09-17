@@ -4,14 +4,21 @@
     hash = "sha256-H0mHKWSb3OZH0RYJk7TZK/PGFMyBkhO+4vkd008qevQ=";
   }
 , version ? "0.85.1"
-, npmDepsHash ? "sha256-TOcaCCWaWU5b53QCUYHQApcuJemgQykMfFWEFiOcqQE="
+, npmDepsHash ? {
+    aarch64-darwin = "sha256-QVO552JAR2TxQ2x5hObg8VzZPmTLXUms2gypiBM1XXA=";
+    x86_64-linux   = "sha256-MYF38/Q8JFzg2juul/jgYDjy8Bk08kJy+siLjJrIPr0=";
+  }.${pkgs.stdenv.hostPlatform.system} or (throw "pi-coding-agent: no npmDepsHash known for ${pkgs.stdenv.hostPlatform.system}; build once with lib.fakeSha256 and add it here")
 }:
 
 let
   # Phase 1: reproducibly fetch the npm tarball or local directory, and install
   # its dependencies. This is a fixed-output derivation so it is allowed to
-  # talk to the npm registry.  Update `npmDepsHash` whenever dependencies
-  # change (e.g. by building once with `lib.fakeSha256`).
+  # talk to the npm registry.
+  #
+  # Because `npm install` skips incompatible optionalDependencies, the installed
+  # node_modules tree differs per platform. We keep a map of known hashes below.
+  # To update: build once with `lib.fakeSha256` on each target platform and add
+  # the resulting hash to the `npmDepsHash` attrset.
   piWithDeps = pkgs.stdenvNoCC.mkDerivation {
     pname = "pi-coding-agent-deps";
     inherit version;
