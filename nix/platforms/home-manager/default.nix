@@ -49,6 +49,13 @@ in
         fi
       fi
     '';
+
+    # Override upstream LaunchAgents activation on macOS.
+    # The upstream setupLaunchAgents uses GNU `readlink -m` which fails on Darwin's BSD readlink.
+    # We don't define any launchd.agents, so this step is a no-op. Rather than wait for upstream
+    # to fix it, we override the activation entry with a NOOP.
+    setupLaunchAgents = lib.mkIf (host.platform == "darwin") (lib.mkForce
+      (lib.hm.dag.entryAfter [ "writeBoundary" ] "# NOOP: disabled due to BSD readlink -m incompatibility\ntrue"));
   };
 
   # Let Home Manager manage itself

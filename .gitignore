@@ -26,6 +26,7 @@
 .config/pi/agent/models-store.json
 .config/pi/agent/skills/source-layout/
 .config/pi/agent/extensions/herdr-agent-state.ts
+.config/pi/web-search-cache/
 .config/opencode/plugins/
 
 # Zeroclaw runtime state
