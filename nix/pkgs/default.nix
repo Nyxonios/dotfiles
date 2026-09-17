@@ -2,6 +2,7 @@
 # These can be built using 'nix build .#<package-name>'
 
 pkgs: {
+  betterdisplay = pkgs.callPackage ./betterdisplay { };
   pi = pkgs.callPackage ./pi { };
 
   # Add your custom packages here as needed

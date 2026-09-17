@@ -10,7 +10,6 @@
         enable = true;
 
         casks = [
-          "betterdisplay"
           "ghostty"
           "mattermost"
           "raycast"

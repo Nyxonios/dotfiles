@@ -6,6 +6,7 @@
 {
   imports = [
     ./homebrew.nix
+    ./nix-apps.nix
   ];
 
   # Aerospace and Karabiner are now installed via home-manager in
