@@ -5,10 +5,11 @@
 
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
+  pi = pkgs.callPackage ../../../../pkgs/pi { };
 in
 {
   config = {
-    home.packages = [ pkgs.pi ];
+    home.packages = [ pi ];
 
     home.file.".pi".source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/pi";
   };

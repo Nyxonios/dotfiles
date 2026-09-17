@@ -12,5 +12,6 @@
     ./k9s.nix
     ./opencode.nix
     ./zeroclaw.nix
+    ./pi.nix
   ];
 }
