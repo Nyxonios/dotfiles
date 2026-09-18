@@ -28,7 +28,7 @@
       pkgs.gnumake42
 
       # Secrets
-      # pkgs.vault-bin
+      pkgs.vault-bin
 
       # SOPS tools (age encryption)
       pkgs.age
