@@ -158,22 +158,19 @@ in
     if [[ -n "${host.platform}" && "${host.platform}" != "nixos" ]]; then
       PATH="/usr/bin:/bin:$PATH"
       ZSH_PATH="${pkgs.zsh}/bin/zsh"
-      
-      # Check if zsh is already the default shell
-      if [[ $(getent passwd ${host.username}) != *"$ZSH_PATH"* ]]; then
-        echo "Setting zsh as default shell (using chsh). Password may be required."
-        
-        # Add zsh to /etc/shells if not present
-        if ! grep -q "$ZSH_PATH" /etc/shells 2>/dev/null; then
-          echo "Adding zsh to /etc/shells"
-          echo "$ZSH_PATH" | sudo tee -a /etc/shells
-        fi
-        
-        # Set zsh as default shell
-        echo "Running chsh to make zsh the default shell"
-        chsh -s "$ZSH_PATH" ${host.username}
-        echo "Zsh is now set as default shell!"
+
+      echo "Setting zsh as default shell (using chsh). Password may be required."
+
+      # Add zsh to /etc/shells if not present
+      if ! grep -q "$ZSH_PATH" /etc/shells 2>/dev/null; then
+        echo "Adding zsh to /etc/shells"
+        echo "$ZSH_PATH" | sudo tee -a /etc/shells
       fi
+
+      # Set zsh as default shell (chsh is idempotent)
+      echo "Running chsh to make zsh the default shell"
+      chsh -s "$ZSH_PATH" ${host.username}
+      echo "Zsh is now set as default shell!"
     fi
   '';
 }
