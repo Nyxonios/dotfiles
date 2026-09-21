@@ -13,5 +13,8 @@
     pkgs.lsof
     pkgs.xclip
     pkgs.gcx
+
+    # GitLab CLI
+    pkgs.glab
   ];
 }

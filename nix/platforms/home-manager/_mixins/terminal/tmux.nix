@@ -55,8 +55,12 @@
 
       extraConfig = ''
         # Darwin-specific fixes
-        set -gu default-command
         set -g default-shell "$SHELL"
+
+        # Default all new panes/windows/sessions to home unless they opt out via
+        # TMUX_KEEP_PATH.  Splits pass -e TMUX_KEEP_PATH=1 so they start in the
+        # current directory.
+        set -g default-command 'if [ -z "''${TMUX_KEEP_PATH}" ]; then cd ~; else unset TMUX_KEEP_PATH; fi; exec ${pkgs.zsh}/bin/zsh -l'
 
         set -g default-terminal "tmux-256color"
         set -ga terminal-overrides ",*256col*:Tc"
@@ -83,11 +87,17 @@
         set -as terminal-features ',*:clipboard'
 
         unbind %
-        bind -n 'C-\' split-window -h -c '#{pane_current_path}'
+        bind -n 'C-\' split-window -h -c '#{pane_current_path}' -e 'TMUX_KEEP_PATH=1'
 
         unbind '"'
-        bind - split-window -v -c '#{pane_current_path}'
-        bind -n 'C-_' split-window -v -c '#{pane_current_path}'
+        bind - split-window -v -c '#{pane_current_path}' -e 'TMUX_KEEP_PATH=1'
+        bind -n 'C-_' split-window -v -c '#{pane_current_path}' -e 'TMUX_KEEP_PATH=1'
+
+
+        # Windows and sessions start at ~; splits use current path
+        unbind c
+        bind c new-window -c '~'
+        bind C new-session -c '~'
 
         unbind r
         bind r source-file ${config.xdg.configHome}/tmux/tmux.conf
