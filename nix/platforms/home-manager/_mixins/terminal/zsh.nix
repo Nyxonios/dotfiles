@@ -45,6 +45,12 @@ in
       export EDITOR=nvim
       export OPENCODE_CONFIG_DIR=~/.config/opencode
 
+      # Keep SSH_AUTH_SOCK in sync with the symlink maintained by ~/.ssh/rc
+      # This fixes stale agent sockets when reconnecting to tmux/screen sessions
+      if [[ -L ~/.ssh/ssh_auth_sock && -S $(readlink ~/.ssh/ssh_auth_sock) ]]; then
+        export SSH_AUTH_SOCK=$(readlink ~/.ssh/ssh_auth_sock)
+      fi
+
       # Enable editing current command line in $EDITOR
       autoload -U edit-command-line
       zle -N edit-command-line
