@@ -201,11 +201,20 @@ return {
         filetypes = { 'odin' },
       })
 
+      -- Slang (shader language) LSP
+      vim.lsp.config('slangd', {
+        cmd = { 'slangd' },
+        filetypes = { 'hlsl', 'shaderslang' },
+        root_markers = { 'slangdconfig.json', '.clang-format', '.git' },
+        single_file_support = true,
+      })
+
       -- Enable LSP servers
       vim.lsp.enable 'nixd'
       vim.lsp.enable 'lua_ls'
       vim.lsp.enable 'zls'
       vim.lsp.enable 'ols'
+      vim.lsp.enable 'slangd'
       vim.lsp.enable 'clangd'
       vim.lsp.enable 'rust_analyzer'
       vim.lsp.enable 'bashls'

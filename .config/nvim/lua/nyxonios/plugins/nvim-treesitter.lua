@@ -15,6 +15,8 @@ return {
       'gotmpl',
       'comment',
       'regex',
+      'hlsl',
+      'slang',
       'nix',
     })
 
