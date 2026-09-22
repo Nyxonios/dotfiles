@@ -2,10 +2,9 @@
 name: code-review
 description: >
   Platform-agnostic thorough multi-pass code review of diffs, commit ranges, or
-  file sets. Performs focused review passes (correctness, security, performance,
-  tests, architecture, completeness), synthesises findings into a structured
-  severity-ranked report, provides file:line evidence, and concrete fixes.
-  Read-only — never modifies code.
+  file sets. Delegates each review pass to parallel fresh-context sub-agents,
+  synthesises findings into a structured severity-ranked report, provides
+  file:line evidence, and concrete fixes. Read-only — never modifies code.
 license: MIT
 compatibility: opencode
 metadata:
@@ -15,24 +14,24 @@ metadata:
 
 # Skill: code-review
 
-# Code Review Skill
-
 ## Overview
 
 This skill performs thorough, multi-pass code review on any set of code
 changes. It is platform-agnostic — it does not talk to GitLab, GitHub, or any
 remote system. It reviews code that is provided to it as input.
 
-The review is organised as **six focused passes**, each with a narrow scope, an
-explicit escape hatch (permission to find nothing), and a required structured
-output format. After all passes, findings are synthesised, deduplicated, and
-presented as a severity-ranked actionable report.
+The review is organised as **six focused passes**, each delegated to a
+independent fresh-context sub-agent running in parallel. The parent
+orchestrator controls the workflow, accepts findings, and synthesises a
+severity-ranked actionable report. This mirrors the review-loop pattern used
+for implementation-fix cycles, but is kept strictly read-only (no fix
+workers).
 
 **Companion skills**:
 - `gitlab-review-mr` — GitLab orchestrator that fetches MR data and delegates
-the review to this skill.
+  the review to this skill.
 - `gitlab-analyze-review-comments` — Fetches existing review comments to avoid
-duplicating feedback.
+  duplicating feedback.
 
 **Key principle**: Read-only. This skill never edits files, posts comments, or
 modifies any state.
@@ -84,19 +83,8 @@ git show HEAD:<file> # or read local files
 If the diff exceeds ~500 changed lines, note this in the report and consider
 recommending that the change be split.
 
-### Step 1: Pre-Review — Blast Radius & Scope
-
-Before reading code, understand what territory is being touched.
-
-**Analyse**:
-- Which subsystems, packages, or layers are touched?
-- Does this touch auth, payments, schema migrations, public APIs, or deployment
-  config?
-- Is the change reversible in production (feature flag, rollback plan)?
-- Which other files import or depend on the changed surfaces?
-- Are there generated files, lockfiles, or vendored code that should be skipped?
-
-**Output**:
+Produce a **Blast Radius summary** yourself (this stays in the orchestrator,
+not delegated):
 
 ```
 BLAST RADIUS
@@ -113,12 +101,22 @@ Skipped in review: <generated / vendored / lockfiles>
 > improvement) and touches no risk surfaces, produce a brief blast radius
 > summary and reduce remaining passes to a lighter scan.
 
-### Step 2: Passes 1–6 — Focused Review
+### Step 1: Parallel Review Pass Sub-Agents
 
-Run each pass as an independent analysis. Treat the diff as the primary source
-and full files as secondary context. Each pass has its own narrow mandate.
+**DO NOT perform the review passes yourself.** Instead, launch parallel
+fresh-context reviewers via the `subagent` tool.
 
-**Rules for every pass**:
+Each reviewer receives:
+- The diff
+- Full file contents
+- Commit messages
+- The change context/goal
+- Tech stack hints
+- Existing comments (if any)
+- Their specific pass mandate and output format
+- The blast radius summary
+
+**Reviewer rules** (must be included in each sub-agent task):
 - Focus ONLY on the diff (changed lines and their immediate context).
 - Use full files for context only — do not critique unchanged code unless it
   directly explains a bug in the diff.
@@ -128,14 +126,15 @@ and full files as secondary context. Each pass has its own narrow mandate.
   `No issues found in this pass.`
 - Skip cosmetics (whitespace, import order, formatting) — assume a linter
   handles those.
+- Label every finding with severity: **P0** (blocking), **P1** (high), **P2** (medium).
 
----
+**Launch all reviewers in parallel as async subagents.** Use `async: true`.
 
-#### Pass 1 — Correctness & Logic
+#### Reviewer 1 — Correctness & Logic
 
-**Role**: Senior engineer hunting real bugs.
+Role: Senior engineer hunting real bugs.
 
-**Check**:
+Checks (to include in task):
 - Logic errors in conditions, loops, arithmetic, state transitions
 - Null / undefined / zero-length safety on all new code paths
 - Error handling: are new error paths properly handled? Are existing handlers
@@ -147,7 +146,7 @@ and full files as secondary context. Each pass has its own narrow mandate.
 - Resource leaks: files, connections, subscriptions, timers not cleaned up
 - State management: initialization order, mutation side effects, global state
 
-**Output format per finding**:
+Output format per finding:
 ```
 [PASS-1] <Severity> — <one-line title>
   File: <path>:<line>
@@ -155,13 +154,11 @@ and full files as secondary context. Each pass has its own narrow mandate.
   Fix: <concrete change, <= 30 words>
 ```
 
----
+#### Reviewer 2 — Security
 
-#### Pass 2 — Security
+Role: Security auditor. OWASP-aware.
 
-**Role**: Security auditor. OWASP-aware.
-
-**Check**:
+Checks:
 - Injection: SQL, NoSQL, command, template, LDAP, XPath
 - New user input that reaches any interpreter without validation/sanitisation
 - Hardcoded secrets, tokens, credentials, private keys
@@ -173,7 +170,7 @@ and full files as secondary context. Each pass has its own narrow mandate.
 - Secrets in error messages returned to clients
 - New dependencies — are they trustworthy and actively maintained?
 
-**Output format per finding**:
+Output format per finding:
 ```
 [PASS-2] <Severity> — <one-line title>
   File: <path>:<line>
@@ -182,13 +179,11 @@ and full files as secondary context. Each pass has its own narrow mandate.
   Fix: <concrete mitigation, <= 30 words>
 ```
 
----
+#### Reviewer 3 — Performance
 
-#### Pass 3 — Performance
+Role: SRE / performance engineer.
 
-**Role**: SRE / performance engineer.
-
-**Check**:
+Checks:
 - New synchronous I/O in hot paths (loops, request handlers)
 - N+1 query patterns introduced (loop + DB/API call inside)
 - Algorithmic complexity regressions (e.g. nested loops on unbounded data)
@@ -200,7 +195,7 @@ and full files as secondary context. Each pass has its own narrow mandate.
 - Expensive operations in constructors or render paths
 - Inefficient string concatenation in loops
 
-**Output format per finding**:
+Output format per finding:
 ```
 [PASS-3] <Severity> — <one-line title>
   File: <path>:<line>
@@ -208,13 +203,11 @@ and full files as secondary context. Each pass has its own narrow mandate.
   Fix: <concrete optimisation, <= 30 words>
 ```
 
----
+#### Reviewer 4 — Testing & Validation
 
-#### Pass 4 — Testing & Validation
+Role: QA engineer looking for gaps.
 
-**Role**: QA engineer looking for gaps.
-
-**Check**:
+Checks:
 - New branches without tests (conditions, error paths)
 - Modified branches whose existing test still passes against BOTH old and new
   behaviour (the test proves nothing)
@@ -225,7 +218,7 @@ and full files as secondary context. Each pass has its own narrow mandate.
 - Mock/stub misuse that hides real integration issues
 - Test names that do not describe the scenario under test
 
-**Output format per finding**:
+Output format per finding:
 ```
 [PASS-4] <Severity> — <one-line title>
   File: <path>:<line>
@@ -233,13 +226,11 @@ and full files as secondary context. Each pass has its own narrow mandate.
   Suggested test: <what should be asserted, <= 30 words>
 ```
 
----
+#### Reviewer 5 — Architecture & Maintainability
 
-#### Pass 5 — Architecture & Maintainability
+Role: Staff engineer reviewing structural health.
 
-**Role**: Staff engineer reviewing structural health.
-
-**Check**:
+Checks:
 - Single Responsibility Principle violations (functions/classes doing too much)
 - Coupling: new dependencies on unstable or distant modules
 - Duplication: logic that already exists elsewhere and should be reused
@@ -251,7 +242,7 @@ and full files as secondary context. Each pass has its own narrow mandate.
 - Configuration drift: new env vars without `.env.example` updates
 - Feature flags: should risky changes be behind a flag?
 
-**Output format per finding**:
+Output format per finding:
 ```
 [PASS-5] <Severity> — <one-line title>
   File: <path>:<line>
@@ -259,13 +250,11 @@ and full files as secondary context. Each pass has its own narrow mandate.
   Fix: <concrete refactor, <= 30 words>
 ```
 
----
+#### Reviewer 6 — Completeness & Documentation (deep mode only)
 
-#### Pass 6 — Completeness & Documentation (deep mode only)
+Role: Release captain.
 
-**Role**: Release captain.
-
-**Check**:
+Checks:
 - Changed env vars? → `.env.example` and docs updated?
 - Changed API route / schema? → OpenAPI / client SDK / protobuf docs?
 - New migration? → rollback plan, seed data, idempotency on retry?
@@ -275,7 +264,7 @@ and full files as secondary context. Each pass has its own narrow mandate.
 - New metric / log? → dashboard / alert update?
 - Public API change? → versioning and deprecation notice?
 
-**Output format per finding**:
+Output format per finding:
 ```
 [PASS-6] <Severity> — <one-line title>
   Category: <env | api-docs | migration | changelog | runbook | monitoring>
@@ -283,11 +272,24 @@ and full files as secondary context. Each pass has its own narrow mandate.
   Action: <who should do what, <= 30 words>
 ```
 
----
+**Depth filtering** — launch only the relevant reviewers:
+
+| Depth | Reviewers launched |
+|-------|-------------------|
+| `quick` | 1, 2, 3 (Correctness, Security, Performance) |
+| `standard` (default) | 1, 2, 3, 4, 5 (all above) |
+| `deep` | 1, 2, 3, 4, 5, 6 (all) |
+
+### Step 2: Await Sub-Agent Results
+
+Wait for all async reviewer sub-agents to complete. Collect their outputs.
+
+Use `bg_wait` with `all: true` if running in a context where blocking is
+appropriate, or simply handle incoming completion events as they arrive.
 
 ### Step 3: Synthesis & Deduplication
 
-After all passes:
+After all reviewers return:
 
 1. **Merge duplicates**: The same bug may surface in Pass 1 and Pass 2. Keep
    it once with the highest severity.
@@ -358,7 +360,7 @@ Focus: <general | security | performance | correctness>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📝 BLAST RADIUS SUMMARY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-<blast radius output from Step 1>
+<blast radius output from Step 0>
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ✅ POSITIVE FEEDBACK
@@ -381,6 +383,49 @@ Overall: <BLOCKED / APPROVE_WITH_NOTES / APPROVE>
     P0 findings are blockers; everything else is advisory.
 ```
 
+## Orchestrator Prompt Template
+
+When launching reviewers, use a concrete task like this in each `subagent`
+call:
+
+```
+You are a senior <role> performing code review. You have NO access to the
+parent conversation. Use only the material provided below.
+
+MANDATE: Perform ONLY the checks described in this message. Do NOT perform
+other review passes. Do NOT edit files.
+
+INPUT:
+--- Context ---
+<change context>
+
+--- Diff ---
+<diff text>
+
+--- Full files ---
+<file contents for context>
+
+--- Blast Radius ---
+<summary from Step 0>
+
+--- Existing Comments ---
+<if any, otherwise "none">
+
+CHECKS (select the relevant list from the pass descriptions above):
+<copy the checklist for the assigned pass>
+
+RULES:
+- Focus ONLY on changed lines and their immediate context.
+- Use full files for context only; do not critique unchanged code.
+- Every finding MUST cite file:line evidence. No evidence = discard.
+- Provide a concrete fix or next step, not vague advice.
+- If no substantive findings, respond with exactly: "No issues found in this pass."
+- Skip cosmetics (whitespace, import order, formatting).
+- Label severity for each finding: P0 (blocking), P1 (high), or P2 (medium).
+
+Output all findings in the format specified for your pass.
+```
+
 ## Severity Classification
 
 | Level | Criteria | Action Required |
@@ -394,16 +439,16 @@ Overall: <BLOCKED / APPROVE_WITH_NOTES / APPROVE>
 ## Review Depth Modes
 
 ### Quick Mode (`--quick` or user asks for "quick review")
-- Run only: Blast Radius, Pass 1 (Correctness), Pass 2 (Security)
-- No Pass 5–6
+- Launch only Reviewers 1–3 (Correctness, Security, Performance)
+- No Reviewers 5–6
 - Limit output to P0 and P1
 
 ### Standard Mode (default)
-- Run all passes 1–5
+- Launch all Reviewers 1–5
 - Output P0–P3
 
 ### Deep Mode (`--deep` or user asks for "deep review")
-- Run all passes 1–6
+- Launch all Reviewers 1–6
 - Output P0–P3 and Nits
 - Include architecture deep-dive and coupling analysis
 - If >20 files changed or >500 LOC, recommend splitting the change
@@ -418,13 +463,14 @@ When using this skill directly without an orchestrator:
 2. Run `git log --oneline HEAD~3..HEAD` for commit messages.
 3. Read each changed file in full.
 4. Assemble input and execute the review methodology above.
+5. Launch parallel reviewer sub-agents for the configured depth.
 ```
 
 **"Review this diff"** (user pastes a diff):
 ```
 1. Accept the diff as input.
 2. If available, read relevant files from disk for context.
-3. Execute the review methodology above.
+3. Launch parallel reviewer sub-agents for the configured depth.
 ```
 
 **"Review files X, Y, Z"** (no diff, just files):
@@ -432,13 +478,14 @@ When using this skill directly without an orchestrator:
 1. Read the specified files.
 2. If in a git repo, run `git diff HEAD` to see unstaged changes, or `git diff --cached` for staged.
 3. Otherwise, review the files as-is (static analysis mode).
+4. Launch parallel reviewer sub-agents for the configured depth.
 ```
 
 **"Security review of my changes"**:
 ```
 1. Default depth = standard, Focus = security.
-2. Expand Pass 2 with extra scrutiny.
-3. Run all other passes but weight Pass 2 findings higher in synthesis.
+2. Expand Reviewer 2 (Security) with extra scrutiny.
+3. Launch all reviewers but weight Security findings higher in synthesis.
 ```
 
 ## Edge Cases
@@ -446,23 +493,29 @@ When using this skill directly without an orchestrator:
 - **Very large diff (>500 LOC or >20 files)**: Note in blast radius.
   Recommend splitting. If user insists, run quick mode only and offer file-level
   drill-down on request.
-- **Generated code (protobuf, GraphQL, OpenAPI, bindata)**: Skip all passes.
+- **Generated code (protobuf, GraphQL, OpenAPI, bindata)**: Skip all reviewers.
   Review only the generator configuration or template.
-- **Lockfile-only changes**: Blast radius only. Verify the dependency delta is
+- **Lockfile-only changes**: Do blast radius only. Verify the dependency delta is
   intentional.
-- **Binary files**: Skip content passes. Note in blast radius.
-- **Config-only changes** (YAML, JSON, `.env`): Pass 2 (Security) and Pass 6
-  (Completeness) only.
-- **Documentation-only changes**: Pass 5 (maintainability focused on clarity and
-  accuracy) and Pass 6. Skip correctness, security, performance.
+- **Binary files**: Skip content reviewers. Note in blast radius.
+- **Config-only changes** (YAML, JSON, `.env`): Launch Reviewer 2 (Security) and
+  Reviewer 6 (Completeness) only.
+- **Documentation-only changes**: Launch Reviewer 5 (maintainability focused on
+  clarity and accuracy) and Reviewer 6. Skip correctness, security, performance.
 - **No diff / no changes**: Report "Nothing to review" and stop.
 
 ## Notes
 
 - **Read-only**: This skill never edits files, posts comments, or modifies
-  state. It produces a console report only.
-- **Escape hatches are essential**: If a pass finds nothing, say so.
-  Manufactured findings destroy trust.
+  state. It produces a console report only. There are no "fix workers" in this
+  workflow — that belongs to the `review-loop` or `implementation` skills.
+- **Fresh context per reviewer**: Each reviewer starts with no parent
+  conversation history. They must derive everything from the input material
+  alone. This prevents finding fatigue and cross-contamination between passes.
+- **Parallel by default**: All reviewers launch simultaneously. The parent does
+  not review code itself — it orchestrates, synthesises, and reports.
+- **Escape hatches are essential**: If a reviewer finds nothing, they must say
+  so. Manufactured findings destroy trust.
 - **file:line discipline**: Every finding must cite a location. This makes the
   review actionable and helps humans verify.
 - **Concrete fixes**: Vague advice like "consider refactoring" is noise. Every
