@@ -62,7 +62,6 @@
     in
     {
       zsh = pkgs-stable.zsh;
-      fzf = pkgs-stable.fzf;
       zsh-fzf-tab = pkgs-stable.zsh-fzf-tab;
     };
 
