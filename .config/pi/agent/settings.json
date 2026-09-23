@@ -16,9 +16,8 @@
   "lastChangelogVersion": "0.85.1",
   "packages": [
     "npm:pi-web-access",
-    "npm:pi-subagents"
+    "npm:pi-subagents",
+    "npm:pi-mcp-extension"
   ],
-  "hideThinkingBlock": false,
-  "fullscreenExitOutput": "transcript",
-  "tuiMode": "fullscreen"
+  "hideThinkingBlock": true
 }

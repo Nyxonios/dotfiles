@@ -1,0 +1,15 @@
+diff -ruN a/packages/ai/src/utils/retry.ts b/packages/ai/src/utils/retry.ts
+--- a/packages/ai/src/utils/retry.ts	2026-09-23 10:36:48.946423815 +0200
++++ b/packages/ai/src/utils/retry.ts	2026-09-23 10:36:48.952423871 +0200
+@@ -206,7 +206,10 @@
+ 
+ 		attempt++;
+ 		lastRetry = { attempt, errorMessage: response.errorMessage || "Unknown error" };
+-		const delayMs = retryDelayMs(policy!, attempt);
++		const _retryAfterMatch = lastRetry.errorMessage.match(/retry after (\d+) seconds?/i);
++		const delayMs = _retryAfterMatch
++			? (parseInt(_retryAfterMatch[1], 10) + 1) * 1000
++			: retryDelayMs(policy!, attempt);
+ 		await callbacks?.onRetryScheduled?.(attempt, maxAttempts, delayMs, lastRetry.errorMessage);
+ 
+ 		// Normalize aborts during retry backoff to the same AssistantMessage shape as

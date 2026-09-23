@@ -1,0 +1,39 @@
+--- a/packages/coding-agent/src/modes/interactive/chat-viewport.ts
++++ b/packages/coding-agent/src/modes/interactive/chat-viewport.ts
+@@ -1,4 +1,4 @@
+-import { type Component, ScrollView, type ScrollViewScrollbar, VStack } from "@earendil-works/pi-tui";
++import { type Component, HStack, ScrollView, type ScrollViewScrollbar, VStack } from "@earendil-works/pi-tui";
+ 
+ export interface ChatViewportOptions {
+ 	readonly document: Component;
+@@ -39,8 +39,28 @@
+ 	return {
+ 		transcript,
+ 		root: new VStack([
+-			{ component: transcript, basis: 0, grow: 1, shrink: 1, minSize: 1 },
+-			{ component: dock, basis: "auto", grow: 0, shrink: 1, minSize: 1 },
++			{
++				component: new VStack([
++					{ component: transcript, basis: 0, grow: 1, shrink: 1, minSize: 1 },
++					{ component: dock, basis: "auto", grow: 0, shrink: 1, minSize: 1 },
++				]),
++				basis: 0,
++				grow: 1,
++				shrink: 1,
++				minSize: 1,
++				visible: (vp) => vp.width < 120,
++			},
++			{
++				component: new HStack([
++					{ component: transcript, basis: 0, grow: 1, shrink: 1, minSize: 30 },
++					{ component: dock, basis: "auto", grow: 0, shrink: 1, minSize: 1, maxSize: 55 },
++				], { gap: 1 }),
++				basis: 0,
++				grow: 1,
++				shrink: 1,
++				minSize: 1,
++				visible: (vp) => vp.width >= 120,
++			},
+ 		]),
+ 	};
+ }

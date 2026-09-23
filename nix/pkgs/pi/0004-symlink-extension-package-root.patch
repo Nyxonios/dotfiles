@@ -1,0 +1,51 @@
+--- a/packages/coding-agent/src/cli/setup.ts
++++ b/packages/coding-agent/src/cli/setup.ts
+@@ -1,10 +1,47 @@
+-import { APP_NAME } from "../config.ts";
++import { APP_NAME, getAgentDir } from "../config.ts";
+ import { configureHttpDispatcher } from "../core/http-dispatcher.ts";
++import * as fs from "node:fs";
++import * as path from "node:path";
+ 
+ export function setupCli(): void {
+ 	process.title = APP_NAME;
+ 	process.env.PI_CODING_AGENT = "true";
+ 	process.env.AI_AGENT = "pi";
++
++	// Nix installs Pi in an isolated store path, so import.meta.resolve()
++	// from extension modules (e.g. pi-web-access) cannot find pi-coding-agent.
++	// Create a symlink in the user's extension node_modules so Node module
++	// resolution works, and set the env var that pi-subagents consumes.
++	const entryPoint = process.argv[1];
++	if (entryPoint) {
++		try {
++			let dir = path.dirname(entryPoint);
++			let piRoot: string | undefined;
++			while (dir !== path.dirname(dir)) {
++				const pkgJson = path.join(dir, "package.json");
++				if (fs.existsSync(pkgJson)) {
++					const pkg = JSON.parse(fs.readFileSync(pkgJson, "utf-8"));
++					if (pkg.name === "@earendil-works/pi-coding-agent") {
++						piRoot = dir;
++						break;
++					}
++				}
++				dir = path.dirname(dir);
++			}
++			if (piRoot) {
++				process.env.PI_SUBAGENTS_PI_CODING_AGENT_PACKAGE_ROOT = piRoot;
++				const extScopeDir = path.join(getAgentDir(), "npm", "node_modules", "@earendil-works");
++				const extLink = path.join(extScopeDir, "pi-coding-agent");
++				if (!fs.existsSync(extLink)) {
++					fs.mkdirSync(extScopeDir, { recursive: true });
++					fs.symlinkSync(piRoot, extLink);
++				}
++			}
++		} catch {
++			/* best-effort */
++		}
++	}
++
+ 	process.emitWarning = (() => {}) as typeof process.emitWarning;
+ 
+ 	// Configure undici before provider SDKs issue requests. Settings are applied

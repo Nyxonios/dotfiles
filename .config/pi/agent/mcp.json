@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "gopls": {
+      "command": "/home/mseller/.nix-profile/bin/gopls",
+      "args": ["mcp"],
+      "transport": "stdio",
+      "lifecycle": "lazy",
+      "requestTimeoutMs": 60000
+    }
+  }
+}
