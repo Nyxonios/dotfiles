@@ -115,7 +115,7 @@ in
           layer = "top";
           position = "top";
           modules-center = [
-            "hyprland/workspaces"
+            "ext/workspaces"
             "custom/recording"
             "clock"
           ];
@@ -136,13 +136,13 @@ in
             "disk"
           ];
 
-          "hyprland/workspaces" = {
+          "ext/workspaces" = {
             format = "{name}";
             format-icons = {
               default = " ";
               active = " ";
-              urgent = " ";
             };
+            "on-click" = "activate";
             on-scroll-up = "hyprctl dispatch workspace e+1";
             on-scroll-down = "hyprctl dispatch workspace e-1";
           };
@@ -312,12 +312,11 @@ in
         #custom-screen-record,
         #custom-netbird,
         #window,
-        #hyprland-workspaces,
+        #workspaces,
         #clock,
         #battery,
         #pulseaudio,
         #network,
-        #workspaces,
         #cpu,
         #memory,
         #bluetooth,
