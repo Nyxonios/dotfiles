@@ -47,9 +47,14 @@ in
 
       # Keep SSH_AUTH_SOCK in sync with the symlink maintained by ~/.ssh/rc
       # This fixes stale agent sockets when reconnecting to tmux/screen sessions
-      if [[ -L ~/.ssh/ssh_auth_sock && -S $(readlink ~/.ssh/ssh_auth_sock) ]]; then
-        export SSH_AUTH_SOCK=$(readlink ~/.ssh/ssh_auth_sock)
-      fi
+      __refresh_ssh_agent() {
+        if [[ -S ~/.ssh/ssh_auth_sock ]]; then
+          export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+        fi
+      }
+      __refresh_ssh_agent
+      typeset -ag precmd_functions
+      precmd_functions+=(__refresh_ssh_agent)
 
       # Enable editing current command line in $EDITOR
       autoload -U edit-command-line
