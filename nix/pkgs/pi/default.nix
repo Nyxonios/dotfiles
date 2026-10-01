@@ -7,7 +7,7 @@
 , srcHash ? "sha256-TZnTye1ttB+IznujbUeLBqk4b06B+gweo/k+aByZ6Ds="
 , npmDepsHash ? {
     aarch64-darwin = pkgs.lib.fakeSha256; # build once on darwin and replace with real hash
-    x86_64-linux = "sha256-WwEo1hCVIy/DgZaeoq+pd1z+WvYQsKqRztYAJEvzJAg=";
+    x86_64-linux = "sha256-VqJMTEG1EtNTNhCvfbdidED26TdIDQFUe1F+klIe2/Y=";
   }.${pkgs.stdenv.hostPlatform.system} or (throw "pi-coding-agent: no npmDepsHash known for ${pkgs.stdenv.hostPlatform.system}; build once with pkgs.lib.fakeSha256 and add it here")
 }:
 
