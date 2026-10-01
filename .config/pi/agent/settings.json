@@ -17,7 +17,8 @@
   "packages": [
     "npm:pi-web-access",
     "npm:pi-subagents",
-    "npm:pi-mcp-extension"
+    "npm:pi-mcp-extension",
+    "npm:context-mode"
   ],
   "hideThinkingBlock": false,
   "tuiMode": "fullscreen"
