@@ -107,7 +107,7 @@ hl.config({
 
 	input = {
 		kb_layout = "us,se",
-		kb_options = "grp:ctrl_space_toggle",
+		kb_options = "grp:ctrl_space_toggle,caps:none",
 		follow_mouse = 1,
 		sensitivity = 0,
 		repeat_rate = 100,

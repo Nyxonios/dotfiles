@@ -96,20 +96,6 @@ in
 
       bindkey -s ^f "tmux-sessionizer\n"
 
-      _direnv_hook() {
-        trap -- ''' SIGINT
-        eval "$("${pkgs.direnv}/bin/direnv" export zsh)"
-        trap - SIGINT
-      }
-      typeset -ag precmd_functions
-      if (( ! ''${precmd_functions[(I)_direnv_hook]} )); then
-        precmd_functions=(_direnv_hook $precmd_functions)
-      fi
-      typeset -ag chpwd_functions
-      if (( ! ''${chpwd_functions[(I)_direnv_hook]} )); then
-        chpwd_functions=(_direnv_hook $chpwd_functions)
-      fi
-
       if [ -f ~/.local/bin/work.sh ]; then
         source ~/.local/bin/work.sh
       fi
@@ -155,6 +141,12 @@ in
         file = "share/fzf-tab/fzf-tab.plugin.zsh";
       }
     ];
+  };
+
+  # Direnv integration (automatically sets up shell hooks and PATH)
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
   };
 
   # Set zsh as default shell on activation (for standalone Home Manager)

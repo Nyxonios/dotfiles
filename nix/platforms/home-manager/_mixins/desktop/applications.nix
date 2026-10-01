@@ -15,9 +15,9 @@ in
         # Content creation (Linux-specific or better on Linux)
         pkgs.obs-studio
 
-        # Communication (mattermost-desktop is broken on Darwin - macOS deployment target issue)
-        pkgs.mattermost-desktop
-        pkgs.signal-desktop
+      # Communication (mattermost-desktop is broken on Darwin - macOS deployment target issue)
+      pkgs.mattermost-desktop
+      pkgs.signal-desktop
 
         # Office suite (LibreOffice works on macOS but you probably use MS Office/iWork)
         pkgs.libreoffice
