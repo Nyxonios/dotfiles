@@ -3,11 +3,11 @@
     url = "https://github.com/earendil-works/pi/releases/download/v${version}/pi-${version}-source.tar.gz";
     sha256 = srcHash;
   }
-, version ? "0.87.1"
-, srcHash ? "sha256-eTlJ2NnlZik0bku5pr9fwXlS73RqG/TzGF+Olg6Ab88="
+, version ? "0.99.1"
+, srcHash ? "sha256-TZnTye1ttB+IznujbUeLBqk4b06B+gweo/k+aByZ6Ds="
 , npmDepsHash ? {
-    aarch64-darwin = pkgs.lib.fakeSha256;  # build once on darwin and replace with real hash
-    x86_64-linux   = "sha256-A0d1jNZiXJIfqMLoUsz1WMc4ImRZZdeOeleNGjlCIlo=";
+    aarch64-darwin = pkgs.lib.fakeSha256; # build once on darwin and replace with real hash
+    x86_64-linux = "sha256-WwEo1hCVIy/DgZaeoq+pd1z+WvYQsKqRztYAJEvzJAg=";
   }.${pkgs.stdenv.hostPlatform.system} or (throw "pi-coding-agent: no npmDepsHash known for ${pkgs.stdenv.hostPlatform.system}; build once with pkgs.lib.fakeSha256 and add it here")
 }:
 
@@ -67,6 +67,16 @@ pkgs.stdenvNoCC.mkDerivation {
     # The source tarball is unpacked by stdenv; we just need to add the deps.
     cp -r ${piWithDeps}/node_modules node_modules
     chmod -R +w node_modules
+
+    # npm workspaces create per-package node_modules when a workspace depends on
+    # a different version than the root. Copy those too so the sandbox has the
+    # correct resolution tree.
+    for dir in ${piWithDeps}/packages/*/node_modules; do
+      [ -d "$dir" ] || continue
+      pkg=$(basename "$(dirname "$dir")")
+      cp -r "$dir" "packages/$pkg/node_modules"
+      chmod -R +w "packages/$pkg/node_modules"
+    done
 
     # Fix shebangs in npm-installed binaries (e.g. tsgo) so they work in the nix sandbox.
     patchShebangs node_modules/

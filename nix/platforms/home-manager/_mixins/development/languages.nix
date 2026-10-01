@@ -20,7 +20,7 @@
 
       # Nix
       pkgs.nixd
-      pkgs.nixpkgs-fmt
+      pkgs.nixfmt
 
       # Shell
       pkgs.shellcheck

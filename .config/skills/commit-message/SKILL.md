@@ -44,6 +44,12 @@ Generate a concise, conventional-commit-style message for the current changes.
 - Use plain language, not buzzwords
 - No bullet lists of changed files
 - Maximum 2–4 sentences
+- Do NOT include `Issue:`, `Test:`, or `Co-authored-by:` sections
+
+**Humanization:**
+- After drafting the message, run it through the humanize skill
+- Remove AI patterns: not-X-but-Y contrasts, one-line closers, forced triads, dashes everywhere, inflated claims, stock AI words
+- The final output must sound like a human wrote it
 
 **Breaking changes:**
 - Append "BREAKING CHANGE: <description>" at the end of the body if applicable
@@ -54,6 +60,8 @@ Generate a concise, conventional-commit-style message for the current changes.
 - Only output the commit message text and the command to use it
 - Keep it simple and direct
 - Match the style of recent commits in this repo
+- Do NOT include `Issue:`, `Test:`, or `Co-authored-by:` lines unless the user explicitly requests them
+- Humanize the final message: remove AI tells, vary sentence length, end on concrete facts
 
 ## Examples
 

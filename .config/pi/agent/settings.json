@@ -19,5 +19,6 @@
     "npm:pi-subagents",
     "npm:pi-mcp-extension"
   ],
-  "hideThinkingBlock": true
+  "hideThinkingBlock": false,
+  "tuiMode": "fullscreen"
 }

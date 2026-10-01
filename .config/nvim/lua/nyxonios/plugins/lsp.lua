@@ -138,7 +138,7 @@ return {
               expr = 'import (builtins.getFlake(toString ./.)).inputs.nixpkgs { }',
             },
             formatting = {
-              command = { 'nixpkgs-fmt' }, -- or nixfmt or nixpkgs-fmt
+              command = { 'nixfmt' }, -- same formatter used by the nixpkgs repository
             },
             options = {
               nixos = {
