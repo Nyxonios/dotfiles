@@ -14,10 +14,14 @@
     "maxRetries": 10
   },
   "lastChangelogVersion": "0.85.1",
+  "extensions": [
+    "-builtin:mcp"
+  ],
   "packages": [
     "npm:pi-web-access",
     "npm:pi-subagents",
-    "npm:pi-mcp-extension"
+    "npm:pi-mcp-extension",
+    "npm:context-mode"
   ],
   "hideThinkingBlock": false,
   "tuiMode": "fullscreen"

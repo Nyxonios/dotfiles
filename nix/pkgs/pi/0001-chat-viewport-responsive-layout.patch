@@ -21,18 +21,18 @@
 +				grow: 1,
 +				shrink: 1,
 +				minSize: 1,
-+				visible: (vp) => vp.width < 120,
++				visible: (vp) => vp.width < 140,
 +			},
 +			{
 +				component: new HStack([
-+					{ component: transcript, basis: 0, grow: 1, shrink: 1, minSize: 30 },
-+					{ component: dock, basis: "auto", grow: 0, shrink: 1, minSize: 1, maxSize: 55 },
++					{ component: transcript, basis: 0, grow: 1, shrink: 1, minSize: 80 },
++					{ component: dock, basis: 0, grow: 1, shrink: 1, minSize: 55 },
 +				], { gap: 1 }),
 +				basis: 0,
 +				grow: 1,
 +				shrink: 1,
 +				minSize: 1,
-+				visible: (vp) => vp.width >= 120,
++				visible: (vp) => vp.width >= 140,
 +			},
  		]),
  	};
