@@ -20,6 +20,7 @@
 .jj/
 
 .config/pi/agent/sessions/*
+.config/pi/context-mode/
 .config/pi/agent/trust.json
 .config/pi/agent/missions/*
 .config/pi/agent/run-history.jsonl
