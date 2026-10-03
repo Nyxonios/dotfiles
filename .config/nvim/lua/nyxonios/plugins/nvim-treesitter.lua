@@ -18,6 +18,7 @@ return {
       'hlsl',
       'slang',
       'nix',
+      'json',
     })
 
     vim.api.nvim_create_autocmd('FileType', {
