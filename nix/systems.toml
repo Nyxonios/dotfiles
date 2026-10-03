@@ -51,3 +51,14 @@ gpu = []
 tags = ["personal", "development", "minimal"]
 description = "Personal Development VM - Mimir: Norse god of wisdom and knowledge, guardian of the Well of Wisdom. Counselor to the gods who speaks only truth."
 
+[huginn]
+platform = "nixos"
+system = "aarch64-linux"
+username = "nyxonios"
+home = "/home/nyxonios"
+email = "mseller@evroc.com"
+formFactor = "sbc"
+gpu = []
+tags = ["personal", "headless", "terminal"]
+description = "Personal NixOS SBC - Huginn: One of Odin's ravens, representing thought. A small, ever-vigilant node running bare-bones NixOS on a Raspberry Pi 3 Model B."
+
