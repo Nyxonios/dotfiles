@@ -131,6 +131,188 @@
             "cacheRead": 0,
             "cacheWrite": 0
           }
+        },
+        {
+          "id": "zai-org/GLM-5.2",
+          "name": "GLM-5.2",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 524000,
+          "maxTokens": 131000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "google/gemma-4-26B-A4B-it",
+          "name": "Gemma 4 26B A4B IT",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 262000,
+          "maxTokens": 33000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "nvidia/Llama-3.3-70B-Instruct-FP8",
+          "name": "Llama 3.3 70B Instruct",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 128000,
+          "maxTokens": 4000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "mistralai/Mistral-Medium-3.5-128B",
+          "name": "Mistral Medium 3.5",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 262000,
+          "maxTokens": 262000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "Qwen/Qwen3.6-35B-A3B",
+          "name": "Qwen3.6 35B-A3B",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 262000,
+          "maxTokens": 66000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "Qwen/Qwen3.8-27B",
+          "name": "Qwen3.8 27B",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 262000,
+          "maxTokens": 262000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "evroc/roc",
+          "name": "roc",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 262000,
+          "maxTokens": 262000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "intfloat/multilingual-e5-large-instruct",
+          "name": "E5 Multi-Lingual Large Embeddings 0.6B",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 512,
+          "maxTokens": 512,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "Qwen/Qwen3-Embedding-8B",
+          "name": "Qwen3 Embedding 8B",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 41000,
+          "maxTokens": 4000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "Qwen/Qwen3-Reranker-4B",
+          "name": "Qwen3 Reranker 4B",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 32000,
+          "maxTokens": 4000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "KBLab/kb-whisper-large",
+          "name": "KB Whisper",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 448,
+          "maxTokens": 448,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "openai/whisper-large-v3",
+          "name": "Whisper 3 Large",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 448,
+          "maxTokens": 4000,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "openai/whisper-large-v3-turbo",
+          "name": "Whisper Large v3 Turbo",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 448,
+          "maxTokens": 448,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
         }
       ]
     }

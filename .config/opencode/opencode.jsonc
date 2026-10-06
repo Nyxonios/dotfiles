@@ -112,17 +112,101 @@
         "mistralai/Voxtral-Small-24B-2507": {
           "name": "mistralai/Voxtral-Small-24B-2507",
           "limit": {
-            "context": 10000,
-            "output": 10000
+            "context": 32000,
+            "output": 32000
           }
         },
-        // "nvidia/Llama-3.3-70B-Instruct-FP8": {
-        //   "name": "nvidia/Llama-3.3-70B-Instruct-FP8",
-        //   "limit": {
-        //     "context": 128000,
-        //     "output": 20000
-        //   }
-        // }
+        "nvidia/Llama-3.3-70B-Instruct-FP8": {
+          "name": "nvidia/Llama-3.3-70B-Instruct-FP8",
+          "limit": {
+            "context": 128000,
+            "output": 4000
+          }
+        },
+        "zai-org/GLM-5.2": {
+          "name": "zai-org/GLM-5.2",
+          "limit": {
+            "context": 524000,
+            "output": 131000
+          }
+        },
+        "google/gemma-4-26B-A4B-it": {
+          "name": "google/gemma-4-26B-A4B-it",
+          "limit": {
+            "context": 262000,
+            "output": 33000
+          }
+        },
+        "mistralai/Mistral-Medium-3.5-128B": {
+          "name": "mistralai/Mistral-Medium-3.5-128B",
+          "limit": {
+            "context": 262000,
+            "output": 262000
+          }
+        },
+        "Qwen/Qwen3.6-35B-A3B": {
+          "name": "Qwen/Qwen3.6-35B-A3B",
+          "limit": {
+            "context": 262000,
+            "output": 66000
+          }
+        },
+        "Qwen/Qwen3.8-27B": {
+          "name": "Qwen/Qwen3.8-27B",
+          "limit": {
+            "context": 262000,
+            "output": 262000
+          }
+        },
+        "evroc/roc": {
+          "name": "evroc/roc",
+          "limit": {
+            "context": 262000,
+            "output": 262000
+          }
+        },
+        "intfloat/multilingual-e5-large-instruct": {
+          "name": "intfloat/multilingual-e5-large-instruct",
+          "limit": {
+            "context": 512,
+            "output": 512
+          }
+        },
+        "Qwen/Qwen3-Embedding-8B": {
+          "name": "Qwen/Qwen3-Embedding-8B",
+          "limit": {
+            "context": 41000,
+            "output": 4000
+          }
+        },
+        "Qwen/Qwen3-Reranker-4B": {
+          "name": "Qwen/Qwen3-Reranker-4B",
+          "limit": {
+            "context": 32000,
+            "output": 4000
+          }
+        },
+        "KBLab/kb-whisper-large": {
+          "name": "KBLab/kb-whisper-large",
+          "limit": {
+            "context": 448,
+            "output": 448
+          }
+        },
+        "openai/whisper-large-v3": {
+          "name": "openai/whisper-large-v3",
+          "limit": {
+            "context": 448,
+            "output": 4000
+          }
+        },
+        "openai/whisper-large-v3-turbo": {
+          "name": "openai/whisper-large-v3-turbo",
+          "limit": {
+            "context": 448,
+            "output": 448
+          }
+        }
       }
     }
   }
