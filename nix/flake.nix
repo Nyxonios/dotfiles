@@ -17,6 +17,8 @@
     zig.url = "github:mitchellh/zig-overlay";
     zls.url = "github:zigtools/zls";
 
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, nixpkgs-stable, nix-darwin, nix-homebrew, home-manager, ... } @ inputs:

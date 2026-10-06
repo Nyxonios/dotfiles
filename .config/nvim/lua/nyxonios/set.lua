@@ -35,4 +35,5 @@ vim.opt.scrolloff = 30
 
 vim.filetype.add { extension = { templ = 'templ' } }
 vim.filetype.add { extension = { hlsl = 'hlsl' } }
+vim.filetype.add { extension = { gltf = 'json' } }
 vim.g.vim_markdown_frontmatter = 1

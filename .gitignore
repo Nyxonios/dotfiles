@@ -33,3 +33,7 @@
 
 # Zeroclaw runtime state
 .config/zeroclaw/workspaces/daemon_state.json
+
+# Pi agent generated state
+.config/pi/context-mode/
+.config/pi/agent/pi-subagents/
