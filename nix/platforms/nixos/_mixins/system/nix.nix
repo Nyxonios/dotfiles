@@ -6,7 +6,11 @@
 {
   config = customLib.mkIfPlatform "nixos" {
     nix = {
-      gc.dates = "weekly";
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        persistent = true;
+      };
       optimise.automatic = true;
     };
   } host;

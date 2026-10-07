@@ -5,12 +5,18 @@
 
 {
   config = customLib.mkIfPlatform "darwin" {
-    nix.gc.interval = [
-      {
-        Hour = 3;
-        Minute = 15;
-        Weekday = 7;
-      }
-    ];
+    nix = {
+      gc = {
+        automatic = true;
+        interval = [
+          {
+            Hour = 3;
+            Minute = 15;
+            Weekday = 7;
+          }
+        ];
+      };
+      optimise.automatic = true;
+    };
   } host;
 }

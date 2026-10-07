@@ -9,4 +9,7 @@
     ./hardware-configuration.nix
   ];
 
+  # Enable cross-compilation (emulation) for Raspberry Pi aarch64 builds
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
 }

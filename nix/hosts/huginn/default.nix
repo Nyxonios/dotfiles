@@ -11,11 +11,12 @@
 
   # Reduce write pressure on the SD card
   boot.tmp.cleanOnBoot = true;
-  services.journald.extraConfig = ''
-    SystemMaxUse=100M
-    RuntimeMaxUse=50M
-  '';
-
+  services.journald.settings = {
+    Journal = {
+      SystemMaxUse = "100M";
+      RuntimeMaxUse = "50M";
+    };
+  };
   # Headless: no need for full NixOS docs or man caches
   documentation.nixos.enable = false;
   documentation.man.generateCaches = false;

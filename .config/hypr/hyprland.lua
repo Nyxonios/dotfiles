@@ -7,7 +7,7 @@
 ------------------
 
 -- Screen geometry derived from monitor mode
-local wide_mode = "5120x1440@120"
+local wide_mode = "2560x1440@120"
 local wide_w, wide_h = wide_mode:match("(%d+)x(%d+)")
 wide_w = tonumber(wide_w)
 wide_h = tonumber(wide_h)

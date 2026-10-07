@@ -54,7 +54,21 @@
       inherit overlays;
 
       # NixOS configurations - automatically generated from registry
-      nixosConfigurations = lib.mapAttrs builders.mkNixOSConfiguration nixosHosts;
+      nixosConfigurations = lib.mapAttrs builders.mkNixOSConfiguration nixosHosts // {
+        # Installer: headless live SD image to boot from USB on a Raspberry Pi 3
+        huginn-installer = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = {
+            inherit inputs;
+            inherit (self) outputs;
+            host = { name = "huginn-installer"; system = "aarch64-linux"; username = "nyxonios"; home = "/home/nyxonios"; email = "mseller@evroc.com"; formFactor = "sbc"; gpu = []; tags = []; };
+            customLib = lib;
+          };
+          modules = [
+            ./hosts/huginn-installer
+          ];
+        };
+      };
 
       # macOS (nix-darwin) configurations - automatically generated from registry
       darwinConfigurations = lib.mapAttrs builders.mkDarwinConfiguration darwinHosts;

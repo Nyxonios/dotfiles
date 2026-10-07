@@ -4,6 +4,9 @@
 { ... }:
 
 {
-  # Services folder is currently empty
+  imports = [
+    ./nix-gc.nix
+  ];
+
   # Add user systemd services, timers, and background processes here
 }
