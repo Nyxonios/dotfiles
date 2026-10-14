@@ -130,6 +130,15 @@ Each reviewer receives:
 
 **Launch all reviewers in parallel as async subagents.** Use `async: true`.
 
+**Thinking mode — MANDATORY**: Every reviewer sub-agent MUST run with
+thinking set to **high**. In each `subagent` call, pass the model with the
+`:high` suffix (e.g. `model: "anthropic/claude-sonnet-4:high"`); the suffix
+overrides the agent's thinking default while keeping the model. Never launch
+a reviewer at a lower thinking level — review quality depends on deeper
+reasoning. If the environment rejects model IDs with thinking suffixes, set
+`subagents.agentOverrides.<name>.thinking: "high"` in user or project settings
+instead so reviewers still resolve to high thinking.
+
 #### Reviewer 1 — Correctness & Logic
 
 Role: Senior engineer hunting real bugs.
@@ -386,7 +395,19 @@ Overall: <BLOCKED / APPROVE_WITH_NOTES / APPROVE>
 ## Orchestrator Prompt Template
 
 When launching reviewers, use a concrete task like this in each `subagent`
-call:
+call. Every launch must set `async: true` and **high thinking mode** via the
+`:high` model suffix:
+
+```
+subagent({
+  agent: "reviewer",            // or the reviewer agent available in this harness
+  async: true,
+  model: "<provider/model-id>:high",  // ":high" suffix = high thinking mode
+  task: "<task text from the template below>",
+})
+```
+
+Task text:
 
 ```
 You are a senior <role> performing code review. You have NO access to the
@@ -509,6 +530,10 @@ When using this skill directly without an orchestrator:
 - **Read-only**: This skill never edits files, posts comments, or modifies
   state. It produces a console report only. There are no "fix workers" in this
   workflow — that belongs to the `review-loop` or `implementation` skills.
+- **High thinking on every reviewer**: All reviewer sub-agents launch at
+  high thinking mode (via the `:high` model suffix or a `thinking: "high"`
+  agent override). Do not downgrade a reviewer to a lower thinking level to
+  save cost or time — reduce the depth (number of passes) instead.
 - **Fresh context per reviewer**: Each reviewer starts with no parent
   conversation history. They must derive everything from the input material
   alone. This prevents finding fatigue and cross-contamination between passes.
