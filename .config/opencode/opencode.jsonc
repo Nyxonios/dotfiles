@@ -1,7 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "theme": "catppuccin",
-  "model": "evroc/moonshotai/Kimi-K2.6",
+  "model": "evroc/zai-org/GLM-5.3",
   "plugin": ["oh-my-openagent@3.13.1"],
   "permission": {
     "read": {
@@ -53,8 +53,8 @@
         }
       },
       "models": {
-        "moonshotai/Kimi-K2.6": {
-          "name": "moonshotai/Kimi-K2.6",
+        "zai-org/GLM-5.3": {
+          "name": "zai-org/GLM-5.3",
           // "limit": {
           //   "context": 262000,
           //   "output": 56000
@@ -123,8 +123,8 @@
             "output": 4000
           }
         },
-        "zai-org/GLM-5.2": {
-          "name": "zai-org/GLM-5.2",
+        "zai-org/GLM-5.3": {
+          "name": "zai-org/GLM-5.3",
           "limit": {
             "context": 524000,
             "output": 131000

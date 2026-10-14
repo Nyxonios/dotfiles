@@ -1,6 +1,6 @@
 {
   "defaultProvider": "evroc",
-  "defaultModel": "moonshotai/Kimi-K2.6",
+  "defaultModel": "zai-org/GLM-5.3",
   "defaultThinkingLevel": "medium",
   "theme": "dark",
   "enableSkillCommands": true,
@@ -21,7 +21,8 @@
     "npm:pi-web-access",
     "npm:pi-subagents",
     "npm:pi-mcp-extension",
-    "npm:context-mode"
+    "npm:context-mode",
+    "https://github.com/cathrynlavery/diagram-design"
   ],
   "hideThinkingBlock": false,
   "tuiMode": "fullscreen"

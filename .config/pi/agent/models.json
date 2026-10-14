@@ -133,8 +133,8 @@
           }
         },
         {
-          "id": "zai-org/GLM-5.2",
-          "name": "GLM-5.2",
+          "id": "zai-org/GLM-5.3",
+          "name": "GLM-5.3",
           "reasoning": true,
           "input": ["text"],
           "contextWindow": 524000,

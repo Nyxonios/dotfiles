@@ -1,6 +1,6 @@
 {
   "defaultProvider": "evroc",
-  "defaultModel": "moonshotai/Kimi-K2.6",
+  "defaultModel": "zai-org/GLM-5.3",
   "defaultThinkingLevel": "medium",
   "theme": "dark",
   "enableSkillCommands": true,
