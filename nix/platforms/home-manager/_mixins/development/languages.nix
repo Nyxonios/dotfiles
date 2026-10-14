@@ -40,6 +40,10 @@
       pkgs.ansible
       pkgs.bun
 
+      # Pkl
+      pkgs.pkl
+      pkgs.pkl-lsp
+
       # JavaScript/TypeScript (Node already in host config for work)
       pkgs.nodejs_26
       # pkgs.pnpm_10
