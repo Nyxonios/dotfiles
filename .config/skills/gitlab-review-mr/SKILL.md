@@ -10,7 +10,7 @@ compatibility: opencode
 metadata:
   audience: developers
   workflow: gitlab
-  companions: [code-review, gitlab-analyze-review-comments]
+  companions: [code-review, gitlab-fetch-mr-comments, gitlab-analyze-review-comments]
 ---
 
 # Skill: gitlab-review-mr
@@ -37,8 +37,10 @@ The `code-review` skill provides the multi-pass review methodology
 (blast-radius, correctness, security, performance, tests, architecture, and
 completeness passes).
 
-**Optional companion**: Load `gitlab-analyze-review-comments` to fetch and
-incorporate existing unresolved review comments into the review material.
+**Optional companion**: Load `gitlab-fetch-mr-comments` to fetch existing review
+comments as structured data (it also accepts MR URLs directly and saves flattened,
+agent-actionable records). Load `gitlab-analyze-review-comments` if the fetched
+comments should additionally be analyzed and triaged.
 
 **Key principle**: Read-only. This skill never posts, edits, or modifies the MR.
 
@@ -153,8 +155,16 @@ git show "origin/$(jq -r '.target_branch' /tmp/mr_meta.json):$file" 2>/dev/null 
 
 ### Step 6: Gather Existing Review Comments (Optional)
 
-If `gitlab-analyze-review-comments` is available and the user asked to include
-existing comments, or if the user explicitly requests it, run:
+If the user asked to include existing comments (or explicitly requested it), prefer
+the `gitlab-fetch-mr-comments` skill: its bundled script fetches and structures them,
+saving raw JSON to `/tmp/mr_<iid>_comments.json` and flattened action items to
+`/tmp/mr_<iid>_action_items.json`:
+
+```bash
+python3 <skill-dir>/scripts/fetch_mr_comments.py "${MR_ID}" --quiet > /dev/null 2>&1 || true
+```
+
+If that skill is not available, call the tool directly:
 
 ```bash
 gitlab-comment-extractor --mr "${MR_ID}" > /tmp/mr_comments.json 2>/dev/null || true

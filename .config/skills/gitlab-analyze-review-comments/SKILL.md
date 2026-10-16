@@ -25,6 +25,8 @@ This skill retrieves and analyzes all review comments on a GitLab Merge Request 
 
 **Key principle**: This skill is read-only. It never posts, edits, or resolves comments. All output goes to the console where the prompt was received.
 
+**Companion skill**: `gitlab-fetch-mr-comments` is the fetch-only counterpart this skill builds on. Use it (instead of this skill) when the input is a raw MR URL, or when a consumer only needs structured comment data without analysis. When both are loaded, its bundled script may replace Steps 1–2 below.
+
 ## Prerequisites
 
 - `gitlab-comment-extractor` tool installed (built from `/home/mseller/development/gitlab-comment-extractor`)
@@ -55,6 +57,11 @@ GLAB_HOST=gitlab.evroc.dev glab mr view 2>/dev/null | head -10
 Store the MR ID for subsequent queries.
 
 ### Step 2: Fetch Comments Using gitlab-comment-extractor
+
+**Tip**: If the `gitlab-fetch-mr-comments` skill is loaded, its bundled script
+(`scripts/fetch_mr_comments.py <MR_URL | MR_NUMBER>`) replaces this step — it parses
+MR URLs, saves the raw JSON to `/tmp/mr_<iid>_comments.json`, and flattens everything
+into agent-actionable records. Continue below from the same JSON schema.
 
 Use the `gitlab-comment-extractor` tool to fetch all MR comments as structured JSON:
 
