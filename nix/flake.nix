@@ -81,6 +81,19 @@
             ./hosts/huginn-image
           ];
         };
+        # Minimal permanent config on the Pi (bypasses builder desktop bloat)
+        huginn = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = {
+            inherit inputs;
+            inherit (self) outputs;
+            host = { name = "huginn"; platform = "nixos"; system = "aarch64-linux"; username = "nyxonios"; home = "/home/nyxonios"; email = "mseller@evroc.com"; formFactor = "sbc"; gpu = []; tags = []; };
+            customLib = lib;
+          };
+          modules = [
+            ./hosts/huginn
+          ];
+        };
       };
 
       # macOS (nix-darwin) configurations - automatically generated from registry
