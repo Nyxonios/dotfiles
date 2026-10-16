@@ -68,6 +68,19 @@
             ./hosts/huginn-installer
           ];
         };
+        # SD image for huginn (usable to flash directly to SD card)
+        huginn-image = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = {
+            inherit inputs;
+            inherit (self) outputs;
+            host = { name = "huginn-image"; system = "aarch64-linux"; username = "nyxonios"; home = "/home/nyxonios"; email = "mseller@evroc.com"; formFactor = "sbc"; gpu = []; tags = []; };
+            customLib = lib;
+          };
+          modules = [
+            ./hosts/huginn-image
+          ];
+        };
       };
 
       # macOS (nix-darwin) configurations - automatically generated from registry
