@@ -8,7 +8,7 @@ let
   pi = pkgs.callPackage ../../../../pkgs/pi { };
 in
 {
-  config = {
+  config = lib.mkIf (pkgs.stdenv.hostPlatform.isx86_64) {
     home.packages = [ pi ];
 
     home.file.".pi".source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/pi";
