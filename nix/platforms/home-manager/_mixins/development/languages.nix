@@ -1,6 +1,12 @@
 # Programming Languages and Language Servers
 
-{ config, pkgs, lib, host, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  host,
+  ...
+}:
 
 {
   config = {
@@ -12,7 +18,8 @@
       pkgs.gofumpt
 
       # Zig
-      pkgs.zigpkgs."0.16.0"
+      # pkgs.zigpkgs."0.17.0"
+      pkgs.zvm
       pkgs.zls
 
       # Rust

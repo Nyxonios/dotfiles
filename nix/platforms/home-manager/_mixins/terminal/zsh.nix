@@ -1,7 +1,13 @@
 # Zsh Configuration
 # Shell configuration using oh-my-zsh and various plugins
 
-{ config, pkgs, lib, host, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  host,
+  ...
+}:
 
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
@@ -18,7 +24,8 @@ in
 {
   # Symlink p10k config from dotfiles (outside Nix store)
   # Using home.file instead of xdg.configFile to avoid collision with dotDir
-  home.file."${config.xdg.configHome}/zsh/p10k.zsh".source = mkOutOfStoreSymlink "${host.home}/dotfiles/.config/zsh/p10k.zsh";
+  home.file."${config.xdg.configHome}/zsh/p10k.zsh".source =
+    mkOutOfStoreSymlink "${host.home}/dotfiles/.config/zsh/p10k.zsh";
 
   programs.zsh = {
     dotDir = "${config.xdg.configHome}/zsh";
@@ -101,6 +108,9 @@ in
       fi
 
       export PATH=$PATH:$HOME/.local/bin
+      export ZVM_INSTALL="$HOME/.zvm/self"
+      export PATH="$HOME/.zvm/bin:$ZVM_INSTALL:$PATH"
+
     '';
 
     oh-my-zsh = {
