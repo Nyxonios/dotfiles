@@ -104,8 +104,10 @@
 
       # Expose package sets for convenience
       packages = lib.mapAttrs
-        (system: _: {
-          # Default packages can be added here
+        (system: pkgs: {
+          # Zig-aware LLDB fork (debug adapter for nvim-dap)
+          # Build with: nix build ~/dotfiles/nix#lldb-zig
+          lldb-zig = pkgs.callPackage ./pkgs/lldb-zig { };
         })
         nixpkgs.legacyPackages;
 

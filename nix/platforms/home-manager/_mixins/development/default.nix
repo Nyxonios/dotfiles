@@ -13,5 +13,6 @@
     ./opencode.nix
     ./zeroclaw.nix
     ./pi.nix
+    ./lldb-zig.nix
   ];
 }

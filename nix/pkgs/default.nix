@@ -4,6 +4,7 @@
 pkgs: {
   betterdisplay = pkgs.callPackage ./betterdisplay { };
   pi = pkgs.callPackage ./pi { };
+  lldb-zig = pkgs.callPackage ./lldb-zig { };
 
   # Add your custom packages here as needed
   # Each package should be in its own directory with a default.nix
