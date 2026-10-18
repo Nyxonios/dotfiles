@@ -107,7 +107,10 @@ hl.config({
 
 	input = {
 		kb_layout = "us,se",
-		kb_options = "grp:ctrl_space_toggle,caps:none",
+		-- caps:hyper turns CapsLock into a "hyper" key (XKB Mod3): a hold
+		-- modifier no app uses, so CAPS-chords never collide with app shortcuts.
+		-- Bind such chords in hyprland as "MOD3 + <key>" (e.g. the todo popup).
+		kb_options = "grp:ctrl_space_toggle,caps:hyper",
 		follow_mouse = 1,
 		sensitivity = 0,
 		repeat_rate = 100,
@@ -182,6 +185,40 @@ end
 hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
 
+--------------------------
+---- QUICK TODO POPUP ----
+--------------------------
+
+-- Quake-style todo list: a ghostty+nvim window living on the hidden
+-- special workspace "todo". CAPS+T only shows/hides it, the terminal
+-- (and nvim state) keep running, so reopening is instant. ESC inside
+-- nvim saves and hides it too (see ~/.config/nvim/todo.lua).
+-- CAPS is remapped to a hyper (MOD3) modifier in the input section above,
+-- so this chord is invisible to apps (no more browser new-tab clashes).
+-- The window is identified by title "nvim-todo" because ghostty's
+-- Wayland class is fixed (com.mitchellh.ghostty) on every instance.
+
+local todoTitle = "nvim-todo"
+local todoSpawning = false -- debounces rapid presses while ghostty starts
+
+hl.bind("MOD3 + T", function()
+	local windows = hl.get_windows({ title = todoTitle })
+	if #windows == 0 then
+		-- No window yet (fresh login, or it got closed): spawn one. The
+		-- window rule below places it on the hidden special workspace.
+		-- Ignore presses during startup so we never spawn two.
+		if todoSpawning then
+			return
+		end
+		todoSpawning = true
+		hl.timer(function()
+			todoSpawning = false
+		end, { timeout = 1000, type = "oneshot" })
+		hl.dispatch(hl.dsp.exec_cmd("ghostty --title=" .. todoTitle .. " -e nvim -u $HOME/.config/nvim/todo.lua $HOME/todo.md"))
+	end
+	hl.dispatch(hl.dsp.workspace.toggle_special("todo"))
+end)
+
 -- Scroll workspaces
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
@@ -246,4 +283,16 @@ hl.window_rule({
 	match = { title = "^World of Warcraft$" },
 	float = true,
 	fullscreen = true,
+})
+
+-- Quick-todo popup: any window titled nvim-todo always lands on the
+-- hidden special workspace, floats centered, sized for the ultrawide.
+hl.window_rule({
+	name = "todo-popup",
+	match = { title = "^nvim-todo$", class = "^com\\.mitchellh\\.ghostty$" },
+	workspace = "special:todo silent",
+	float = true,
+	stay_focused = true, -- follow_mouse=1 would otherwise leave the popup unfocused
+	size = { "(monitor_w*0.42)", "(monitor_h*0.68)" },
+	center = true,
 })
