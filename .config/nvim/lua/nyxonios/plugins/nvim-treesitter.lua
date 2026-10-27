@@ -19,7 +19,10 @@ return {
       'slang',
       'nix',
       'json',
+      'javascript',
     }
+
+    vim.treesitter.language.register('javascript', 'pac')
 
     vim.api.nvim_create_autocmd('FileType', {
       group = vim.api.nvim_create_augroup('treesitter-highlight', { clear = true }),

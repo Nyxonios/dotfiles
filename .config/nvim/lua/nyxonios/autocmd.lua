@@ -1,3 +1,10 @@
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+  desc = 'Set .pac filetype to pac (avoids triggering JS LSPs)',
+  pattern = '*.pac',
+  group = vim.api.nvim_create_augroup('pac-filetype', { clear = true }),
+  command = 'setfiletype pac',
+})
+
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking text',
   group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
