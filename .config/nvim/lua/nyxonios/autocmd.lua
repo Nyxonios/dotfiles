@@ -34,7 +34,7 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function()
     local del_qf_item = function()
       local items = vim.fn.getqflist()
-      local line = vim.fn.line('.')
+      local line = vim.fn.line '.'
       table.remove(items, line)
       vim.fn.setqflist(items, 'r')
       local new_line = math.min(line, #items)
@@ -45,8 +45,8 @@ vim.api.nvim_create_autocmd('FileType', {
 
     local del_qf_range = function()
       local items = vim.fn.getqflist()
-      local start_line = vim.fn.line("'<")
-      local end_line = vim.fn.line("'>")
+      local start_line = vim.fn.line "'<"
+      local end_line = vim.fn.line "'>"
       local count = end_line - start_line + 1
       for i = 1, count do
         table.remove(items, start_line)

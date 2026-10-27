@@ -51,7 +51,7 @@ vim.api.nvim_create_user_command('AlignMarkdownTable', function(opts)
   local is_separator = {}
 
   for _, line in ipairs(lines) do
-    if line:match('%S') then
+    if line:match '%S' then
       local cells = {}
       local trimmed_line = line:gsub('|$', '')
       local is_sep = true
@@ -81,7 +81,7 @@ vim.api.nvim_create_user_command('AlignMarkdownTable', function(opts)
         for idx, cell in ipairs(cells) do
           local trimmed = cell:gsub('^%s+', ''):gsub('%s+$', '')
           cells[idx] = trimmed
-          if trimmed ~= '' and not trimmed:match('^%-+$') then
+          if trimmed ~= '' and not trimmed:match '^%-+$' then
             is_sep = false
           end
         end

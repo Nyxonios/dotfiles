@@ -1,4 +1,4 @@
-local cmp = require('cmp')
+local cmp = require 'cmp'
 
 local M = {}
 
@@ -10,10 +10,9 @@ end
 
 ---Only active in Pi external-editor temp files.
 function M.is_available()
-  local filepath = vim.fn.expand('%:p')
+  local filepath = vim.fn.expand '%:p'
   -- pi-editor creates files like /tmp/pi-editor-XXXXXX/prompt.md
-  local is_pi_prompt = vim.fn.fnamemodify(filepath, ':t') == 'prompt.md'
-    and filepath:find('pi%-editor%-') ~= nil
+  local is_pi_prompt = vim.fn.fnamemodify(filepath, ':t') == 'prompt.md' and filepath:find 'pi%-editor%-' ~= nil
   return is_pi_prompt
 end
 
@@ -35,8 +34,8 @@ function M.complete(self, params, callback)
   local line = params.context.cursor_before_line
 
   -- Only serve completions on lines that start with a slash (e.g. /skill…).
-  if not line:match('^%s*/') then
-    callback({})
+  if not line:match '^%s*/' then
+    callback {}
     return
   end
 
@@ -45,7 +44,7 @@ function M.complete(self, params, callback)
   local items = {}
   local skills = self.skills or {}
   if #skills == 0 then
-    callback({})
+    callback {}
     return
   end
 
@@ -103,8 +102,8 @@ function M:_ensure_skills()
   end
 
   -- Global skill directories
-  parse_skill_dir(vim.fn.expand('~/.pi/agent/skills'))
-  parse_skill_dir(vim.fn.expand('~/.agents/skills'))
+  parse_skill_dir(vim.fn.expand '~/.pi/agent/skills')
+  parse_skill_dir(vim.fn.expand '~/.agents/skills')
 
   -- Project-local skill directories (cwd and ancestors up to git root)
   local cwd = vim.fn.getcwd()
@@ -151,13 +150,13 @@ function M._parse_skill_md(filepath)
 
     -- Continue previous multi-line description block
     if collecting_desc then
-      if line:match('^  ') or line:match('^\t') then
+      if line:match '^  ' or line:match '^\t' then
         table.insert(desc_parts, (line:gsub('^%s+', '')))
       elseif line == '' then
         if desc_indicator == 'literal' then
           table.insert(desc_parts, '')
         end
-      elseif line:match('^[%w_-]+:') then
+      elseif line:match '^[%w_-]+:' then
         -- a new key starts; stop collecting description
         collecting_desc = false
         desc_indicator = nil
@@ -165,11 +164,11 @@ function M._parse_skill_md(filepath)
     end
 
     if not collecting_desc then
-      local key, value = line:match('^([%w_-]+):%s*(.*)$')
+      local key, value = line:match '^([%w_-]+):%s*(.*)$'
       if key == 'name' then
-        name = (value:gsub('^[\'"]', ''):gsub('[\'"]$', '')):match('^%s*(.-)%s*$')
+        name = (value:gsub('^[\'"]', ''):gsub('[\'"]$', '')):match '^%s*(.-)%s*$'
       elseif key == 'description' then
-        value = value:gsub('^[\'"]', ''):gsub('[\'"]$', ''):match('^%s*(.-)%s*$')
+        value = value:gsub('^[\'"]', ''):gsub('[\'"]$', ''):match '^%s*(.-)%s*$'
         if value ~= '' and value ~= '>' and value ~= '|' then
           desc_parts = { value }
           desc_indicator = nil
@@ -212,16 +211,12 @@ local instance = M.new()
 cmp.register_source('pi_skills', instance)
 
 vim.api.nvim_create_user_command('PiSkillsDebug', function()
-  local filepath = vim.fn.expand('%:p')
-  local is_pi_prompt = vim.fn.fnamemodify(filepath, ':t') == 'prompt.md'
-    and filepath:find('pi%-editor%-') ~= nil
+  local filepath = vim.fn.expand '%:p'
+  local is_pi_prompt = vim.fn.fnamemodify(filepath, ':t') == 'prompt.md' and filepath:find 'pi%-editor%-' ~= nil
 
   if not is_pi_prompt then
     vim.notify(
-      string.format(
-        "Pi skills source is NOT active here.\nCurrent file: %s\nExpected: prompt.md inside a pi-editor temp dir.",
-        filepath
-      ),
+      string.format('Pi skills source is NOT active here.\nCurrent file: %s\nExpected: prompt.md inside a pi-editor temp dir.', filepath),
       vim.log.levels.WARN
     )
     return
@@ -233,11 +228,11 @@ vim.api.nvim_create_user_command('PiSkillsDebug', function()
   local items = instance.skills or {}
   local msg
   if #items == 0 then
-    msg = "Active for this buffer, but NO skills were found/loaded."
+    msg = 'Active for this buffer, but NO skills were found/loaded.'
   else
-    local lines = { string.format("Active for this buffer — %d skill(s) loaded:", #items) }
+    local lines = { string.format('Active for this buffer — %d skill(s) loaded:', #items) }
     for _, s in ipairs(items) do
-      table.insert(lines, string.format("  /skill:%s  (%s)", s.name, s.description or '<no desc>'))
+      table.insert(lines, string.format('  /skill:%s  (%s)', s.name, s.description or '<no desc>'))
     end
     msg = table.concat(lines, '\n')
   end

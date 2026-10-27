@@ -29,16 +29,12 @@ return {
       }
 
       -- Build gopls config using go.nvim helpers, then register with native API
-      local capabilities = vim.tbl_deep_extend(
-        'force',
-        vim.lsp.protocol.make_client_capabilities(),
-        require('cmp_nvim_lsp').default_capabilities()
-      )
+      local capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(), require('cmp_nvim_lsp').default_capabilities())
       local gopls_cfg = require('go.lsp').config()
       gopls_cfg.cmd = { 'gopls' }
       gopls_cfg.capabilities = capabilities
       vim.lsp.config('gopls', gopls_cfg)
-      vim.lsp.enable('gopls')
+      vim.lsp.enable 'gopls'
 
       vim.keymap.set('n', '<leader>tf', '<cmd>GoTestFunc<CR>')
       vim.keymap.set('n', '<leader>tp', '<cmd>GoTestPkg<CR>')
@@ -94,11 +90,7 @@ return {
     config = function()
       -- nvim-cmp supports more completion types than the default omnifunc.
       -- We must advertise these capabilities to each LSP server.
-      local capabilities = vim.tbl_deep_extend(
-        'force',
-        vim.lsp.protocol.make_client_capabilities(),
-        require('cmp_nvim_lsp').default_capabilities()
-      )
+      local capabilities = vim.tbl_deep_extend('force', vim.lsp.protocol.make_client_capabilities(), require('cmp_nvim_lsp').default_capabilities())
 
       -- Apply these capabilities globally to all LSP clients.
       -- Individual configs below will be merged on top of this.

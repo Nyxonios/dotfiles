@@ -6,7 +6,7 @@ require 'nyxonios.autocmd'
 -- On macOS with Nix, the wrapped cc/clang injects --target flags that conflict
 -- with tree-sitter build's own --target, causing linker errors. Force the use
 -- of the system Apple clang for any in-editor compilation (treesitter, mason, etc).
-if vim.fn.has('mac') == 1 then
+if vim.fn.has 'mac' == 1 then
   vim.env.CC = '/usr/bin/clang'
   vim.env.CXX = '/usr/bin/clang++'
 end

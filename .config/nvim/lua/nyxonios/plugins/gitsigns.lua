@@ -9,7 +9,7 @@ return {
       changedelete = { text = '~' },
     },
     on_attach = function(bufnr)
-      local gitsigns = require('gitsigns')
+      local gitsigns = require 'gitsigns'
 
       local function map(mode, l, r, opts)
         opts = opts or {}
@@ -20,7 +20,7 @@ return {
       -- Navigation
       map('n', ']c', function()
         if vim.wo.diff then
-          vim.cmd.normal({ ']c', bang = true })
+          vim.cmd.normal { ']c', bang = true }
         else
           gitsigns.nav_hunk('next', { target = 'all' })
         end
@@ -28,7 +28,7 @@ return {
 
       map('n', '[c', function()
         if vim.wo.diff then
-          vim.cmd.normal({ '[c', bang = true })
+          vim.cmd.normal { '[c', bang = true }
         else
           gitsigns.nav_hunk('prev', { target = 'all' })
         end
@@ -38,10 +38,10 @@ return {
       map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
       map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
       map('v', '<leader>hs', function()
-        gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
+        gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
       end, { desc = 'git [s]tage hunk' })
       map('v', '<leader>hr', function()
-        gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') })
+        gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
       end, { desc = 'git [r]eset hunk' })
       map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
       map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
@@ -84,7 +84,7 @@ return {
         end
       end, { desc = 'git [d]iff against index (toggle)' })
       map('n', '<leader>hD', function()
-        gitsigns.diffthis('@')
+        gitsigns.diffthis '@'
       end, { desc = 'git [D]iff against last commit' })
 
       -- Toggles

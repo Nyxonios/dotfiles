@@ -85,7 +85,7 @@ return {
         cwd = '${workspaceFolder}',
         stopOnEntry = false,
         args = function()
-          local args_string = vim.fn.input('Arguments: ')
+          local args_string = vim.fn.input 'Arguments: '
           return vim.split(args_string, ' +')
         end,
       },
