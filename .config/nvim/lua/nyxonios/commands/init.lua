@@ -35,7 +35,8 @@ vim.api.nvim_create_user_command('DecodeBase64File', function()
   local content = vim.api.nvim_buf_get_lines(0, 0, vim.api.nvim_buf_line_count(0), false)
   local text = table.concat(content, '\n')
   local decoded = Base64dec(text)
-end, { desc = 'Decodes a base64 string' })
+  vim.api.nvim_buf_set_lines(0, 0, vim.api.nvim_buf_line_count(0), false, vim.split(decoded, '\n'))
+end, { desc = 'Decode the base64 content of the buffer in place' })
 
 vim.api.nvim_create_user_command('AlignMarkdownTable', function(opts)
   local start_line = opts.line1
@@ -142,9 +143,9 @@ local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 function Base64enc(data)
   return (
     (data:gsub('.', function(x)
-      local r, b = '', x:byte()
+      local r, byte = '', x:byte()
       for i = 8, 1, -1 do
-        r = r .. (b % 2 ^ i - b % 2 ^ (i - 1) > 0 and '1' or '0')
+        r = r .. (byte % 2 ^ i - byte % 2 ^ (i - 1) > 0 and '1' or '0')
       end
       return r
     end) .. '0000'):gsub('%d%d%d?%d?%d?%d?', function(x)

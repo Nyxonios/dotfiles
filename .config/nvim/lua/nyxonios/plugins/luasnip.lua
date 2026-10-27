@@ -8,6 +8,8 @@ return {
     'rafamadriz/friendly-snippets',
   },
   config = function()
+    local ls = require 'luasnip'
+
     vim.keymap.set('i', '<c-u>', require 'luasnip.extras.select_choice')
     vim.keymap.set({ 'i' }, '<C-K>', function()
       ls.expand()

@@ -22,6 +22,9 @@ return {
         if vim.wo.diff then
           vim.cmd.normal { ']c', bang = true }
         else
+          -- gitsigns annotates all NavOpts fields as required even though
+          -- they are optional at runtime.
+          ---@diagnostic disable-next-line: missing-fields
           gitsigns.nav_hunk('next', { target = 'all' })
         end
       end, { desc = 'Jump to next git [c]hange' })
@@ -30,6 +33,9 @@ return {
         if vim.wo.diff then
           vim.cmd.normal { '[c', bang = true }
         else
+          -- gitsigns annotates all NavOpts fields as required even though
+          -- they are optional at runtime.
+          ---@diagnostic disable-next-line: missing-fields
           gitsigns.nav_hunk('prev', { target = 'all' })
         end
       end, { desc = 'Jump to previous git [c]hange' })

@@ -7,6 +7,10 @@ require('luasnip.session.snippet_collection').clear_snippets 'zig'
 
 local ls = require 'luasnip'
 
+-- Keep the standard helper toolbox below available while iterating on
+-- snippets here, even when some of the helpers are unused right now.
+---@diagnostic disable: unused-local
+
 local fmta = require('luasnip.extras.fmt').fmta
 local rep = require('luasnip.extras').rep
 

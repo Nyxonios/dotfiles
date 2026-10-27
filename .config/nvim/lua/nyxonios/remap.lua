@@ -1,5 +1,3 @@
-local funcs = require 'nyxonios.functions'
-
 vim.g.mapleader = ' '
 vim.g.localleader = ' '
 

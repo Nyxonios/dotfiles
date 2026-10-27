@@ -48,7 +48,7 @@ vim.api.nvim_create_autocmd('FileType', {
       local start_line = vim.fn.line "'<"
       local end_line = vim.fn.line "'>"
       local count = end_line - start_line + 1
-      for i = 1, count do
+      for _ = 1, count do
         table.remove(items, start_line)
       end
       vim.fn.setqflist(items, 'r')
