@@ -47,7 +47,42 @@ return {
       map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
       map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
       map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
-      map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
+      map('n', '<leader>hd', function()
+        -- Find windows in this tab showing a gitsigns diff buffer
+        local gs_wins = {}
+        for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+          local bufname = vim.api.nvim_buf_get_name(vim.api.nvim_win_get_buf(win))
+          if vim.startswith(bufname, 'gitsigns://') then
+            gs_wins[#gs_wins + 1] = win
+          end
+        end
+
+        -- No diff open yet: show it
+        if #gs_wins == 0 then
+          gitsigns.diffthis()
+          return
+        end
+
+        -- Diff open: close it. If pressed from inside the diff split,
+        -- move out of it first.
+        if vim.tbl_contains(gs_wins, vim.api.nvim_get_current_win()) then
+          for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            if not vim.tbl_contains(gs_wins, win) then
+              vim.api.nvim_set_current_win(win)
+              break
+            end
+          end
+        end
+
+        -- Restore window-local diff options (scrollbind, foldmethod, ...)
+        vim.cmd.diffoff()
+
+        -- Closing the split disables diff in the source window via
+        -- gitsigns' own BufHidden autocmd.
+        for _, win in ipairs(gs_wins) do
+          pcall(vim.api.nvim_win_close, win, false)
+        end
+      end, { desc = 'git [d]iff against index (toggle)' })
       map('n', '<leader>hD', function()
         gitsigns.diffthis('@')
       end, { desc = 'git [D]iff against last commit' })
