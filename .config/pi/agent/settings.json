@@ -13,13 +13,13 @@
     "enabled": true,
     "maxRetries": 10
   },
-  "lastChangelogVersion": "0.85.1",
+  "lastChangelogVersion": "1.4.0",
   "extensions": [
     "-builtin:mcp"
   ],
   "packages": [
     "npm:pi-web-access",
-    "npm:pi-subagents",
+    "npm:pi-subagents@0.83.0",
     "npm:pi-mcp-extension",
     "npm:context-mode",
     "https://github.com/cathrynlavery/diagram-design"

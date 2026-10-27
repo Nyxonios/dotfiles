@@ -20,6 +20,7 @@
 .jj/
 
 .config/pi/agent/sessions/*
+.config/pi/agent/git/
 .config/pi/context-mode/
 .config/pi/agent/trust.json
 .config/pi/agent/missions/*
@@ -37,3 +38,4 @@
 # Pi agent generated state
 .config/pi/context-mode/
 .config/pi/agent/pi-subagents/
+.config/pi/agent/pi-web-access/
