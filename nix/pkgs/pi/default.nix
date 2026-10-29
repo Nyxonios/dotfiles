@@ -3,11 +3,11 @@
     url = "https://github.com/earendil-works/pi/releases/download/v${version}/pi-${version}-source.tar.gz";
     sha256 = srcHash;
   }
-, version ? "1.1.0"
-, srcHash ? "sha256-Y7F7SLhV425kxQE1I6zUgTH/z6kK5I/i8+b6n+PQ2jI="
+, version ? "1.4.0"
+, srcHash ? "sha256-ErFKXYEuBJoLIkSeJYnudkfDHwD5O7l9jSWv8OcZINo="
 , npmDepsHash ? {
     aarch64-darwin = pkgs.lib.fakeSha256; # build once on darwin and replace with real hash
-    x86_64-linux = "sha256-PgEo4B27aICZ5vDqVBMO8+G+gXjPP4DA1ZAzDvHtO+A="; # build once on linux and replace with real hash
+    x86_64-linux = "sha256-FAEXdpgkTS7JEbyLTNVdaPm8quvRfGvaAcl2izSlqUU="; # build once on linux and replace with real hash
   }.${pkgs.stdenv.hostPlatform.system} or (throw "pi-coding-agent: no npmDepsHash known for ${pkgs.stdenv.hostPlatform.system}; build once with pkgs.lib.fakeSha256 and add it here")
 }:
 
@@ -85,7 +85,7 @@ pkgs.stdenvNoCC.mkDerivation {
   buildPhase = ''
     # Build all workspace packages in dependency order.
     # Use build:offline to avoid network calls (e.g. fetching model catalog from models.dev).
-    # The root script handles ordering: chord -> tui -> telemetry -> ai -> agent -> sqlite-node -> protocol -> client -> server -> coding-agent
+    # The root script handles ordering: telemetry -> chord -> tui -> codemode -> mcp -> ai -> durable -> env -> agent -> coding-agent
     npm run build:offline
   '';
 
