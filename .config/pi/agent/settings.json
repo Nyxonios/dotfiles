@@ -24,6 +24,6 @@
     "npm:context-mode",
     "https://github.com/cathrynlavery/diagram-design"
   ],
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "tuiMode": "fullscreen"
 }
