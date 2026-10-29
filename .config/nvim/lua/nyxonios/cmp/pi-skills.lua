@@ -33,8 +33,11 @@ end
 function M.complete(self, params, callback)
   local line = params.context.cursor_before_line
 
-  -- Only serve completions on lines that start with a slash (e.g. /skill…).
-  if not line:match '^%s*/' then
+  -- Only serve completions when the token being typed starts with a slash.
+  -- The '/' may sit at the start of the line or right after any other
+  -- whitespace, so mid-line commands work too (e.g. "…use the /ski…").
+  local token = line:match '%S*$' or ''
+  if token:sub(1, 1) ~= '/' then
     callback {}
     return
   end
